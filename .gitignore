@@ -1,0 +1,18 @@
+# Secrets
+.env
+
+# Data (large files, not for version control)
+data/raw/
+data/processed/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Outputs (regenerable)
+outputs/figures/
+outputs/tables/
+outputs/report/

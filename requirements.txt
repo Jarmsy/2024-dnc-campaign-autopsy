@@ -1,0 +1,13 @@
+pandas
+numpy
+geopandas
+statsmodels
+scipy
+matplotlib
+seaborn
+plotly
+jupyter
+requests
+fredapi
+openpyxl
+python-dotenv
