@@ -90,8 +90,11 @@ def build_summary(long_df):
     summary = pd.DataFrame({
         "private_emp": total["emplvl"],
         "private_avg_pay": total["avg_annual_pay"],
-        "mfg_emp": mfg["emplvl"],
     })
+    # No manufacturing row at all = no establishments = a true zero.
+    # A row with NaN emplvl = suppressed, and stays NaN.
+    summary["mfg_emp"] = mfg["emplvl"].reindex(summary.index)
+    summary.loc[~summary.index.isin(mfg.index), "mfg_emp"] = 0.0
     summary["mfg_share"] = summary["mfg_emp"] / summary["private_emp"]
 
     wide = summary.unstack("year")

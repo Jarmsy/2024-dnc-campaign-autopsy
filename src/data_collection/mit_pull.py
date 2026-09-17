@@ -54,28 +54,34 @@ def parse_and_clean(data_bytes):
     sep = "\t" if data_bytes[:200].count(b"\t") > data_bytes[:200].count(b",") else ","
     df = pd.read_csv(io.BytesIO(data_bytes), sep=sep)
 
-    # Filter to presidential elections and TOTAL mode only
-    # (dataset includes per-mode sub-rows alongside TOTAL; summing all would double-count)
     df = df[df["office"] == "US PRESIDENT"].copy()
-    if "mode" in df.columns:
-        df = df[df["mode"] == "TOTAL"]
-
-    # Normalize party column (varies by version: 'DEMOCRAT'/'REPUBLICAN' or lower)
     df["party"] = df["party"].str.upper().str.strip()
+    df = df.dropna(subset=["county_fips"])
 
-    dem = (
-        df[df["party"] == "DEMOCRAT"][
-            ["year", "state", "county_fips", "candidatevotes", "totalvotes"]
-        ]
-        .copy()
-        .rename(columns={"candidatevotes": "dem_votes", "totalvotes": "total_votes"})
+    # Reporting varies by state-year: some counties have a single TOTAL row, some only
+    # per-mode rows (ABSENTEE, ELECTION DAY, ...), and some have both. Per county-party,
+    # use TOTAL when present, else sum the modes. Either global rule alone is wrong:
+    # TOTAL-only drops AZ/GA/NC in 2020; sum-all double-counts ten states in 2024.
+    keys = ["year", "state", "county_fips", "party"]
+    if "mode" in df.columns:
+        df["mode"] = df["mode"].fillna("TOTAL")
+        has_total = df.loc[df["mode"] == "TOTAL", keys].drop_duplicates().assign(_has_total=True)
+        df = df.merge(has_total, on=keys, how="left")
+        df = df[(df["mode"] == "TOTAL") | df["_has_total"].isna()]
+
+    # totalvotes is the county total repeated on every row, so max not sum
+    votes = df.groupby(keys, as_index=False).agg(
+        candidatevotes=("candidatevotes", "sum"), totalvotes=("totalvotes", "max")
     )
 
-    rep = (
-        df[df["party"] == "REPUBLICAN"][
-            ["year", "state", "county_fips", "candidatevotes"]
+    dem = (
+        votes[votes["party"] == "DEMOCRAT"][
+            ["year", "state", "county_fips", "candidatevotes", "totalvotes"]
         ]
-        .copy()
+        .rename(columns={"candidatevotes": "dem_votes", "totalvotes": "total_votes"})
+    )
+    rep = (
+        votes[votes["party"] == "REPUBLICAN"][["year", "state", "county_fips", "candidatevotes"]]
         .rename(columns={"candidatevotes": "rep_votes"})
     )
 
