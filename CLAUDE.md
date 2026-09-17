@@ -27,7 +27,7 @@ Output: narrative in `report/main_report.md` + technical appendix in `report/tec
 | FRED API | Economic indicators (GDP, unemployment, inflation) | `fredapi` package; set `FRED_API_KEY` env var |
 | MIT Election Lab | Precinct-level returns | Bulk CSV download |
 | FEC.gov | Campaign finance bulk data | FTP bulk files |
-| ANES 2024 | Survey microdata | Manual download, restricted |
+| CES (Cooperative Election Study) | Individual survey microdata 2016/2020/2024 with county FIPS (~60k/yr) | Harvard Dataverse, no guestbook; `ces_pull.py` harmonizes core vars. **Question numbers and candidate codes differ by year — see `HARMONIZED`/`PRES_CODES` in the script, never use raw `CCyy_*` codes across years** |
 | BLS QCEW | County private employment by NAICS sector (2012/16/20/24) | Annual single-file zips, no key; `bls_qcew_pull.py` caches zips in `data/raw/bls_qcew/` |
 | Census ACS | County income, education, race, unemployment (2020 5-yr) | API; set `CENSUS_API_KEY` env var |
 | GDELT | Media coverage index | BigQuery or bulk download |
