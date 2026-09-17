@@ -1,7 +1,7 @@
 # 2024 DNC Campaign Autopsy: A Data-Driven Analysis
 
 *Unit of analysis: national election (Part 1), county (Parts 2–3), survey respondent in county (Part 4) · Elections covered: 1948–2024*
-*Data: MIT Election Lab · FRED · Census ACS 2020 · BLS QCEW · Gallup · Cooperative Election Study*
+*Data: MIT Election Lab · FRED · Census ACS 2020 · BLS QCEW · Gallup · Cooperative Election Study · Medill Local News Initiative*
 
 ---
 
@@ -200,9 +200,21 @@ For reference, one step on the seven-point party scale is −0.30. Fox viewing s
 
 ### Media environment, as opposed to media diet, has almost nothing to explain
 
-A multilevel model with respondents nested in counties puts a ceiling on how much any county-level factor — local news availability, media market, anything geographic — could matter. Only 4.7% of the variance in perceived economy is between counties at all, and after accounting for who lives in each county (party, education, age, race) that falls to 0.5%. A county two standard deviations above versus two below the average differs by 0.31 points on a four-point scale. Whatever produced the disconnect between perception and reality, it operated on individuals through the sources they chose, not on places through the sources available.
+A multilevel model with respondents nested in counties puts a ceiling on how much any county-level factor — local news availability, media market, anything geographic — could matter. Only 4.7% of the variance in perceived economy is between counties at all, and after accounting for who lives in each county (party, education, age, race) that falls to 0.5%. A county two standard deviations above versus two below the average differs by 0.31 points on a four-point scale.
 
-The one thing county context does modulate is the size of the partisan gap: the distance between strong Republicans and strong Democrats is **−2.09 in counties with the most white non-college residents and −1.56 in counties with the fewest**. The partisan divergence in perception is a third wider in exactly the places Part 3 identified as structurally drifting.
+That ceiling was then tested directly against the Medill Local News Initiative's 2025 county inventory: 213 counties with no local news outlet, 1,526 with one. Linked to the CES, that gives 547 respondents in news deserts and 8,003 in single-outlet counties. The news environment fails every test it was given:
+
+| Test | Result |
+|---|---|
+| Does scarcity change what people consume? | Net of party, education, and rural status: newspaper −0.03 (SE 0.02), local TV −0.03 (0.02), Fox −0.02 (0.02). Only "no news at all" rises, by 1.8 points. |
+| Does it explain between-county variance? | 16% of the 0.5% that remains after composition. Composition alone explains 80% of it. |
+| Direct effect on perception? | News desert +0.04 (SE 0.05). Watching Fox, for scale: −0.36. |
+| Does it widen the partisan gap? | +0.02 (SE 0.02) — null, and the point estimate runs the wrong way. |
+| Can it instrument for perception? | First-stage F = 0.6. No. |
+
+Whatever produced the disconnect between perception and reality, it operated on individuals through the sources they chose, not on places through the sources available. The local news environment is not where the 2024 information problem lived.
+
+The one thing county context does modulate is the size of the partisan gap: the distance between strong Republicans and strong Democrats is **−2.09 in counties with the most white non-college residents and −1.56 in counties with the fewest**. The partisan divergence in perception is a third wider in exactly the places Part 3 identified as structurally drifting — and news availability does not move it.
 
 ### The gap and vote switching
 
@@ -218,7 +230,7 @@ Among 2024 respondents who recall voting for Biden in 2020 and voted for a major
 
 The relationship is monotonic across all five levels. Controlling for party identification, education, age, race, media diet, and the county's actual economic record, a one-point-worse attribution gap raises the probability of switching by 3.9 percentage points. The county's real pay growth has no detectable effect (−0.011, SE 0.113). The mirror holds for recalled Trump voters: 2.3% switched to Harris, and the gap predicts it in the expected direction. A multilevel logit with a county random effect gives a similar coefficient (−0.96 vs −0.83).
 
-**This is the finding that most needs a caveat.** Perception is measured before the election and vote after, but a voter who had already decided to leave Biden's coalition would rate the economy badly *because* of that decision. The association is consistent with misattribution driving the switch and equally consistent with the switch driving the rating. Nothing in the CES design separates the two. What the data does establish is that the rating is not coming from the local economy, and that it is coming, in part, from media diet — which narrows the set of explanations without closing it.
+**This is the finding that most needs a caveat.** Perception is measured before the election and vote after, but a voter who had already decided to leave Biden's coalition would rate the economy badly *because* of that decision. The association is consistent with misattribution driving the switch and equally consistent with the switch driving the rating. Nothing in the CES design separates the two. The obvious repair — use local news availability as an instrument for perception, on the logic that it shifts what people believe but not how they vote except through belief — was tried and does not work: the news environment barely moves perception at all (first-stage F = 0.6), so there is nothing to instrument with. What the data does establish is that the rating is not coming from the local economy, and that it is coming, in part, from media diet — which narrows the set of explanations without closing it.
 
 ### Prices: consensus on direction, partisanship on degree
 
@@ -256,7 +268,7 @@ Part 3 found that the local economic outcomes voters should have been rewarding 
 
 **The class gradient is structural and predates the campaign.** Democrats have lost ground in the poorest counties relative to 2012 in every cycle since, at an accelerating rate. No single campaign created it, and the 2024 gradient is the 2020 gradient shifted down.
 
-**The information problem is individual, not geographic.** Only 4.7% of the variance in economic perception is between counties, and almost none of that survives controlling for who lives there. The disconnect between what happened locally and what voters believed was not a function of local news availability or media markets; it tracked the sources people chose within the same county. The partisan divergence in perception is widest in the white non-college counties where the structural drift has been strongest.
+**The information problem is individual, not geographic.** Only 4.7% of the variance in economic perception is between counties, and almost none of that survives controlling for who lives there. Tested directly, the local news environment — 213 counties with no outlet, 1,526 with one — changes neither media diet, nor perception, nor the partisan gap, nor switching. The disconnect between what happened locally and what voters believed tracked the sources people chose within the same county, not the sources available to them. The partisan divergence in perception is widest in the white non-college counties where the structural drift has been strongest.
 
 **Prices were the least filtered economic perception, not an unfiltered one.** Democrats, independents, and Republicans agreed that prices had gone up — 80%, 90%, and 95% — and reported price experience lowered the economy rating by the same amount in every party. But whether prices had gone up "a lot" was itself partisan: 35% of Democrats said so against 76% of Republicans. Saying "a lot" predicted leaving Biden's coalition independently of the overall economy rating. The Democratic base recognized the record and reported the inflation; it reported less of it than everyone else.
 

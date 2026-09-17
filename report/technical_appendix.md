@@ -94,6 +94,19 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 **Recall bias.** In the 2024 wave, recalled 2020 vote is 45% Biden / 32% Trump / 20% did not vote, against an actual 51 / 47. Trump 2020 voters are under-represented among recallers, so switching analyses are run primarily on the recalled-Biden group.
 
+### A.6 Medill Local News Initiative — State of Local News 2025
+
+**Source:** The county-level data behind `localnewsinitiative.northwestern.edu/projects/state-of-local-news/explore/`. Medill publishes no download; the explorer is an Angular app that reads an unauthenticated backend at `northwesternlni.com:9095` (host and port from the page's `runtime-config.js`). Four endpoints are used: the full 2025 outlet inventory (`/lni/localnewstable?year=2025`, 8,051 outlets with county FIPS and media type), the desert/watchlist classification (`/api/watchlistcounties`), per-state county demographics with USDA Rural-Urban Continuum Codes (`/api/demographics`), and per-state 2025-vs-2024 outlet counts (`/api/lni/state/county`). Calls are paced at 0.5 s and cached.
+**Script:** `src/data_collection/news_deserts_pull.py` → `data/raw/news_deserts/lni_outlets_2025.csv`, `lni_county_summary.csv` (3,144 counties).
+
+**Validation.** Counties with zero outlets in the pulled inventory: 213; with exactly one: 1,526. Both match the figures the site itself reports. The 2025 newspaper count from the year-over-year endpoint agrees with the inventory count in 99.9% of counties.
+
+**TLS.** The server omits its Sectigo intermediate certificate from the chain. Browsers fetch it via AIA; Python's `requests` does not and fails verification. The script downloads the intermediate from the AIA URL in the leaf certificate and appends it to certifi's bundle. Verification is not disabled.
+
+**Name matching.** The 2024 side of the year-over-year map names Louisiana parishes without "Parish" and Virginia independent cities without "city," so the same county arrives as two rows. A two-pass match (exact, then suffix-stripped for still-unmatched rows against spine names unique after stripping) resolves this; Richmond / Richmond city and similar pairs both match exactly in pass 1 and never reach pass 2. Connecticut's 2024 counts are by planning region and are left missing. Counties absent from the year-over-year map have no newspapers in either year and are coded zero.
+
+**Variables used in Part 4:** `news_desert` (0 outlets), `single_outlet`, `n_outlets`, `outlets_per_100k` (log1p in models), `rucc` and `nonmetro` (RUCC ≥ 4), `newspapers_lost_2024_2025`.
+
 ---
 
 ## B. Part 1 — Fundamentals model
@@ -464,6 +477,46 @@ AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp 
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
+### E.9 Local news environment
+
+Notebook 07 §1b, §2, §5b. CES 2024 respondents by county news environment: 547 in 112 news deserts, 8,003 in 1,253 single-outlet counties, 48,085 in 1,288 counties with 2+ outlets; 8,188 in nonmetro counties. Among recalled Biden voters: 164 in deserts, 2,073 in single-outlet counties.
+
+**Media diet by environment** (`outputs/tables/multilevel_news_media_diet.csv`, unweighted shares, past 24 h):
+
+| | N | Newspaper | Local TV | Fox | MSNBC | CNN | Social | No news |
+|---|---|---|---|---|---|---|---|---|
+| Desert | 547 | 0.263 | 0.406 | 0.168 | 0.099 | 0.137 | 0.792 | 0.049 |
+| Single outlet | 8,003 | 0.272 | 0.435 | 0.194 | 0.088 | 0.116 | 0.817 | 0.034 |
+| 2+ outlets | 48,085 | 0.340 | 0.458 | 0.170 | 0.131 | 0.157 | 0.810 | 0.027 |
+
+Net of `pid7c`, college, age, race, nonmetro, and county composition (LPM, county-clustered), the desert coefficient is −0.027 (0.021) newspaper, −0.026 (0.021) local TV, −0.015 (0.015) Fox, −0.025 (0.020) social, +0.018 (0.008) no news. Single-outlet coefficients are all |b| < 0.01.
+
+**Variance decomposition with news environment** (`outputs/tables/multilevel_news_variance.csv`; MixedLM, county random intercept):
+
+| Model | County var. | ICC | Share of M1a county var. explained |
+|---|---|---|---|
+| M1a demographics + party | 0.0061 | 0.0052 | — |
+| M1a + news environment | 0.0051 | 0.0044 | 16% |
+| M1a + news + composition | 0.0012 | 0.0010 | 81% |
+| M3 (composition + state FE) | 0.0002 | 0.0001 | 97% |
+| M3 + news environment | 0.0001 | 0.0001 | 98% |
+
+News environment = `news_desert + single_outlet + log_outlets_pc_z + nonmetro`.
+
+**Direct fixed effects, M3 + news:** `news_desert` +0.041 (0.050), `single_outlet` +0.007 (0.016), `log_outlets_pc_z` +0.001 (0.006), `nonmetro` +0.019 (0.018). For scale, `fox` −0.361, `newspaper` +0.277.
+
+**Cross-level interactions** (added to the E.6 model): `pid7c × news_desert` +0.022 (0.020, p = 0.27), `pid7c × single_outlet` +0.008 (0.006, p = 0.22), `pid7c × nonmetro` −0.004 (0.007, p = 0.51). Implied strong-Rep-minus-strong-Dem gap: −1.83 (2+ outlets, metro), −1.70 (desert, metro), −1.86 (2+ outlets, nonmetro), −1.72 (desert, nonmetro). The white-non-college interaction (−0.022, p < 0.001) is unchanged by the news terms.
+
+**Reduced form, first stage, IV** (`outputs/tables/multilevel_news_switching.csv`, `multilevel_news_iv.csv`; recalled-Biden sample, N = 20,608, unweighted, county-clustered; controls as E.4 full model plus composition and nonmetro):
+
+| | LPM coef. | SE | p | Logit coef. | SE | p |
+|---|---|---|---|---|---|---|
+| Reduced form: `news_desert` → switch | +0.024 | 0.018 | 0.18 | +0.741 | 0.448 | 0.10 |
+| `single_outlet` | +0.001 | 0.004 | 0.90 | +0.066 | 0.183 | 0.72 |
+| `log_outlets_pc_z` | +0.002 | 0.002 | 0.27 | +0.123 | 0.068 | 0.07 |
+
+First stage (gap on instruments + controls): `news_desert` −0.078 (0.087), `single_outlet` +0.024 (0.029), `log_outlets_pc_z` +0.002 (0.010). **Cluster-robust F on excluded instruments = 0.64; partial R² = 0.00008.** 2SLS LPM estimate of the gap effect: −0.114 (SE 0.123), against OLS −0.027 (0.0015). The 2SLS estimate is not interpretable; it is reported so the weak-instrument result is on the record rather than omitted.
+
 ---
 
 ## F. Limitations
@@ -481,6 +534,8 @@ AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp 
 11. **Unweighted mixed models.** MixedLM and BayesMixedGLM take no survey weights. Fixed effects match the weighted single-level estimates closely, but the variance components are model-based.
 12. **Few respondents per county.** The random slope for party ID is not identified; EB county effects are heavily shrunk; any county-level test has low power outside the ~600 counties with 20+ respondents.
 13. **Opt-in panel.** CES is a matched opt-in sample, not a probability sample. Its reported two-party vote tracks the actual result within 1pp in each wave, but that validates the weights for vote share, not for perception items.
+14. **Local news data provenance.** The Medill county inventory comes from an undocumented backend rather than a published file. It reproduces the site's headline counts exactly, but its definitions (what counts as an outlet, how "active" is determined) are Medill's and are documented only in their methodology page. The 2025 inventory is a snapshot taken after the 2024 election; a county's news environment during the campaign is assumed to be the same.
+15. **News-desert sample size.** 547 CES respondents live in the 112 news-desert counties with data; 164 of them are recalled Biden voters. The null results in E.9 have point estimates near zero, not merely wide intervals, but a desert-specific effect of a few points on switching would not be detectable.
 
 ---
 
@@ -508,7 +563,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 8 | `05_county_covariates.ipynb` | steps 1, 4, 6, 7 | `data/processed/county_covariates.csv`, tables, figure |
 | 9 | `python src/data_collection/ces_pull.py` | Dataverse | `data/raw/ces/ces_{2016,2020,2024}.csv`, `ces_2016_2024_core.csv`, guide PDFs |
 | 10 | `06_attribution_gap.ipynb` | steps 8, 9 | `data/processed/ces_2024_attribution.csv`, tables, figures |
-| 11 | `07_multilevel_model.ipynb` | step 10 | `data/processed/county_attribution_gap.csv`, tables, figure (≈10 min; the VB mixed logit dominates) |
+| 11 | `python src/data_collection/news_deserts_pull.py` | LNI backend | `data/raw/news_deserts/lni_county_summary.csv`, `lni_outlets_2025.csv`, `ca_bundle.pem` |
+| 12 | `07_multilevel_model.ipynb` | steps 10, 11 | `data/processed/county_attribution_gap.csv`, tables, figure (≈10 min; the VB mixed logit dominates) |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -524,10 +580,11 @@ Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never
 
 ## H. Next steps
 
-Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching; it did not establish direction. Three things would move it:
+Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching; it did not establish direction. The local news environment was the planned instrument and, as E.9 shows, it does not move perception (first-stage F = 0.64) — the variance ceiling in E.5 ruled it out in advance and the data confirmed it. Two things would still move identification:
 
-1. **An instrument for perception.** The Medill local-news file (county outlet counts and closures) is the candidate. The multilevel results set expectations: news availability can explain at most the M1a county variance (SD 0.078), so its first-stage effect on perception *levels* will be small. Its more plausible role is in the switching model — as an instrument, it requires that news deserts affect switching only through perception, which is arguable rather than given. Slots in at notebook 05 (county covariates) and notebook 07 §1–2.
-2. **Panel data.** The CES has a panel component (2020 → 2022 → 2024 re-interviews). Perception measured in 2022, before the 2024 decision, would break the simultaneity in E.4. Requires the panel file, which is a separate Dataverse release.
-3. **A local price measure.** The prices item (E.8) is the least partisan perception in the survey and predicts switching net of the economy rating, but there is nothing to set it against. BLS publishes CPI only for large metro areas; the closest county-level options are the BEA regional price parities (annual, by metro/non-metro portion of state) or rent from ACS 1-year files. Either would allow a prices *gap* — perceived minus measured — and a test of whether that gap, rather than the level, is what moved votes.
+1. **Panel data.** The CES has a panel component (2020 → 2022 → 2024 re-interviews). Perception measured in 2022, before the 2024 decision, breaks the simultaneity in E.4 directly and is now the only realistic route. Requires the panel file, which is a separate Dataverse release.
+2. **A local price measure.** The prices item (E.8) is the least partisan perception in the survey and predicts switching net of the economy rating, but there is nothing to set it against. BLS publishes CPI only for large metro areas; the closest county-level options are the BEA regional price parities (annual, by metro/non-metro portion of state) or rent from ACS 1-year files. Either would allow a prices *gap* — perceived minus measured — and a test of whether that gap, rather than the level, is what moved votes.
+
+One loose end from E.9 worth a look with more data: the reduced-form association between living in a news desert and switching (+2.4pp LPM, p = 0.18; logit p = 0.10) does not run through perception, so if it is real it is a direct rural-disengagement path. With 164 desert residents among recalled Biden voters it cannot be more than a hint.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.
