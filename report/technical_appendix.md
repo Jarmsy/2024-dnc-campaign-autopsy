@@ -435,13 +435,21 @@ Random intercepts from M1 (`data/processed/county_attribution_gap.csv`, 2,653 co
 
 Notebook 06 §8. Weighted distribution of `CC24_303`: increased a lot 56.3%, increased somewhat 31.7%, stayed the same 8.5%, decreased somewhat 3.0%, decreased a lot 0.6%.
 
-**Partisanship of the three perception items** (`outputs/tables/attribution_prices_partisan.csv`; weighted means, `commonweight`):
+**Partisanship of the three perception items** (`outputs/tables/attribution_prices_partisan.csv`; all statistics weighted by `commonweight`):
 
-| Item (sign) | N | All | Dem | Ind | Rep | corr. with `pid7` | R² on `pid7` |
-|---|---|---|---|---|---|---|---|
-| Nation's economy (+ = better) | 56,635 | −0.59 | +0.32 | −0.98 | −1.37 | −0.59 | 0.338 |
-| Prices (+ = rose more) | 56,526 | +1.40 | +1.09 | +1.47 | +1.69 | +0.34 | 0.112 |
-| Own household income (+ = better) | 56,561 | −0.13 | +0.16 | −0.32 | −0.36 | −0.27 | 0.062 |
+| Item (sign) | N | All | Dem | Ind | Rep | Dem − Rep | SD | Gap in SDs | corr. with `pid7` | R² on `pid7` |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Nation's economy (+ = better) | 56,635 | −0.59 | +0.32 | −0.98 | −1.37 | +1.69 | 1.33 | **1.27** | −0.58 | 0.338 |
+| Prices (+ = rose more) | 56,526 | +1.40 | +1.09 | +1.47 | +1.69 | −0.60 | 0.81 | **0.74** | +0.34 | 0.112 |
+| Own household income (+ = better) | 56,561 | −0.13 | +0.16 | −0.32 | −0.36 | +0.51 | 0.95 | **0.54** | −0.25 | 0.062 |
+
+The prices scale is compressed (88% in two of five categories), so the R² ratio across items (0.11 vs 0.34) overstates how much less partisan prices are; the SD-scaled gap (0.74 vs 1.27) is the fairer comparison. Direction versus degree, by party:
+
+| | Rose (any) | Rose "a lot" | Same | P("a lot" \| rose) |
+|---|---|---|---|---|
+| Dem | 80.1% | 35.2% | 14.3% | 43.9% |
+| Ind | 89.6% | 61.5% | 7.1% | 68.6% |
+| Rep | 95.4% | 75.9% | 3.1% | 79.5% |
 
 **Prices → economy rating, within party** (WLS, `commonweight`, county-clustered): slope −0.530 (0.020) Dem, −0.543 (0.040) Ind, −0.575 (0.036) Rep; R² 0.14–0.17. Pooled: `pid7c` alone R² 0.338; `pid7c + perceived_prices` 0.439; `pid7c × perceived_prices` interaction +0.000 (0.007).
 
@@ -452,7 +460,7 @@ Notebook 06 §8. Weighted distribution of `CC24_303`: increased a lot 56.3%, inc
 | `gap` | −0.696 (0.097) | — |
 | `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
 
-AME of one step more inflation experienced: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read).
+AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in F.9 applies to this result with only modestly less force than to the economy rating.
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
