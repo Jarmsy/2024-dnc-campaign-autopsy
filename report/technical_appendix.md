@@ -90,7 +90,7 @@ The 2020 five-year file pools 2016–2020 responses. It predates the inflation o
 
 The question numbers shifted in 2024 and the 2016 candidate order is reversed relative to later waves. The pull script emits `presvote_post_party` and `presvote_prior_party` as D/R/other so raw codes never cross years. Weighted two-party Democratic share of reported vote: 51.4% (2016), 53.1% (2020), 49.0% (2024) against actual 51.1 / 52.3 / 49.25 — the standard CES validity check.
 
-**Scales.** Economy item: 1 much better … 5 much worse, 6 not sure → recoded to +2 … −2, not-sure dropped. `pid7`: 1 strong Democrat … 4 independent … 7 strong Republican, 8 not sure (dropped). Media items (`CC24_300_1..5`, past 24 hours, check-all, 1 = yes): social media, TV news, newspaper, radio, none. `CC24_300a` TV type: 1 local, 2 national, 3 both. `CC24_300b_1..8` networks watched: ABC, CBS, NBC, CNN, Fox, MSNBC, PBS, other. `educ`: 1 no HS … 5 four-year, 6 post-grad; college = 5 or 6.
+**Scales.** Economy item: 1 much better … 5 much worse, 6 not sure → recoded to +2 … −2, not-sure dropped. Household income (`CC24_302`): 1 increased a lot … 5 decreased a lot → +2 … −2. Prices (`CC24_303`): 1 increased a lot … 5 decreased a lot → recoded **+2 = increased a lot, −2 = decreased a lot** — higher means more inflation experienced, the opposite valence to the other two items; the notebook and all tables carry this sign. `pid7`: 1 strong Democrat … 4 independent … 7 strong Republican, 8 not sure (dropped). Media items (`CC24_300_1..5`, past 24 hours, check-all, 1 = yes): social media, TV news, newspaper, radio, none. `CC24_300a` TV type: 1 local, 2 national, 3 both. `CC24_300b_1..8` networks watched: ABC, CBS, NBC, CNN, Fox, MSNBC, PBS, other. `educ`: 1 no HS … 5 four-year, 6 post-grad; college = 5 or 6.
 
 **Recall bias.** In the 2024 wave, recalled 2020 vote is 45% Biden / 32% Trump / 20% did not vote, against an actual 51 / 47. Trump 2020 voters are under-represented among recallers, so switching analyses are run primarily on the recalled-Biden group.
 
@@ -431,6 +431,31 @@ Implied strong-Rep-minus-strong-Dem gap (6 × slope): white non-college −2 SD 
 
 Random intercepts from M1 (`data/processed/county_attribution_gap.csv`, 2,653 counties). SD 0.017 versus 0.755 for raw county means — heavy shrinkage; for counties with 1–5 respondents the EB SD is 0.007. Regressed on county covariates (respondent-weighted, HC3): R² 0.23, all coefficients |b| < 0.01. Regressed as a predictor of the county margin swing: −3.40 (SE 8.68, p = 0.70) bivariate; +1.52 (6.37, p = 0.81) with Part 3 controls. No detectable county-level relationship.
 
+### E.8 Prices item
+
+Notebook 06 §8. Weighted distribution of `CC24_303`: increased a lot 56.3%, increased somewhat 31.7%, stayed the same 8.5%, decreased somewhat 3.0%, decreased a lot 0.6%.
+
+**Partisanship of the three perception items** (`outputs/tables/attribution_prices_partisan.csv`; weighted means, `commonweight`):
+
+| Item (sign) | N | All | Dem | Ind | Rep | corr. with `pid7` | R² on `pid7` |
+|---|---|---|---|---|---|---|---|
+| Nation's economy (+ = better) | 56,635 | −0.59 | +0.32 | −0.98 | −1.37 | −0.59 | 0.338 |
+| Prices (+ = rose more) | 56,526 | +1.40 | +1.09 | +1.47 | +1.69 | +0.34 | 0.112 |
+| Own household income (+ = better) | 56,561 | −0.13 | +0.16 | −0.32 | −0.36 | −0.27 | 0.062 |
+
+**Prices → economy rating, within party** (WLS, `commonweight`, county-clustered): slope −0.530 (0.020) Dem, −0.543 (0.040) Ind, −0.575 (0.036) Rep; R² 0.14–0.17. Pooled: `pid7c` alone R² 0.338; `pid7c + perceived_prices` 0.439; `pid7c × perceived_prices` interaction +0.000 (0.007).
+
+**Switching with prices** (`outputs/tables/attribution_prices_switching.csv`; recalled-Biden sample with a prices response, N = 20,583; specification as E.4 full model):
+
+| | With economy gap | Without |
+|---|---|---|
+| `gap` | −0.696 (0.097) | — |
+| `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
+
+AME of one step more inflation experienced: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read).
+
+**County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
+
 ---
 
 ## F. Limitations
@@ -495,6 +520,6 @@ Part 4 established that perception is disconnected from local reality and travel
 
 1. **An instrument for perception.** The Medill local-news file (county outlet counts and closures) is the candidate. The multilevel results set expectations: news availability can explain at most the M1a county variance (SD 0.078), so its first-stage effect on perception *levels* will be small. Its more plausible role is in the switching model — as an instrument, it requires that news deserts affect switching only through perception, which is arguable rather than given. Slots in at notebook 05 (county covariates) and notebook 07 §1–2.
 2. **Panel data.** The CES has a panel component (2020 → 2022 → 2024 re-interviews). Perception measured in 2022, before the 2024 decision, would break the simultaneity in E.4. Requires the panel file, which is a separate Dataverse release.
-3. **The prices item.** `CC24_303` (prices past year) is the grievance of the cycle and is in the pull but unused; there is no county-level price series to set against it, but its relationship to the gap and to switching, conditional on the economy item, is a cheap addition to notebook 06.
+3. **A local price measure.** The prices item (E.8) is the least partisan perception in the survey and predicts switching net of the economy rating, but there is nothing to set it against. BLS publishes CPI only for large metro areas; the closest county-level options are the BEA regional price parities (annual, by metro/non-metro portion of state) or rent from ACS 1-year files. Either would allow a prices *gap* — perceived minus measured — and a test of whether that gap, rather than the level, is what moved votes.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.

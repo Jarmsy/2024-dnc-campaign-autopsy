@@ -16,7 +16,7 @@ Kamala Harris lost the 2024 presidential election with **49.25% of the two-party
 | **Part 1** | A fundamentals model fit on 1948–2020 predicted Harris at 47.9%. She received 49.25%. The +1.4pp residual is well inside the model's 3.75pp out-of-sample error — she performed **about as the fundamentals predicted**, not meaningfully better or worse. |
 | **Part 2** | The shift was near-universal: 90% of counties and all 51 states moved right. Nationally, **73% of the Democratic vote loss came from share shift and 27% from lower turnout**. But the largest raw losses were in Democratic strongholds, and there the mechanism was turnout. |
 | **Part 3** | County income, education, and racial composition explain about 42% of the variance in county swings. The gap between Democratic performance in rich and poor counties, relative to 2012, widened from +5.0pp (2016) to +9.4pp (2020) to +9.9pp (2024). Harris inherited that gradient; she did not create it. Manufacturing exposure and real wage growth over the Biden term explain essentially nothing. |
-| **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, **31.6% of those who said the economy got "much worse" voted for Trump, against 1.5% of those who said "much better"** — but that association runs in both causal directions. Media diet, not media environment, is where the signal is. |
+| **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, **31.6% of those who said the economy got "much worse" voted for Trump, against 1.5% of those who said "much better"** — but that association runs in both causal directions. Prices were the exception to the partisan filter: 88% of respondents of every party said they rose, and saying "a lot" rather than "somewhat" predicted switching independently of the economy rating. Media diet, not media environment, is where the remaining signal is. |
 
 **What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 gets closer to mechanism — it shows that perception is disconnected from local reality and that misperception travels with vote switching — but it cannot establish that misperception *caused* switching rather than the reverse. The identification strategy that would settle that is laid out in the technical appendix.
 
@@ -220,9 +220,27 @@ The relationship is monotonic across all five levels. Controlling for party iden
 
 **This is the finding that most needs a caveat.** Perception is measured before the election and vote after, but a voter who had already decided to leave Biden's coalition would rate the economy badly *because* of that decision. The association is consistent with misattribution driving the switch and equally consistent with the switch driving the rating. Nothing in the CES design separates the two. What the data does establish is that the rating is not coming from the local economy, and that it is coming, in part, from media diet — which narrows the set of explanations without closing it.
 
+### Prices: the one item everyone agrees on
+
+The 2024 CES also asks whether "the prices of everyday goods and services" increased a lot, somewhat, stayed the same, or decreased. Unlike the economy rating, this is close to a factual report, and it behaves differently.
+
+| Item | Democrats | Independents | Republicans | R² on party ID |
+|---|---|---|---|---|
+| Nation's economy (higher = better) | +0.32 | −0.98 | −1.37 | **0.34** |
+| Prices (higher = rose more) | +1.09 | +1.47 | +1.69 | **0.11** |
+| Own household income (higher = better) | +0.16 | −0.32 | −0.36 | 0.06 |
+
+Eighty-eight percent of respondents said prices went up; 56% said "a lot." Democrats said it too — a mean of +1.09 is well into "increased." Party identification explains a third as much of the prices rating as of the economy rating, and a fifth as much as it explains of the abstract item once the question is about the respondent's own household. The closer the question gets to direct experience, the less partisan the answer.
+
+Price perception feeds the economy rating by the same amount for everyone: within each party, saying prices rose one step more lowers the economy rating by 0.53–0.58, and the party × prices interaction is zero (0.000, SE 0.007). Partisanship sets the level from which each respondent starts; the experience of prices moves every group off that level by the same amount. Adding prices to party identification raises the explained variance in the economy rating from 34% to 44%.
+
+Prices also predict switching on their own. Among recalled Biden voters, **12.8% of those who said prices "increased a lot" voted for Trump, against 3.6% of those who said "increased somewhat."** With the economy rating held fixed, one step more inflation experienced raises the probability of switching by 1.9 points; without that control, by 5.1 — about half the prices effect runs through the general economy rating and half is direct.
+
+This does not resolve the reverse-causation problem, but it narrows it. "Prices rose a lot" versus "prices rose somewhat" — among respondents who all agree prices rose — is a harder claim to attribute to post-decision rationalization than a shift in the abstract economy rating. And like the economy rating, it has no local component: county economic record and composition explain 2% of its variance.
+
 ### Reading Part 4 against Parts 1–3
 
-Part 3 found that the local economic outcomes voters should have been rewarding had no effect on the county swing. Part 4 shows why: voters were not perceiving them. The individual-level gap predicts individual switching, but between-county variation in the gap barely exists, so it does not aggregate to a county-level relationship with the swing — the county-level gap has no detectable effect on the county swing (p = 0.8). The economy voters evaluated in 2024 was a national, partisan, and media-mediated object, not the one in their county's employment and wage records.
+Part 3 found that the local economic outcomes voters should have been rewarding had no effect on the county swing. Part 4 shows why: voters were not perceiving them. The individual-level gap predicts individual switching, but between-county variation in the gap barely exists, so it does not aggregate to a county-level relationship with the swing — the county-level gap has no detectable effect on the county swing (p = 0.8). The economy voters evaluated in 2024 was a national, partisan, and media-mediated object, not the one in their county's employment and wage records — with one exception. Prices were the part of that object that all sides perceived alike, and price experience moved the economy rating and the vote through the same channel regardless of party.
 
 ---
 
@@ -239,6 +257,8 @@ Part 3 found that the local economic outcomes voters should have been rewarding 
 **The class gradient is structural and predates the campaign.** Democrats have lost ground in the poorest counties relative to 2012 in every cycle since, at an accelerating rate. No single campaign created it, and the 2024 gradient is the 2020 gradient shifted down.
 
 **The information problem is individual, not geographic.** Only 4.7% of the variance in economic perception is between counties, and almost none of that survives controlling for who lives there. The disconnect between what happened locally and what voters believed was not a function of local news availability or media markets; it tracked the sources people chose within the same county. The partisan divergence in perception is widest in the white non-college counties where the structural drift has been strongest.
+
+**Prices were the exception to the partisan filter.** The one economic question on which Democrats, independents, and Republicans gave similar answers was whether prices had gone up. They had, everyone said so, and saying "a lot" rather than "somewhat" predicted leaving Biden's coalition regardless of party and regardless of how the respondent rated the economy overall. The Democratic base recognized the record; the base did not experience the prices differently from anyone else.
 
 ---
 
