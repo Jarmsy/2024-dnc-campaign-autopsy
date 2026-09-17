@@ -16,7 +16,7 @@ Kamala Harris lost the 2024 presidential election with **49.25% of the two-party
 | **Part 1** | A fundamentals model fit on 1948–2020 predicted Harris at 47.9%. She received 49.25%. The +1.4pp residual is well inside the model's 3.75pp out-of-sample error — she performed **about as the fundamentals predicted**, not meaningfully better or worse. |
 | **Part 2** | The shift was near-universal: 90% of counties and all 51 states moved right. Nationally, **73% of the Democratic vote loss came from share shift and 27% from lower turnout**. But the largest raw losses were in Democratic strongholds, and there the mechanism was turnout. |
 | **Part 3** | County income, education, and racial composition explain about 42% of the variance in county swings. The gap between Democratic performance in rich and poor counties, relative to 2012, widened from +5.0pp (2016) to +9.4pp (2020) to +9.9pp (2024). Harris inherited that gradient; she did not create it. Manufacturing exposure and real wage growth over the Biden term explain essentially nothing. |
-| **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, those who rated the economy worse than their county's record predicts switched to Trump at **12.9%** vs 1.6% for those who rated it better — but that association runs in both causal directions. Media diet, not media environment, is where the signal is. |
+| **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, **31.6% of those who said the economy got "much worse" voted for Trump, against 1.5% of those who said "much better"** — but that association runs in both causal directions. Media diet, not media environment, is where the signal is. |
 
 **What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 gets closer to mechanism — it shows that perception is disconnected from local reality and that misperception travels with vote switching — but it cannot establish that misperception *caused* switching rather than the reverse. The identification strategy that would settle that is laid out in the technical appendix.
 
@@ -170,7 +170,7 @@ Regressing perceived economic change (−2 to +2) on the respondent's county's r
 | Party identification (7-point) | **0.338** |
 | Both | 0.341 |
 
-The county record explains six-tenths of one percent. Within party the picture is flat: Democrats in counties where real pay fell the most rate the economy +0.34; where it rose the most, +0.36. Republicans, −1.31 and −1.43. A one-standard-deviation better local economy moves perception by −0.02 to −0.04 points — the wrong sign, and indistinguishable from zero. Whatever voters were evaluating in 2024, it was not the economy of the place they live.
+The county record explains six-tenths of one percent. Within party the picture is flat: Democrats in counties where real pay fell the most rate the economy +0.34; where it rose the most, +0.36. Republicans, −1.31 and −1.43. A one-standard-deviation better local real-pay record moves perception by −0.02 (Democrats), −0.04 (independents), and −0.04 (Republicans) — tiny, and in the wrong direction; only the Republican estimate is statistically distinct from zero, and it says Republicans in counties where pay grew faster rated the economy slightly *worse*. Whatever voters were evaluating in 2024, it was not the economy of the place they live.
 
 ### The partisan flip, and who flipped less
 
@@ -180,7 +180,7 @@ The county record explains six-tenths of one percent. Within party the picture i
 | 2020 (Trump, R, pandemic) | −1.41 | −0.83 | +0.11 |
 | 2024 (Biden, D) | +0.32 | −0.98 | −1.37 |
 
-Out-party respondents rate the economy badly in every year; that is the known result. Two comparisons are specific to 2024. **Independents rated the 2024 economy worse than the 2020 pandemic economy** (−0.98 vs −0.83). And **Democrats in 2024 were less positive about their own incumbent (+0.32) than Republicans were about theirs during COVID (+0.11)** — a margin of enthusiasm that the in-party of an incumbent would normally be expected to supply.
+Out-party respondents rate the economy badly in every year; that is the known result. Two comparisons are specific to 2024. **Independents rated the 2024 economy worse than the 2020 pandemic economy** (−0.98 vs −0.83). And **the in-party did not fail to notice**: Democrats in 2024 rated Biden's economy (+0.32) *higher* than Republicans rated Trump's in 2020 (+0.11) and only modestly below Democrats' rating of Obama's in 2016 (+0.43). The disconnect between the economic record and its perception is not an in-party phenomenon. It sits with independents and with Republicans, whose −1.37 is within rounding of the −1.41 Democrats recorded for the pandemic year — the out-party rated the 2024 economy about as harshly as the out-party of 2020 rated the year of the COVID crash.
 
 ### The attribution gap and media diet
 
@@ -200,21 +200,23 @@ For reference, one step on the seven-point party scale is −0.30. Fox viewing s
 
 ### Media environment, as opposed to media diet, has almost nothing to explain
 
-A multilevel model with respondents nested in counties puts a ceiling on how much any county-level factor — local news availability, media market, anything geographic — could matter. Only 4.7% of the variance in perceived economy is between counties at all, and after accounting for who lives in each county (party, education, age, race) that falls to 0.6%. A county two standard deviations above versus two below the average differs by 0.31 points on a four-point scale. Whatever produced the disconnect between perception and reality, it operated on individuals through the sources they chose, not on places through the sources available.
+A multilevel model with respondents nested in counties puts a ceiling on how much any county-level factor — local news availability, media market, anything geographic — could matter. Only 4.7% of the variance in perceived economy is between counties at all, and after accounting for who lives in each county (party, education, age, race) that falls to 0.5%. A county two standard deviations above versus two below the average differs by 0.31 points on a four-point scale. Whatever produced the disconnect between perception and reality, it operated on individuals through the sources they chose, not on places through the sources available.
 
 The one thing county context does modulate is the size of the partisan gap: the distance between strong Republicans and strong Democrats is **−2.09 in counties with the most white non-college residents and −1.56 in counties with the fewest**. The partisan divergence in perception is a third wider in exactly the places Part 3 identified as structurally drifting.
 
 ### The gap and vote switching
 
-Among 2024 respondents who recall voting for Biden in 2020 and voted for a major-party candidate in 2024 (N = 20,608), 6.4% voted for Trump. Split by attribution gap:
+Among 2024 respondents who recall voting for Biden in 2020 and voted for a major-party candidate in 2024 (N = 20,608), 6.4% voted for Trump (weighted; 3.0% unweighted — the panel over-represents consistent Democrats and the weights correct for it, so the level depends on the weights more than most figures in this report). Split by how they rated the economy:
 
-| Attribution gap tercile | Switched to Trump |
-|---|---|
-| Rated economy worst relative to county record | **12.9%** |
-| Middle | 2.0% |
-| Rated economy best relative to county record | 1.6% |
+| "Over the past year the nation's economy has…" | N | Switched to Trump |
+|---|---|---|
+| Gotten much worse | 1,192 | **31.6%** |
+| Gotten somewhat worse | 2,580 | 11.1% |
+| Stayed about the same | 3,798 | 4.6% |
+| Gotten somewhat better | 8,746 | 1.7% |
+| Gotten much better | 4,292 | **1.5%** |
 
-Controlling for party identification, education, age, race, media diet, and the county's actual economic record, a one-point-worse gap raises the probability of switching by 3.9 percentage points. The county's real pay growth has an effect of exactly zero. The mirror holds for recalled Trump voters: 2.3% switched to Harris, and the gap predicts it in the expected direction. A multilevel logit with a county random effect gives the same coefficient.
+The relationship is monotonic across all five levels. Controlling for party identification, education, age, race, media diet, and the county's actual economic record, a one-point-worse attribution gap raises the probability of switching by 3.9 percentage points. The county's real pay growth has no detectable effect (−0.011, SE 0.113). The mirror holds for recalled Trump voters: 2.3% switched to Harris, and the gap predicts it in the expected direction. A multilevel logit with a county random effect gives a similar coefficient (−0.96 vs −0.83).
 
 **This is the finding that most needs a caveat.** Perception is measured before the election and vote after, but a voter who had already decided to leave Biden's coalition would rate the economy badly *because* of that decision. The association is consistent with misattribution driving the switch and equally consistent with the switch driving the rating. Nothing in the CES design separates the two. What the data does establish is that the rating is not coming from the local economy, and that it is coming, in part, from media diet — which narrows the set of explanations without closing it.
 
