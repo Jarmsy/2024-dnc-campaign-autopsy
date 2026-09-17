@@ -70,6 +70,30 @@ The 2020 five-year file pools 2016–2020 responses. It predates the inflation o
 
 `avg_annual_pay` is total wages divided by average employment — a mean, not a median, and per job rather than per worker. It rises when low-wage jobs disappear. Treat `real_pay_pct_chg` as a coarse measure.
 
+### A.5 Cooperative Election Study (CES)
+
+**Source:** Harvard Dataverse, CCES dataverse. 2016 `doi:10.7910/DVN/GDF6Z0`, 2020 `doi:10.7910/DVN/E9N6PH`, 2024 `doi:10.7910/DVN/X11EP6`. No guestbook; the common-content CSV/tab files (135–190 MB) and guide PDFs download via the API.
+**Script:** `src/data_collection/ces_pull.py` → `data/raw/ces/ces_{year}.csv` and `ces_2016_2024_core.csv`.
+**Sample:** 64,600 (2016), 61,000 (2020), 60,000 (2024). YouGov opt-in panel with sample matching; `commonweight` for pre-election items, `commonpostweight` for post-election items (49,432 post-wave respondents in 2024).
+
+**County identifier.** `countyfips` is in the public common-content file for all three waves (99.8–100% non-missing) and matches the integer FIPS used elsewhere in the project. 98.7% of 2024 respondents fall in a county with complete QCEW data. Median respondents per county is 6 (IQR 2–16); 602 counties have 20 or more, 272 have 50 or more.
+
+**Cross-year harmonization.** Two traps, both verified against the guide PDFs:
+
+| Item | 2016 | 2020 | 2024 |
+|---|---|---|---|
+| Nation's economy past year | `CC16_302` | `CC20_302` | **`CC24_301`** |
+| Household income | `CC16_303` (past *four* years) | `CC20_303` | **`CC24_302`** |
+| Prices past year | — | — | `CC24_303` (new) |
+| Presidential vote (post) | `CC16_410a`: **Trump = 1, Clinton = 2** | `CC20_410`: Biden = 1, Trump = 2 | `CC24_410`: Harris = 1, Trump = 2 |
+| Recalled prior vote | — | `presvote16post` | `presvote20post` (Biden = 1, Trump = 2) |
+
+The question numbers shifted in 2024 and the 2016 candidate order is reversed relative to later waves. The pull script emits `presvote_post_party` and `presvote_prior_party` as D/R/other so raw codes never cross years. Weighted two-party Democratic share of reported vote: 51.4% (2016), 53.1% (2020), 49.0% (2024) against actual 51.1 / 52.3 / 49.25 — the standard CES validity check.
+
+**Scales.** Economy item: 1 much better … 5 much worse, 6 not sure → recoded to +2 … −2, not-sure dropped. `pid7`: 1 strong Democrat … 4 independent … 7 strong Republican, 8 not sure (dropped). Media items (`CC24_300_1..5`, past 24 hours, check-all, 1 = yes): social media, TV news, newspaper, radio, none. `CC24_300a` TV type: 1 local, 2 national, 3 both. `CC24_300b_1..8` networks watched: ABC, CBS, NBC, CNN, Fox, MSNBC, PBS, other. `educ`: 1 no HS … 5 four-year, 6 post-grad; college = 5 or 6.
+
+**Recall bias.** In the 2024 wave, recalled 2020 vote is 45% Biden / 32% Trump / 20% did not vote, against an actual 51 / 47. Trump 2020 voters are under-represented among recallers, so switching analyses are run primarily on the recalled-Biden group.
+
 ---
 
 ## B. Part 1 — Fundamentals model
@@ -303,7 +327,113 @@ No inferential test is applied to the gradient differences; the 2020 → 2024 ch
 
 ---
 
-## E. Limitations
+## E. Part 4 — Attribution gap and multilevel models
+
+Notebooks `06_attribution_gap.ipynb` and `07_multilevel_model.ipynb`. Sample: CES 2024 respondents with a non-missing economy rating, party ID, and county QCEW match (N = 56,635; 2,653 counties; 49 states).
+
+### E.1 Stage 1 — perceived on actual
+
+WLS with `commonweight`, standard errors clustered by county. County "actual" measures are the Part 3 QCEW/ACS variables, standardized with population weights so one SD is a typical resident's experience.
+
+| | County actual only | Party only | Both |
+|---|---|---|---|
+| real pay growth 2020–24 (z) | −0.104 (0.017) | | −0.027 (0.009) |
+| private job growth 2020–24 (z) | +0.016 (0.011) | | +0.007 (0.008) |
+| unemployment 2020 (z) | −0.031 (0.014) | | −0.067 (0.009) |
+| `pid7c` | | −0.348 (0.004) | −0.348 (0.004) |
+| R² | **0.006** | **0.338** | 0.341 |
+
+Within party, the real-pay coefficient is −0.021 (Dem), −0.036 (Ind), −0.044 (Rep) with SEs of 0.012–0.022. Perception by party × county real-pay-growth quartile:
+
+| | Q1 (fell most) | Q2 | Q3 | Q4 (rose most) |
+|---|---|---|---|---|
+| Democrats | +0.34 | +0.29 | +0.28 | +0.36 |
+| Independents | −0.86 | −1.03 | −1.04 | −1.00 |
+| Republicans | −1.31 | −1.34 | −1.38 | −1.43 |
+
+### E.2 Partisan flip
+
+Weighted mean of the economy item by party and wave (`outputs/tables/attribution_partisan_flip.csv`): 2016 D +0.43 / I −0.44 / R −0.65 / all −0.13; 2020 D −1.41 / I −0.83 / R +0.11 / all −0.71; 2024 D +0.32 / I −0.98 / R −1.37 / all −0.60.
+
+### E.3 Attribution gap
+
+`gap = perceived_econ − fitted(county actual only)`. Weighted mean zero, SD 1.37. Weighted mean gap by group: Dem +0.90, Ind −0.39, Rep −0.77; college +0.32, no degree −0.18; Fox viewers −0.53, MSNBC +1.15, CNN +0.64, newspaper +0.46, local TV +0.07, social-media-only −0.31, no news −0.30.
+
+**Gap models** (WLS, `commonweight`, county-clustered; `outputs/tables/attribution_gap_models.csv`):
+
+| | Party only | Media only | Party + media + controls |
+|---|---|---|---|
+| `pid7c` | −0.344 (0.004) | | −0.298 (0.005) |
+| Fox | | −0.880 (0.022) | −0.320 (0.022) |
+| MSNBC | | +1.022 (0.032) | +0.589 (0.030) |
+| CNN | | +0.433 (0.028) | +0.161 (0.027) |
+| local TV | | +0.057 (0.019) | +0.032 (0.017) |
+| newspaper | | +0.528 (0.019) | +0.298 (0.016) |
+| radio | | −0.060 (0.020) | −0.011 (0.017) |
+| social media | | −0.094 (0.023) | −0.052 (0.022) |
+| no news | | −0.219 (0.060) | −0.124 (0.053) |
+| college | | | +0.258 (0.016) |
+| white non-Hispanic | | | +0.161 (0.020) |
+| county college share (z) | | | +0.500 (0.139) |
+| R² | 0.333 | 0.183 | 0.400 |
+
+Controls also include age, county log income, white non-college share, and 2020 Dem share (last two n.s.). Interaction model: `pid7c × Fox` = +0.087 (0.011); implied Fox effect −0.67 for strong Democrats, −0.41 for independents, −0.15 for strong Republicans. `pid7c × MSNBC` = −0.005 (n.s.).
+
+### E.4 Switching models
+
+Sample: 2024 respondents with `presvote_prior_party == "D"` and a 2024 major-party vote (N = 20,608, 1,919 counties). Logit via GLM-binomial with `commonpostweight` as frequency weights (normalized to N), county-clustered SEs. Weighted switch rate 6.4%; by gap tercile 12.9% / 2.0% / 1.6%.
+
+| | Gap only | + demographics | Full |
+|---|---|---|---|
+| `gap` | −1.032 (0.070) | −0.815 (0.083) | −0.827 (0.079) |
+| `pid7c` | | +0.810 (0.048) | +0.826 (0.048) |
+| college | | −0.372 (0.163) | −0.340 (0.167) |
+| Fox | | | +1.868 (0.255) |
+| MSNBC | | | −0.467 (0.322) |
+| social media | | | −0.619 (0.220) |
+| county real pay (z) | | | −0.011 (0.113) |
+| county job growth (z) | | | +0.143 (0.087) |
+| county unemployment (z) | | | +0.192 (0.107) |
+
+Average marginal effects, full model: gap −1 point → +3.9pp on P(switch); gap +1 → −2.5pp; Fox 0→1 → +11.3pp; county real pay +1 SD → 0.000. Recalled-Trump mirror (N = 16,166): 2.3% switched to Harris; gap coefficient +0.849 (0.092), AME +2.1pp.
+
+**Multilevel logit** (`BinomialBayesMixedGLM`, variational Bayes, county random intercept, unweighted): gap −0.956 (0.043), `pid7c` +0.819, Fox +1.637 (0.108), MSNBC −0.527, social −0.349, county real pay −0.104 (0.054); county random-effect SD 0.384 on the logit scale.
+
+### E.5 Variance decomposition
+
+`statsmodels.MixedLM`, REML, county random intercept, unweighted (weighting variables enter as covariates; fixed effects match the weighted notebook 06 estimates within ±0.05).
+
+| Model | County var. | Residual var. | ICC |
+|---|---|---|---|
+| M0 null | 0.0897 | 1.806 | 0.047 |
+| M1a + party, education, age, race | 0.0061 | 1.168 | 0.005 |
+| M1 + individual media diet | 0.0047 | 1.095 | 0.004 |
+| M2 + county economic record | 0.0038 | 1.095 | 0.003 |
+| M3 + county composition + state FE | 0.0002 | 1.095 | 0.0001 |
+
+M1a is the relevant ceiling for a county-level media-environment variable (which would act partly through individual media choice): county-effect SD 0.078 scale points.
+
+### E.6 Cross-level interactions (M3 + `pid7c × county`)
+
+| Term | Coef. | SE | p |
+|---|---|---|---|
+| `pid7c` | −0.305 | 0.002 | <0.001 |
+| `pid7c × county real pay (z)` | −0.005 | 0.002 | 0.014 |
+| `pid7c × county white non-college (z)` | −0.022 | 0.003 | <0.001 |
+| `pid7c × county college share (z)` | −0.015 | 0.003 | <0.001 |
+| `pid7c × county Dem share 2020 (z)` | +0.003 | 0.004 | 0.403 |
+
+Implied strong-Rep-minus-strong-Dem gap (6 × slope): white non-college −2 SD → −1.56, +2 SD → −2.09.
+
+**Random slope for party ID is not identified.** With `pid7` centred at independent, the random-slope model does not converge and the LR statistic against the intercept-only model is negative. At a median of 6 respondents per county there is insufficient within-county variation in party ID. The cross-level interactions are the usable evidence.
+
+### E.7 County empirical-Bayes gap
+
+Random intercepts from M1 (`data/processed/county_attribution_gap.csv`, 2,653 counties). SD 0.017 versus 0.755 for raw county means — heavy shrinkage; for counties with 1–5 respondents the EB SD is 0.007. Regressed on county covariates (respondent-weighted, HC3): R² 0.23, all coefficients |b| < 0.01. Regressed as a predictor of the county margin swing: −3.40 (SE 8.68, p = 0.70) bivariate; +1.52 (6.37, p = 0.81) with Part 3 controls. No detectable county-level relationship.
+
+---
+
+## F. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -313,12 +443,17 @@ No inferential test is applied to the gradient differences; the 2020 → 2024 ch
 6. **Small-N fundamentals model.** Nineteen observations and four predictors. Two predictors are not significant. The model's out-of-sample error (3.75pp) is larger than most of the residuals it is asked to interpret.
 7. **Third-party votes.** Parts 2–3 use raw shares over all votes cast. Rightward "swing" therefore includes movement to third parties, not only to the Republican column.
 8. **Suppression.** BLS suppression removes 6–9% of counties from the extended regression, disproportionately small single-employer counties.
+9. **Reverse causation in the switching model.** The economy rating is pre-election and the vote post-election, but a respondent who had already decided to switch would rate the economy badly because of it. The gap → switching association is consistent with misattribution causing switching and with the reverse. Panel data with perception measured before the decision, or an instrument for perception, is required to separate them.
+10. **Media diet is self-selected.** Fox/MSNBC coefficients net of party ID are associations, not exposure effects.
+11. **Unweighted mixed models.** MixedLM and BayesMixedGLM take no survey weights. Fixed effects match the weighted single-level estimates closely, but the variance components are model-based.
+12. **Few respondents per county.** The random slope for party ID is not identified; EB county effects are heavily shrunk; any county-level test has low power outside the ~600 counties with 20+ respondents.
+13. **Opt-in panel.** CES is a matched opt-in sample, not a probability sample. Its reported two-party vote tracks the actual result within 1pp in each wave, but that validates the weights for vote share, not for perception items.
 
 ---
 
-## F. Reproducibility
+## G. Reproducibility
 
-### F.1 Environment
+### G.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -326,7 +461,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### F.2 Pipeline
+### G.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -338,6 +473,9 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 6 | `03_demobilization_analysis.ipynb` | step 3 | `data/processed/county_decomposition.csv`, state table, figures |
 | 7 | `04_populism_premium.ipynb` | step 6, Census API | `data/processed/county_economic_profile.csv`, tables, figures |
 | 8 | `05_county_covariates.ipynb` | steps 1, 4, 6, 7 | `data/processed/county_covariates.csv`, tables, figure |
+| 9 | `python src/data_collection/ces_pull.py` | Dataverse | `data/raw/ces/ces_{2016,2020,2024}.csv`, `ces_2016_2024_core.csv`, guide PDFs |
+| 10 | `06_attribution_gap.ipynb` | steps 8, 9 | `data/processed/ces_2024_attribution.csv`, tables, figures |
+| 11 | `07_multilevel_model.ipynb` | step 10 | `data/processed/county_attribution_gap.csv`, tables, figure (≈10 min; the VB mixed logit dominates) |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -345,12 +483,18 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### F.3 Keys
+### G.3 Keys
 
-Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`.
+Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key.
 
 ---
 
-## G. Planned extension: media and attribution
+## H. Next steps
 
-The open question in Part 3 — why local economic outcomes did not register — requires individual-level data. The planned design merges the county panel with the Cooperative Election Study (~50K respondents per cycle, county-linkable) to measure the gap between actual county economic change and respondents' perceived change, then tests whether local news availability and partisan media consumption predict that gap and whether the gap predicts 2020 → 2024 vote switching. Additional county covariates (CDC WONDER overdose mortality, Medill local-news counts) slot into notebook 05. The QCEW pull in A.4 is the first component of that extension.
+Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching; it did not establish direction. Three things would move it:
+
+1. **An instrument for perception.** The Medill local-news file (county outlet counts and closures) is the candidate. The multilevel results set expectations: news availability can explain at most the M1a county variance (SD 0.078), so its first-stage effect on perception *levels* will be small. Its more plausible role is in the switching model — as an instrument, it requires that news deserts affect switching only through perception, which is arguable rather than given. Slots in at notebook 05 (county covariates) and notebook 07 §1–2.
+2. **Panel data.** The CES has a panel component (2020 → 2022 → 2024 re-interviews). Perception measured in 2022, before the 2024 decision, would break the simultaneity in E.4. Requires the panel file, which is a separate Dataverse release.
+3. **The prices item.** `CC24_303` (prices past year) is the grievance of the cycle and is in the pull but unused; there is no county-level price series to set against it, but its relationship to the gap and to switching, conditional on the economy item, is a cheap addition to notebook 06.
+
+CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.
