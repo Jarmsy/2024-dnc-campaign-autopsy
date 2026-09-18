@@ -105,7 +105,9 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 **Name matching.** The 2024 side of the year-over-year map names Louisiana parishes without "Parish" and Virginia independent cities without "city," so the same county arrives as two rows. A two-pass match (exact, then suffix-stripped for still-unmatched rows against spine names unique after stripping) resolves this; Richmond / Richmond city and similar pairs both match exactly in pass 1 and never reach pass 2. Connecticut's 2024 counts are by planning region and are left missing. Counties absent from the year-over-year map have no newspapers in either year and are coded zero.
 
-**Variables used in Part 4:** `news_desert` (0 outlets), `single_outlet`, `n_outlets`, `outlets_per_100k` (log1p in models), `rucc` and `nonmetro` (RUCC ≥ 4), `newspapers_lost_2024_2025`.
+**Two desert definitions.** `news_desert` is the mechanical count: zero outlets of any type in the 2025 inventory (213 counties; this is what the site's map legend reports). `lni_desert` is Medill's curated "Desert" designation from the watchlist endpoint (206 counties). They agree on 163 counties. Of the 43 Medill deserts with an outlet in the inventory, 38 have a newspaper — so the label appears to reflect whether an outlet actually covers the county, not merely whether one is based there. Of the 50 zero-outlet counties without the label, 10 are Virginia independent cities (presumably covered by adjacent-county papers) and 11 carry Medill's "Watchlist" label instead. Part 4 uses the count-based definition in the main models and reports every key result under the Medill label as well (E.9).
+
+**Variables used in Part 4:** `news_desert`, `lni_desert`, `lni_watchlist`, `single_outlet`, `n_outlets`, `outlets_per_100k` (log1p in models), `rucc` and `nonmetro` (RUCC ≥ 4), `newspapers_lost_2024_2025`.
 
 ---
 
@@ -496,12 +498,15 @@ Net of `pid7c`, college, age, race, nonmetro, and county composition (LPM, count
 | Model | County var. | ICC | Share of M1a county var. explained |
 |---|---|---|---|
 | M1a demographics + party | 0.0061 | 0.0052 | — |
-| M1a + news environment | 0.0051 | 0.0044 | 16% |
+| M1a + nonmetro only | 0.0054 | 0.0046 | 12% |
+| M1a + RUCC (9 categories) only | 0.0043 | 0.0037 | 30% |
+| M1a + news variables only | 0.0054 | 0.0046 | 12% |
+| M1a + news + nonmetro | 0.0051 | 0.0044 | 16% |
 | M1a + news + composition | 0.0012 | 0.0010 | 81% |
 | M3 (composition + state FE) | 0.0002 | 0.0001 | 97% |
 | M3 + news environment | 0.0001 | 0.0001 | 98% |
 
-News environment = `news_desert + single_outlet + log_outlets_pc_z + nonmetro`.
+News variables = `news_desert + single_outlet + log_outlets_pc_z`. The news variables and `nonmetro` overlap heavily: each explains ~12% alone, both together 16%. The full rural-urban code explains more (30%) than the news variables, which is the expected pattern if what the news variables are picking up is mostly rurality.
 
 **Direct fixed effects, M3 + news:** `news_desert` +0.041 (0.050), `single_outlet` +0.007 (0.016), `log_outlets_pc_z` +0.001 (0.006), `nonmetro` +0.019 (0.018). For scale, `fox` −0.361, `newspaper` +0.277.
 
@@ -516,6 +521,16 @@ News environment = `news_desert + single_outlet + log_outlets_pc_z + nonmetro`.
 | `log_outlets_pc_z` | +0.002 | 0.002 | 0.27 | +0.123 | 0.068 | 0.07 |
 
 First stage (gap on instruments + controls): `news_desert` −0.078 (0.087), `single_outlet` +0.024 (0.029), `log_outlets_pc_z` +0.002 (0.010). **Cluster-robust F on excluded instruments = 0.64; partial R² = 0.00008.** 2SLS LPM estimate of the gap effect: −0.114 (SE 0.123), against OLS −0.027 (0.0015). The 2SLS estimate is not interpretable; it is reported so the weak-instrument result is on the record rather than omitted.
+
+**Definition robustness** (`outputs/tables/multilevel_news_definition_robustness.csv`; each desert variable entered alone with the same controls):
+
+| Definition | N in switch sample | Direct on perception | `pid7c` × desert | Reduced form (LPM) | First stage |
+|---|---|---|---|---|---|
+| Count-based (0 outlets) | 164 | +0.009 (0.096) | +0.006 (0.020) | +0.020 (0.017), p = 0.26 | −0.090 (0.083) |
+| Medill "Desert" label | 163 | −0.068 (0.093) | +0.027 (0.020) | +0.002 (0.015), p = 0.90 | −0.126 (0.095) |
+| Medill "Watchlist" label | 118 | −0.096 (0.100) | +0.014 (0.021) | −0.008 (0.013), p = 0.57 | −0.023 (0.100) |
+
+All null under every definition. The reduced-form desert → switching association, which reaches p = 0.10–0.18 under the count-based definition when entered alongside the other news terms, falls to p = 0.90 under Medill's label; it is definition-dependent noise.
 
 ---
 
@@ -585,6 +600,6 @@ Part 4 established that perception is disconnected from local reality and travel
 1. **Panel data.** The CES has a panel component (2020 → 2022 → 2024 re-interviews). Perception measured in 2022, before the 2024 decision, breaks the simultaneity in E.4 directly and is now the only realistic route. Requires the panel file, which is a separate Dataverse release.
 2. **A local price measure.** The prices item (E.8) is the least partisan perception in the survey and predicts switching net of the economy rating, but there is nothing to set it against. BLS publishes CPI only for large metro areas; the closest county-level options are the BEA regional price parities (annual, by metro/non-metro portion of state) or rent from ACS 1-year files. Either would allow a prices *gap* — perceived minus measured — and a test of whether that gap, rather than the level, is what moved votes.
 
-One loose end from E.9 worth a look with more data: the reduced-form association between living in a news desert and switching (+2.4pp LPM, p = 0.18; logit p = 0.10) does not run through perception, so if it is real it is a direct rural-disengagement path. With 164 desert residents among recalled Biden voters it cannot be more than a hint.
+The reduced-form association between living in a news desert and switching (+2.4pp, p = 0.18 under the count-based definition) was initially flagged as a loose end; it does not survive Medill's desert definition (p = 0.90) and should not be pursued.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.

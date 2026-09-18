@@ -202,12 +202,12 @@ For reference, one step on the seven-point party scale is −0.30. Fox viewing s
 
 A multilevel model with respondents nested in counties puts a ceiling on how much any county-level factor — local news availability, media market, anything geographic — could matter. Only 4.7% of the variance in perceived economy is between counties at all, and after accounting for who lives in each county (party, education, age, race) that falls to 0.5%. A county two standard deviations above versus two below the average differs by 0.31 points on a four-point scale.
 
-That ceiling was then tested directly against the Medill Local News Initiative's 2025 county inventory: 213 counties with no local news outlet, 1,526 with one. Linked to the CES, that gives 547 respondents in news deserts and 8,003 in single-outlet counties. The news environment fails every test it was given:
+That ceiling was then tested directly against the Medill Local News Initiative's 2025 county inventory: 213 counties with no local news outlet, 1,526 with one. (Medill's own curated "news desert" label covers 206 counties and agrees with the zero-outlet count on 163 of them; every result below was run under both definitions and does not change.) Linked to the CES, that gives 547 respondents in news deserts and 8,003 in single-outlet counties. The news environment fails every test it was given:
 
 | Test | Result |
 |---|---|
 | Does scarcity change what people consume? | Net of party, education, and rural status: newspaper −0.03 (SE 0.02), local TV −0.03 (0.02), Fox −0.02 (0.02). Only "no news at all" rises, by 1.8 points. |
-| Does it explain between-county variance? | 16% of the 0.5% that remains after composition. Composition alone explains 80% of it. |
+| Does it explain between-county variance? | The news variables alone explain 12% of the 0.5% that remains after accounting for who lives in each county. The rural-urban code alone explains 30% of the same quantity; news adds about four points beyond a metro/nonmetro split. County composition explains 80%. |
 | Direct effect on perception? | News desert +0.04 (SE 0.05). Watching Fox, for scale: −0.36. |
 | Does it widen the partisan gap? | +0.02 (SE 0.02) — null, and the point estimate runs the wrong way. |
 | Can it instrument for perception? | First-stage F = 0.6. No. |
