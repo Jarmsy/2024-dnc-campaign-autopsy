@@ -109,6 +109,25 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 **Variables used in Part 4:** `news_desert`, `lni_desert`, `lni_watchlist`, `single_outlet`, `n_outlets`, `outlets_per_100k` (log1p in models), `rucc` and `nonmetro` (RUCC ≥ 4), `newspapers_lost_2024_2025`.
 
+### A.7 CES 2020–2022–2024 Panel Survey
+
+**Source:** Harvard Dataverse `doi:10.7910/DVN/CETPVT` (published January 2026), file `merged_recontact_2024_vv.csv` (56 MB, 6,175 rows × 2,229 columns) and `Recontact_Survey_Guide_2020_2022_2024.pdf`. No guestbook.
+**Script:** `src/data_collection/ces_panel_pull.py` → `data/raw/ces_panel/ces_panel_long.csv` (one row per respondent-wave) and `ces_panel_wide.csv` (one row per respondent).
+
+**Design.** 2020 CES respondents re-interviewed in 2022 and 2024 by YouGov; matched to the Catalist voter file for 2020 and the TargetSmart file for 2022 and 2024 (matches performed August 2023 and August 2025). 4,015 completed the 2024 post-election wave.
+
+**Variable naming.** Demographics carry a wave suffix (`pid7_20`, `educ_22`, `countyfips_24`); question items keep their `CCyy_` prefix. **The panel's 2024 economy item is `CC24_302`, not `CC24_301` as in the 2024 common content**; household income is `CC24_303` and prices `CC24_304` (guide p. 27). The 2020 gender item is `gender` with no suffix. Verified against the guide, not assumed from A.5.
+
+**Vote.** `CC20_410` (asked in 2020) and `CC24_410` (asked in 2024), Democrat = 1 and Trump = 2 in both. Weighted two-party Democratic share of reported vote: 52.0% (2020) and 49.0% (2024) against actual 52.3 / 49.25. Recalled 2020 vote (`presvote20post_22`, `presvote20post_24`) is retained but not used; the contemporaneous item replaces it.
+
+**Validated turnout.** `CL_2020gvm` (Catalist; any value = voted, missing = no record), `TS_g2022` and `TS_g2024` (TargetSmart; 1–6 = voted by method, 7 = did not vote, missing = not matched). Recoded to `voted_validated_{year}`: 1 voted, 0 matched but no vote, missing unmatched. 4,835 panelists have a 2024 match.
+
+**Weights.** `commonweight_24` (all 6,175, adults) for perception items; `commonpostweight_24` (4,015, answered both 2024 waves) for anything using the 2024 vote; `vvweight_22` / `vvweight_post_22` for registered-voter targets (guide p. 10).
+
+**Attrition** (guide p. 11, unweighted): relative to the 2020 base, the 2024 panel is older (mean age 55.9 vs 48.4 in 2020), more college-educated (41% vs 37%), more retired (30% vs 21%), and more often a validated 2020 voter (84% vs 71%). Democrat share 47% vs 48%, Republican 37% vs 34% — no meaningful partisan differential.
+
+**Movers.** 741 panelists (12.0%) report a different county in 2024 than in 2020. The 2024 county's economic record is used; movers are flagged, not dropped.
+
 ---
 
 ## B. Part 1 — Fundamentals model
@@ -475,7 +494,7 @@ The prices scale is compressed (88% in two of five categories), so the R² ratio
 | `gap` | −0.696 (0.097) | — |
 | `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
 
-AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in F.9 applies to this result with only modestly less force than to the economy rating.
+AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in G.9 applies to this result with only modestly less force than to the economy rating.
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
@@ -534,7 +553,58 @@ All null under every definition. The reduced-form desert → switching associati
 
 ---
 
-## F. Limitations
+## F. Part 5 — Panel
+
+Notebook `08_panel_analysis.ipynb`. Party identification is fixed at its 2020 value throughout (pre-treatment for everything that follows). Perception items recoded as in E (+2 … −2; prices +2 = rose a lot).
+
+### F.1 Within-person flip
+
+Weighted (`commonweight_24`) mean perceived economy by 2020 party ID (`outputs/tables/panel_partisan_flip.csv`): 2020 D −1.52 / I −0.98 / R +0.08 / all −0.80; 2022 D −0.49 / I −1.18 / R −1.71 / all −1.10; 2024 D +0.34 / I −0.81 / R −1.36 / all −0.54. Mean within-person change 2020→2024: Democrats +1.88, independents +0.22, Republicans −1.43. Share moving ≥ 2 points toward own-party incumbent: Democrats 60.8%, Republicans 45.7%.
+
+### F.2 First differences
+
+`Δperc_2020→2024 ~ county real pay (z) + job growth (z) + unemployment (z)`, WLS with `commonweight_24`, county-clustered, N = 5,766. R² 0.010 (county actual only), 0.421 (+ 2020 party ID). Real pay: −0.199 (0.078) alone, −0.036 (0.061) with party. Within party: Democrats −0.053 (0.065), independents +0.119 (0.150), Republicans −0.114 (0.080); within-party R² 0.006–0.009.
+
+### F.3 Timing
+
+Sample: `presvote_post_party_2020 == "D"` and `presvote_post_party_2024 ∈ {D, R}`, N = 1,684, switchers = 39 (2.3% unweighted, 4.1% weighted with `commonpostweight_24`). By 2022 rating (`outputs/tables/panel_timing_by_rating.csv`):
+
+| 2022 rating | N | Switched | Unweighted | Weighted |
+|---|---|---|---|---|
+| Much worse | 240 | 19 | 7.9% | 15.9% |
+| Somewhat worse | 611 | 13 | 2.1% | 1.5% |
+| Same | 337 | 6 | 1.8% | 3.9% |
+| Somewhat better | 362 | 0 | 0.0% | 0.0% |
+| Much better | 76 | 0 | 0.0% | 0.0% |
+
+By 2020 rating (given under Trump): much worse 1.5% (18/1,175), somewhat worse 3.6% (15/416), same 5.5% (3/55), better 9.1% (2/22) — Biden voters who rated Trump's economy well were marginally more likely to switch, but on 5 events.
+
+**Models** (`outputs/tables/panel_timing_models.csv`; logit via GLM-binomial, `commonpostweight_24` as frequency weights normalized to N, county-clustered; N = 1,602 with complete covariates, 36 events):
+
+| | Bivariate | + `pid7_20` | + college, age | + 2020 rating | 2020→22 change |
+|---|---|---|---|---|---|
+| `perc_2022` | −1.273 (0.583) | −1.282 (0.576) | −1.401 (0.603) | −1.440 (0.665) | |
+| `d_perc_20_22` | | | | | −0.820 (0.321) |
+| `perc_2020` | | | | +0.395 (0.431) | |
+| `pid7_20` | | −0.071 (0.158) | −0.225 (0.246) | −0.238 (0.239) | −0.194 (0.223) |
+| college | | | −1.416 (0.608) | −1.445 (0.556) | −1.379 (0.573) |
+| age (z) | | | −1.036 (0.228) | −0.988 (0.225) | −0.904 (0.229) |
+
+Unweighted `perc_2022` coefficients for the first three specifications: −1.16 (0.22), −1.13 (0.23), −1.10 (0.22). AME of one step worse in 2022: +0.083 (bivariate), +0.083 (+ party), +0.080 (+ demographics), +0.082 (net of 2020 rating); AME of one step worse in 2020: −0.012; AME of a one-step fall 2020→2022: +0.040.
+
+**Prices 2022** (cross-tab only): rose a lot 3.2% switched (32/986), rose somewhat 0.3% (2/647), same 8.8% (3/34), fell somewhat 22.2% (2/9), fell a lot 0/1. A weighted logit of this item returns a negative coefficient driven by the 5 switchers in the 44-person tail (weighted switch rate in the "fell somewhat" cell: 85%); not reported as an estimate.
+
+**2022 media** (added to the + demographics model): Fox +2.213 (0.926), on 2 switchers among 38 Biden-voting Fox viewers; MSNBC +0.128 (0.528). Not evidence.
+
+### F.4 Validated turnout
+
+Sample: reported 2020 major-party vote and a 2024 voter-file match. Biden 2020: 2,495 matched, 97 with no validated 2024 vote (3.9% unweighted, 3.1% weighted). Trump 2020: 1,957 matched, 83 (4.2%, 3.3%). Among Biden 2020 voters by 2022 rating: much worse 9.0% (31/345), somewhat worse 3.6% (33/928), same 3.5% (17/481), somewhat better 1.7% (9/536), much better 2.8% (3/108). Logit, no validated 2024 vote ~ `perc_2022 + pid7_20 + college + age_z` (`outputs/tables/panel_validated_nonvoting.csv`): `perc_2022` −0.789 (0.366, p = 0.031).
+
+**Full 2024 outcome** for the 3,064 who reported a Biden vote in 2020 (`data/processed/panel_biden2020_outcomes.csv`): Harris 1,617; no 2024 post-wave response 1,280; no validated 2024 vote 97; other candidate 37; Trump 33. Six respondents self-reported a Trump vote but have no validated 2024 vote on file and are classified as non-voters. Among the 1,784 with a known outcome, weighted: Harris 92.9%, Trump 2.9%, other 1.0%, no vote 3.3%.
+
+---
+
+## G. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -551,12 +621,15 @@ All null under every definition. The reduced-form desert → switching associati
 13. **Opt-in panel.** CES is a matched opt-in sample, not a probability sample. Its reported two-party vote tracks the actual result within 1pp in each wave, but that validates the weights for vote share, not for perception items.
 14. **Local news data provenance.** The Medill county inventory comes from an undocumented backend rather than a published file. It reproduces the site's headline counts exactly, but its definitions (what counts as an outlet, how "active" is determined) are Medill's and are documented only in their methodology page. The 2025 inventory is a snapshot taken after the 2024 election; a county's news environment during the campaign is assumed to be the same.
 15. **News-desert sample size.** 547 CES respondents live in the 112 news-desert counties with data; 164 of them are recalled Biden voters. The null results in E.9 have point estimates near zero, not merely wide intervals, but a desert-specific effect of a few points on switching would not be detectable.
+16. **Panel events.** The Part 5 timing result rests on 39 switchers (36 in the models with covariates). The monotonic cross-tab and the stability of the coefficient across specifications and across weighted/unweighted estimation are the evidence; interactions and subgroup splits are not supportable. Post-election weights average roughly 2× for switchers, so any cell with a handful of events can produce an extreme weighted rate (F.3, prices).
+17. **Panel attrition and what it hides.** The retained panel is more engaged than the population (A.7). Validated 2024 non-voting of 3–4% among 2020 voters is a floor, and the equality between Biden and Trump 2020 voters on that measure should not be read as evidence against the stronghold turnout loss in Part 2, which the panel cannot see.
+18. **Timing is not identification.** A 2022 rating rules out rationalization of a 2024 decision. It does not rule out a common cause already operating in 2022 — a voter leaving Biden for a non-economic reason and rating the economy worse because of it. Distinguishing those would need either a measure of the non-economic cause in 2022 or an exogenous shock to perception between waves.
 
 ---
 
-## G. Reproducibility
+## H. Reproducibility
 
-### G.1 Environment
+### H.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -564,7 +637,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### G.2 Pipeline
+### H.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -580,6 +653,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 10 | `06_attribution_gap.ipynb` | steps 8, 9 | `data/processed/ces_2024_attribution.csv`, tables, figures |
 | 11 | `python src/data_collection/news_deserts_pull.py` | LNI backend | `data/raw/news_deserts/lni_county_summary.csv`, `lni_outlets_2025.csv`, `ca_bundle.pem` |
 | 12 | `07_multilevel_model.ipynb` | steps 10, 11 | `data/processed/county_attribution_gap.csv`, tables, figure (≈10 min; the VB mixed logit dominates) |
+| 13 | `python src/data_collection/ces_panel_pull.py` | Dataverse | `data/raw/ces_panel/ces_panel_long.csv`, `ces_panel_wide.csv`, guide PDF |
+| 14 | `08_panel_analysis.ipynb` | steps 8, 13 | `data/processed/panel_biden2020_outcomes.csv`, tables, figure |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -587,19 +662,20 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### G.3 Keys
+### H.3 Keys
 
 Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key.
 
 ---
 
-## H. Next steps
+## I. Next steps
 
-Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching; it did not establish direction. The local news environment was the planned instrument and, as E.9 shows, it does not move perception (first-stage F = 0.64) — the variance ceiling in E.5 ruled it out in advance and the data confirmed it. Two things would still move identification:
+Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
-1. **Panel data.** The CES has a panel component (2020 → 2022 → 2024 re-interviews). Perception measured in 2022, before the 2024 decision, breaks the simultaneity in E.4 directly and is now the only realistic route. Requires the panel file, which is a separate Dataverse release.
-2. **A local price measure.** The prices item (E.8) is the least partisan perception in the survey and predicts switching net of the economy rating, but there is nothing to set it against. BLS publishes CPI only for large metro areas; the closest county-level options are the BEA regional price parities (annual, by metro/non-metro portion of state) or rent from ACS 1-year files. Either would allow a prices *gap* — perceived minus measured — and a test of whether that gap, rather than the level, is what moved votes.
+1. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab.
+2. **A local price measure.** The prices item is the least partisan perception in the survey and predicts switching net of the economy rating in both the cross-section (E.8) and the panel (F.3), but there is nothing to set it against. BEA regional price parities or ACS 1-year rent would allow a prices gap — perceived minus measured.
+3. **More panel.** The 2020–2022 panel (`doi:10.7910/DVN/XV7ABM`) is a different, larger recontact of 2020 respondents; whether any of its members also appear in the 2020–2024 file is undetermined. If so, pooling adds 2022 observations but not 2024 outcomes.
 
-The reduced-form association between living in a news desert and switching (+2.4pp, p = 0.18 under the count-based definition) was initially flagged as a loose end; it does not survive Medill's desert definition (p = 0.90) and should not be pursued.
+The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.

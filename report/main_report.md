@@ -1,15 +1,15 @@
 # 2024 DNC Campaign Autopsy: A Data-Driven Analysis
 
-*Unit of analysis: national election (Part 1), county (Parts 2–3), survey respondent in county (Part 4) · Elections covered: 1948–2024*
-*Data: MIT Election Lab · FRED · Census ACS 2020 · BLS QCEW · Gallup · Cooperative Election Study · Medill Local News Initiative*
+*Unit of analysis: national election (Part 1), county (Parts 2–3), survey respondent in county (Part 4), the same respondent across three waves (Part 5) · Elections covered: 1948–2024*
+*Data: MIT Election Lab · FRED · Census ACS 2020 · BLS QCEW · Gallup · Cooperative Election Study (2024 cross-section and 2020–2024 panel) · Medill Local News Initiative*
 
 ---
 
 ## Executive summary
 
-Kamala Harris lost the 2024 presidential election with **49.25% of the two-party popular vote**, down from Biden's 52.27% in 2020. Democrats received 6.25 million fewer votes than in 2020 in an electorate that was 3.3 million votes smaller. This report examines that result through four lenses: what structural conditions predicted, how the vote loss decomposes geographically, what county economic characteristics explain the shift, and — linking 60,000 survey respondents to their counties — whether voters perceived the economy their county actually had.
+Kamala Harris lost the 2024 presidential election with **49.25% of the two-party popular vote**, down from Biden's 52.27% in 2020. Democrats received 6.25 million fewer votes than in 2020 in an electorate that was 3.3 million votes smaller. This report examines that result through five lenses: what structural conditions predicted, how the vote loss decomposes geographically, what county economic characteristics explain the shift, whether voters perceived the economy their county actually had, and — following 6,175 of the same people from 2020 to 2024 — whether what they believed in 2022 predicted what they did in 2024.
 
-**Four findings:**
+**Five findings:**
 
 | | Finding |
 |---|---|
@@ -17,8 +17,9 @@ Kamala Harris lost the 2024 presidential election with **49.25% of the two-party
 | **Part 2** | The shift was near-universal: 90% of counties and all 51 states moved right. Nationally, **73% of the Democratic vote loss came from share shift and 27% from lower turnout**. But the largest raw losses were in Democratic strongholds, and there the mechanism was turnout. |
 | **Part 3** | County income, education, and racial composition explain about 42% of the variance in county swings. The gap between Democratic performance in rich and poor counties, relative to 2012, widened from +5.0pp (2016) to +9.4pp (2020) to +9.9pp (2024). Harris inherited that gradient; she did not create it. Manufacturing exposure and real wage growth over the Biden term explain essentially nothing. |
 | **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, **31.6% of those who said the economy got "much worse" voted for Trump, against 1.5% of those who said "much better"** — but that association runs in both causal directions. Prices were the least filtered item: 80% of Democrats and 95% of Republicans said they rose, though Republicans were twice as likely to say "a lot," and saying "a lot" rather than "somewhat" predicted switching independently of the economy rating. Media diet, not media environment, is where the remaining signal is. |
+| **Part 5** | In a panel of the same voters, **how a Biden 2020 voter rated the economy in 2022 predicted whether they voted for Trump in 2024**: 7.9% of those who said "much worse" switched, 0 of 438 who saw improvement did. A rating given two years before the vote cannot be a rationalization of it. The same 2022 rating predicted not voting at all, by voter-file record. Within the same people, county economic change still explained nothing. |
 
-**What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 gets closer to mechanism — it shows that perception is disconnected from local reality and that misperception travels with vote switching — but it cannot establish that misperception *caused* switching rather than the reverse. The identification strategy that would settle that is laid out in the technical appendix.
+**What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 shows that perception is disconnected from local reality and that misperception travels with vote switching, but in a single cross-section cannot separate cause from effect. Part 5 puts the perception two years ahead of the vote, which rules out the specific objection that decided switchers rated the economy badly *because* they had decided. It does not rule out a slower common cause — a voter already leaving Biden in 2022 for other reasons — and it rests on 39 switchers.
 
 ---
 
@@ -256,6 +257,58 @@ Part 3 found that the local economic outcomes voters should have been rewarding 
 
 ---
 
+## Part 5: The same voters, 2020 to 2024
+
+### Data
+
+The CES re-interviewed 6,175 of its 2020 respondents in 2022 and again in 2024. Each wave asked the same economy question. The 2020 vote was recorded in 2020 and the 2024 vote in 2024 — no recall. All three waves were matched to voter files, so turnout is validated by record. Retained panelists are older, more educated, and more often validated voters than the 2020 base, with no partisan difference in attrition; the panel under-represents the disengaged.
+
+### The flip, within person
+
+The partisan flip in Part 4 compared different samples in different years. Here it is the same people:
+
+| Perceived economy (+2 … −2), 2020 party ID | 2020 (Trump) | 2022 (Biden, inflation peak) | 2024 (Biden) |
+|---|---|---|---|
+| Democrats (N = 2,912) | −1.52 | −0.49 | +0.34 |
+| Independents (N = 895) | −0.98 | −1.18 | −0.81 |
+| Republicans (N = 2,298) | +0.08 | −1.71 | −1.36 |
+
+Sixty-one percent of Democrats moved two or more points toward their incumbent between 2020 and 2024; 46% of Republicans moved two or more points away. Independents barely moved. Composition cannot explain a within-person change. In 2022, at the inflation peak, Democrats rated their own president's economy at −0.49 — negative, but two full points above Republicans.
+
+In first differences — each person's change in rating against their county's change in real pay — the county coefficient is −0.04 (SE 0.06) with party controlled, and within each party it is indistinguishable from zero. Local reality did not register in the cross-section, and it did not register within the same person over four years.
+
+### Timing
+
+Among 1,684 panelists who voted for Biden in 2020 and for Harris or Trump in 2024, 39 switched. By how they had rated the economy in 2022:
+
+| "Over the past year the nation's economy has…" (asked in 2022) | N | Voted Trump in 2024 |
+|---|---|---|
+| Gotten much worse | 240 | **7.9%** |
+| Gotten somewhat worse | 611 | 2.1% |
+| Stayed about the same | 337 | 1.8% |
+| Gotten somewhat better | 362 | **0.0%** |
+| Gotten much better | 76 | **0.0%** |
+
+Not one of the 438 Biden voters who saw improvement in 2022 voted for Trump. The coefficient on the 2022 rating is −1.1 to −1.4 across five specifications — alone, with party identification, with education and age, net of the same person's rating of Trump's economy in 2020, and expressed as the 2020→2022 *change* — and it moves by less than 0.2 between weighted and unweighted estimation. A one-step-worse rating in 2022 raises the probability of switching by about 8 points. The person's 2020 rating, given under Trump, has no independent effect.
+
+This is the result the cross-section could not deliver. A rating given in autumn 2022 cannot be a rationalization of a vote cast in November 2024. The objection that decided switchers rate the economy badly *because* they have decided does not apply to a rating that predates the decision by two years. What survives is a narrower objection: a voter who was already leaving Biden in 2022 for reasons unrelated to the economy might have rated the economy worse for those reasons. That cannot be excluded with this design, and 39 events do not support the subgroup analysis that would probe it.
+
+The 2022 prices item points the same way: among Biden voters who said prices had risen, 3.2% of those who said "a lot" switched against 0.3% of those who said "somewhat." Watching Fox in 2022 is associated with switching, but on 2 switchers among 38 viewers — not evidence.
+
+### Demobilization, by record
+
+The same 2022 rating predicts the other exit from the coalition. Among Biden 2020 voters matched to a voter file, the share with no validated 2024 vote runs from 9.0% ("much worse" in 2022) to 1.7% ("somewhat better"); the logit coefficient is −0.79 (p = 0.03) with party, education, and age controlled. Perception in 2022 predicted both switching and staying home in 2024.
+
+The level of non-voting does not distinguish the coalitions: 3.9% of Biden 2020 voters and 4.2% of Trump 2020 voters had no validated 2024 vote. In this panel there is no differential demobilization — but the panel retained engaged voters, so both figures are floors, and the population-level turnout loss in Democratic strongholds that Part 2 found is not something this sample can see.
+
+Among the 1,784 Biden 2020 voters with a known 2024 outcome (weighted): 92.9% voted for Harris, 2.9% for Trump, 1.0% for another candidate, 3.3% did not vote. In this engaged panel, defection to Trump and demobilization were the same size.
+
+### Reading Part 5 against Part 4
+
+Part 4 established the pattern; Part 5 establishes its timing. Perception of the economy — not the economy itself — moved with the vote, and it moved first. The county's economic record did not enter either the level or the change of what people believed. What entered was party, and within party, what people reported about prices and what they watched. By 2022 the Biden coalition's economic perception had already sorted its 2024 leavers from its stayers, on an item that has no local component and a partisan filter, before the campaign began.
+
+---
+
 ## Synthesis
 
 **The structural conditions predicted a narrow loss, and a narrow loss is what happened.** A 38%-approval incumbent party with an open seat is expected to lose. Harris's result sits within the model's error band on either side of the prediction, depending on specification.
@@ -264,11 +317,13 @@ Part 3 found that the local economic outcomes voters should have been rewarding 
 
 **The places that moved most were not the places the 2016 narrative would predict.** Diverse, lower-education, urban and border counties swung hardest. White non-college counties, controlling for income and education, swung less than average.
 
-**Local economic performance did not protect the incumbent party, because voters did not perceive it.** Real wage growth and manufacturing exposure explain nothing about the county swing, and the county's economic record explains 0.6% of how its residents rate the economy. What does explain the rating is party identification and media diet. Whether the resulting misperception drove vote switching or was produced by it is the open question, and the one the data cannot yet answer.
+**Local economic performance did not protect the incumbent party, because voters did not perceive it.** Real wage growth and manufacturing exposure explain nothing about the county swing; the county's economic record explains 0.6% of how its residents rate the economy in a cross-section and nothing about how the same person's rating changed over four years. What does explain the rating is party identification and media diet. The perception preceded the vote: a Biden voter's 2022 rating predicted both switching and staying home in 2024, and none of the 438 who saw improvement in 2022 switched. Whether something else was already moving those voters in 2022 is the question that remains.
 
 **The class gradient is structural and predates the campaign.** Democrats have lost ground in the poorest counties relative to 2012 in every cycle since, at an accelerating rate. No single campaign created it, and the 2024 gradient is the 2020 gradient shifted down.
 
 **The information problem is individual, not geographic.** Only 4.7% of the variance in economic perception is between counties, and almost none of that survives controlling for who lives there. Tested directly, the local news environment — 213 counties with no outlet, 1,526 with one — changes neither media diet, nor perception, nor the partisan gap, nor switching. The disconnect between what happened locally and what voters believed tracked the sources people chose within the same county, not the sources available to them. The partisan divergence in perception is widest in the white non-college counties where the structural drift has been strongest.
+
+**The Biden coalition's 2024 exits were visible in 2022.** In the panel, how a Biden voter rated the economy at the inflation peak predicted whether they would vote Trump or stay home two years later, and the gradient is monotonic across all five levels of the item. The campaign of 2024 inherited a coalition whose leavers had already sorted themselves on economic perception — a perception that, in the same people, did not track the economy of the county they lived in.
 
 **Prices were the least filtered economic perception, not an unfiltered one.** Democrats, independents, and Republicans agreed that prices had gone up — 80%, 90%, and 95% — and reported price experience lowered the economy rating by the same amount in every party. But whether prices had gone up "a lot" was itself partisan: 35% of Democrats said so against 76% of Republicans. Saying "a lot" predicted leaving Biden's coalition independently of the overall economy rating. The Democratic base recognized the record and reported the inflation; it reported less of it than everyone else.
 
