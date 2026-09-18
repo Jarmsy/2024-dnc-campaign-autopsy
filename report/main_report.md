@@ -365,7 +365,16 @@ Counties that received more money swung less to the right — about half a point
 
 But the residents of those counties did not rate the economy any better. ARPA per capita has a raw association with perception that is positive within every party; it disappears entirely once county income, education, and Democratic share are controlled, in both the cross-section and the panel. Delivery did not predict individual switching either.
 
-Money that arrived in a county moved that county's vote without moving its residents' economic perception. The mechanism is not in this data: it could be turnout and organizing, a perception of *local* conditions that the "nation's economy" item does not capture, or something about the counties that received money that the controls miss. What can be said is that whatever delivery did, it did not do it by making people believe the economy was better.
+Money that arrived in a county moved that county's vote without moving its residents' economic perception. The decomposition from Part 2 says which part of the vote it moved:
+
+| Per SD of log per-capita obligations | IIJA | ARPA |
+|---|---|---|
+| Turnout component | −0.20 (0.23) | +0.19 (0.14) |
+| Share component | +0.18 (0.11) | **+0.20 (0.07)** |
+| Republican votes, % change 2020→24 | **−1.13 (0.41)** | −0.23 (0.49) |
+| Democratic votes, % change | −0.05 (0.41) | **+0.56 (0.28)** |
+
+Neither program moved total turnout. IIJA counties swung less right because Republican votes grew less there — Democratic votes were unaffected. ARPA counties swung less because Democratic votes held up better. Both are share-side effects: fewer new or switched Republican votes, not more Democratic mobilization. That rules out the organizing explanation. What is left is a share effect that does not run through belief about the national economy — a perception of *local* conditions that the survey item does not ask about, or something about the counties that received money that the controls miss. Whatever delivery did, it did not do it by making people believe the economy was better, and it did not do it by getting more Democrats to the polls.
 
 ---
 
@@ -379,7 +388,7 @@ Money that arrived in a county moved that county's vote without moving its resid
 
 **Local economic performance did not protect the incumbent party, because voters did not perceive it.** Real wage growth and manufacturing exposure explain nothing about the county swing; the county's economic record explains 0.6% of how its residents rate the economy in a cross-section and nothing about how the same person's rating changed over four years. What does explain the rating is party identification and media diet. The perception preceded the vote: a Biden voter's 2022 rating predicted both switching and staying home in 2024, and none of the 438 who saw improvement in 2022 switched. Whether something else was already moving those voters in 2022 is the question that remains.
 
-**Federal money that visibly arrived moved the county vote, but not through perception.** Counties with more infrastructure and recovery obligations per capita swung about half a point less right per standard deviation, robust to composition, urbanity, and outliers — the one local economic variable that did register in the vote. Their residents rated the economy no better once composition is controlled, and were no less likely to defect. Delivery worked on something other than belief about the economy; the data does not say what.
+**Federal money that visibly arrived moved the county vote, but not through perception and not through turnout.** Counties with more infrastructure and recovery obligations per capita swung about half a point less right per standard deviation, robust to composition, urbanity, and outliers — the one local economic variable that did register in the vote. Their residents rated the economy no better once composition is controlled, and were no less likely to defect. The effect is on the share side — Republican votes grew less where infrastructure money went; Democratic votes held better where recovery money went — with no movement in total turnout. Delivery worked on the margin of who voted Republican, not on belief about the economy and not on mobilization; the data does not say how.
 
 **The class gradient is structural and predates the campaign — and in 2024 it was not about class.** Democrats have lost ground in the poorest counties relative to 2012 in every cycle since. But the white low-income counties did their moving in 2016 and held; the 2024 movement in the bottom quartile was Hispanic and Black low-income counties. At the individual level, a Biden voter's income did not predict whether they left; being Hispanic did, at every income. The 2024 chapter of the class realignment is an ethnic realignment that shows up as a class gradient because of where Hispanic voters live.
 

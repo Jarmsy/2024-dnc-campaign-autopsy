@@ -692,6 +692,19 @@ Within party, full controls: Democrats IIJA +0.037 (0.020), ARPA +0.004 (0.016);
 
 The ARPA association with perception in the under-controlled specifications is composition; ARPA per capita correlates +0.39 with 2020 Democratic share. The county-swing effect survives the same controls.
 
+**(v) Components** (`outputs/tables/delivery_components.csv`; same specification as the county-swing model with full controls, N = 2,913; components per 100 2020 voters as in D.1; vote changes as % of 2020 votes):
+
+| Outcome | IIJA per SD | ARPA per SD | R² |
+|---|---|---|---|
+| Margin swing (pp) | +0.501 (0.227) | +0.433 (0.170) | 0.480 |
+| Turnout component | −0.199 (0.226) | +0.189 (0.142) | 0.548 |
+| Share component | +0.181 (0.107) | +0.204 (0.073) | 0.485 |
+| Total votes, % change | −0.398 (0.296) | +0.277 (0.223) | 0.511 |
+| Democratic votes, % change | −0.052 (0.412) | +0.557 (0.278) | 0.478 |
+| Republican votes, % change | −1.127 (0.410) | −0.229 (0.488) | 0.235 |
+
+Neither program predicts the turnout component or total turnout change. IIJA's swing effect is carried by lower Republican vote growth; ARPA's by higher Democratic vote retention. The individual switching model (iii) cannot detect an effect of this size: a 0.5pp county margin effect corresponds to roughly 0.25pp of individual vote share, well inside the logit's precision at a 6% base rate.
+
 ---
 
 ## H. Limitations
@@ -715,7 +728,7 @@ The ARPA association with perception in the under-controlled specifications is c
 17. **Panel attrition and what it hides.** The retained panel is more engaged than the population (A.7). Validated 2024 non-voting of 3–4% among 2020 voters is a floor, and the equality between Biden and Trump 2020 voters on that measure should not be read as evidence against the stronghold turnout loss in Part 2, which the panel cannot see.
 18. **Timing is not identification.** A 2022 rating rules out rationalization of a 2024 decision. It does not rule out a common cause already operating in 2022 — a voter leaving Biden for a non-economic reason and rating the economy worse because of it. Distinguishing those would need either a measure of the non-economic cause in 2022 or an exogenous shock to perception between waves.
 19. **Delivery is obligations, by place of performance, for two programs.** Obligated money is not built infrastructure; place of performance mis-credits state capitals and federal labs (addressed by winsorizing and tail-dropping, not eliminated); IRA and CHIPS are absent. A perception null could reflect voters not crediting delivery or delivery not yet being visible by November 2024.
-20. **A vote effect without a perception effect is unexplained.** The delivery coefficient on the county swing survives every control tried. Its absence from perception, within-person change, and individual switching means the channel is not the one this project can measure. County-level confounding that composition, RUCC, and population do not capture remains possible.
+20. **A vote effect without a perception effect is only partly explained.** The delivery coefficient on the county swing survives every control tried and loads on the share component, not turnout (G.3 v), which rules out mobilization. Its absence from perception, within-person change, and individual switching means the remaining channel is not one this project measures: a local-conditions perception the "nation's economy" item does not capture, or county-level confounding that composition, RUCC, and population do not remove.
 21. **Race categories are coarse.** CES self-identification; "Other" pools Asian, Native, multiracial, and unspecified. The Hispanic switching rate is a single-wave cross-sectional estimate on recalled 2020 vote; the panel cannot corroborate it (38 Hispanic Biden voters).
 
 ---
@@ -770,7 +783,7 @@ Part 4 established that perception is disconnected from local reality and travel
 1. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab.
 2. **A local price measure.** The prices item is the least partisan perception in the survey and predicts switching net of the economy rating in both the cross-section (E.8) and the panel (F.3), but there is nothing to set it against. BEA regional price parities or ACS 1-year rent would allow a prices gap — perceived minus measured.
 3. **More panel.** The 2020–2022 panel (`doi:10.7910/DVN/XV7ABM`) is a different, larger recontact of 2020 respondents; whether any of its members also appear in the 2020–2024 file is undetermined. If so, pooling adds 2022 observations but not 2024 outcomes.
-4. **The delivery mechanism.** Delivery moved the county vote (G.3) without moving perception. The candidates are testable: (a) turnout — regress the Part 2 turnout and share components separately on delivery, as notebook 05 did for the economic variables; (b) a local-conditions perception — the CES has no "your area's economy" item, but the household-income item (`CC24_302` in the common content) is the closest available; (c) organizing — no data. If delivery loads on the turnout component and not the share component, it is a mobilization story, not an attribution one.
+4. **The delivery mechanism.** Delivery moved the county vote (G.3) without moving perception, and the component test (G.3 v) shows it is a share effect, not turnout — Republican vote growth was lower where infrastructure money went. Two things would narrow it further: (a) a local-conditions perception — the CES has no "your area's economy" item, but the household-income item (`CC24_302` in the common content) is the closest available and could be tested against delivery the way the national item was; (b) the composition of the Republican vote growth — whether it is new voters or switchers, which the CES cross-section cannot separate but a county-level comparison of validated new registrants (L2 or TargetSmart aggregates) against delivery could.
 5. **The Hispanic shift.** Part 6 reframes the 2024 class gradient as ethnic. The CES 2024 has the sample to go further (1,890 Hispanic Biden voters): by nativity and language of interview if available, by 2022 perception in the panel (too few), and by whether the prices item carries the switching effect for Hispanic voters as it does overall.
 
 The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
