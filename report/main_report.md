@@ -7,9 +7,9 @@
 
 ## Executive summary
 
-Kamala Harris lost the 2024 presidential election with **49.25% of the two-party popular vote**, down from Biden's 52.27% in 2020. Democrats received 6.25 million fewer votes than in 2020 in an electorate that was 3.3 million votes smaller. This report examines that result through five lenses: what structural conditions predicted, how the vote loss decomposes geographically, what county economic characteristics explain the shift, whether voters perceived the economy their county actually had, and — following 6,175 of the same people from 2020 to 2024 — whether what they believed in 2022 predicted what they did in 2024.
+Kamala Harris lost the 2024 presidential election with **49.25% of the two-party popular vote**, down from Biden's 52.27% in 2020. Democrats received 6.25 million fewer votes than in 2020 in an electorate that was 3.3 million votes smaller. This report examines that result through six lenses: what structural conditions predicted, how the vote loss decomposes geographically, what county economic characteristics explain the shift, whether voters perceived the economy their county actually had, whether — following 6,175 of the same people from 2020 to 2024 — what they believed in 2022 predicted what they did in 2024, and finally who in the poorest counties actually moved and whether federal money that visibly arrived made any difference.
 
-**Five findings:**
+**Six findings:**
 
 | | Finding |
 |---|---|
@@ -18,6 +18,7 @@ Kamala Harris lost the 2024 presidential election with **49.25% of the two-party
 | **Part 3** | County income, education, and racial composition explain about 42% of the variance in county swings. The gap between Democratic performance in rich and poor counties, relative to 2012, widened from +5.0pp (2016) to +9.4pp (2020) to +9.9pp (2024). Harris inherited that gradient; she did not create it. Manufacturing exposure and real wage growth over the Biden term explain essentially nothing. |
 | **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, **31.6% of those who said the economy got "much worse" voted for Trump, against 1.5% of those who said "much better"** — but that association runs in both causal directions. Prices were the least filtered item: 80% of Democrats and 95% of Republicans said they rose, though Republicans were twice as likely to say "a lot," and saying "a lot" rather than "somewhat" predicted switching independently of the economy rating. Media diet, not media environment, is where the remaining signal is. |
 | **Part 5** | In a panel of the same voters, **how a Biden 2020 voter rated the economy in 2022 predicted whether they voted for Trump in 2024**: 7.9% of those who said "much worse" switched, 0 of 438 who saw improvement did. A rating given two years before the vote cannot be a rationalization of it. The same 2022 rating predicted not voting at all, by voter-file record. Within the same people, county economic change still explained nothing. |
+| **Part 6** | The bottom-quartile shift is not a class story. White low-income counties moved in 2016 and held; **nonwhite low-income counties did the moving in 2024**. At the individual level, income does not predict a Biden voter switching (7.1% under $30k, 6.4% over $200k); ethnicity does (Hispanic 10.5%, White 5.8%, Black 4.7%). Separately, counties that received more Biden-era infrastructure and recovery money **swung less right — about half a point per standard deviation — but their residents did not rate the economy any better.** Delivery moved the vote without moving the perception. |
 
 **What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 shows that perception is disconnected from local reality and that misperception travels with vote switching, but in a single cross-section cannot separate cause from effect. Part 5 puts the perception two years ahead of the vote, which rules out the specific objection that decided switchers rated the economy badly *because* they had decided. It does not rule out a slower common cause — a voter already leaving Biden in 2022 for other reasons — and it rests on 39 switchers.
 
@@ -148,6 +149,8 @@ Comparing each Democratic nominee's county-level vote share to Obama's 2012 shar
 | Harris 2024 | −9.2 | −6.4 | −4.1 | +0.7 | **+9.9** |
 
 Every Democrat since Obama has underperformed him in the poorest quartile, by a growing margin: −5.8, −6.3, −9.2. The gradient nearly doubled between 2016 and 2020 and then held. Harris's cycle is Biden's gradient shifted down roughly 2–3pp across all four quartiles. The class realignment is a ten-year trend, not a 2024 event.
+
+Two things about this table are easy to misread, and Part 6 takes both up. The poorest quartile of counties casts 5.5% of the national vote. And "the poorest quartile" is not one population: it contains rural white Appalachia and the Rio Grande Valley, which moved in different years for different reasons.
 
 ### What "populism premium" this does and does not test
 
@@ -309,6 +312,63 @@ Part 4 established the pattern; Part 5 establishes its timing. Perception of the
 
 ---
 
+## Part 6: Who moved, and did delivery register?
+
+### The bottom quartile is two populations that moved in different years
+
+Splitting the 778 poorest-quartile counties into terciles by nonwhite share, and tracking each against Obama 2012:
+
+| Q1 counties | 2016 | 2020 | 2024 | Change 2020→24 |
+|---|---|---|---|---|
+| Mostly white (27% of Q1 votes; 79% white non-college) | −9.6 | −9.1 | −10.7 | −1.6 |
+| Mixed (31%) | −6.3 | −6.2 | −8.4 | −2.1 |
+| Heavily nonwhite (42%; 61% nonwhite) | −3.2 | −4.6 | −8.9 | **−4.3** |
+
+White low-income counties moved nearly ten points in 2016 and then sat still through two more cycles. Nonwhite low-income counties barely moved in 2016, moved in 2020, and moved hardest in 2024. The largest Q1 counties by votes are the Bronx (−18 versus 2012), Hidalgo, Texas (−22), and Cameron, Texas (−18). The 2024 widening of the class gradient in Part 3 is the Hispanic and Black working class, not the white working class — the white working class had already gone.
+
+### At the individual level, income does not predict defection; ethnicity does
+
+Among 20,608 CES respondents who recall voting for Biden in 2020 and voted for a major-party candidate in 2024:
+
+| Biden 2020 voters by family income | Switched to Trump |
+|---|---|
+| Under $30k | 7.1% |
+| $30–50k | 6.0% |
+| $50–100k | 6.3% |
+| $100–200k | 6.3% |
+| $200k+ | 6.4% |
+
+| By race/ethnicity | Switched to Trump |
+|---|---|
+| Hispanic | **10.5%** |
+| Other | 7.1% |
+| White | 5.8% |
+| Black | 4.7% |
+
+Flat across income; the same by county income quartile; and inside the poorest counties, the residents under $50k switched *less* (5.3%) than those over (9.9%). Hispanic Biden voters defected at nearly twice the white rate in every income band; Hispanic voters under $30k, at 13.6%. In a model with party identification, education, age, and county income, Hispanic carries +0.59 (SE 0.24) and individual income −0.008 (SE 0.026).
+
+Low-income Biden voters did rate the economy worse — +0.13 for the lowest band against +0.86 for the highest. The perception gradient by income exists. It did not translate into differential defection. The county-level class gradient is composition: the poorest counties are disproportionately Hispanic, and Hispanic voters left at every income level. (The panel has 38 Hispanic Biden voters and cannot check this.)
+
+### Delivery moved the vote but not the perception
+
+County obligations under the Infrastructure Investment and Jobs Act and the American Rescue Plan — the two most visible Biden-era programs traceable to a county in public spending data — per capita, log-scaled, top 1% winsorized, from enactment through Election Day 2024. Median IIJA obligations were $671 per resident; ARPA, $421. IIJA money was spread evenly across partisan lines ($1,023 per capita in Republican-leaning counties, $861 in Democratic); ARPA was not ($503 versus $1,843), so ARPA doubles as a proxy for urban Democratic counties and every model below controls for composition, the rural-urban code, and population.
+
+| Test | IIJA | ARPA |
+|---|---|---|
+| County swing 2020→24, per SD of log per-capita obligations (Part 3 controls + rural-urban + population) | **+0.50pp** (SE 0.23) | **+0.43pp** (SE 0.17) |
+| Same, dropping the top 5% of counties per capita | +0.55 (0.29) | +0.78 (0.30) |
+| Residents' economy rating, with party and composition | +0.01 (0.01) | +0.00 (0.01) |
+| Within-person change in rating, 2020→24, panel | +0.13 (0.08) | +0.02 (0.05) |
+| Biden voter switching to Trump | −0.09 (0.13) | −0.13 (0.12) |
+
+Counties that received more money swung less to the right — about half a point per standard deviation for each program, robust to every control and to dropping the counties where federal labs and state capitals inflate the figures. This is the first county-level economic variable in the project with the expected sign that survives everything.
+
+But the residents of those counties did not rate the economy any better. ARPA per capita has a raw association with perception that is positive within every party; it disappears entirely once county income, education, and Democratic share are controlled, in both the cross-section and the panel. Delivery did not predict individual switching either.
+
+Money that arrived in a county moved that county's vote without moving its residents' economic perception. The mechanism is not in this data: it could be turnout and organizing, a perception of *local* conditions that the "nation's economy" item does not capture, or something about the counties that received money that the controls miss. What can be said is that whatever delivery did, it did not do it by making people believe the economy was better.
+
+---
+
 ## Synthesis
 
 **The structural conditions predicted a narrow loss, and a narrow loss is what happened.** A 38%-approval incumbent party with an open seat is expected to lose. Harris's result sits within the model's error band on either side of the prediction, depending on specification.
@@ -319,7 +379,9 @@ Part 4 established the pattern; Part 5 establishes its timing. Perception of the
 
 **Local economic performance did not protect the incumbent party, because voters did not perceive it.** Real wage growth and manufacturing exposure explain nothing about the county swing; the county's economic record explains 0.6% of how its residents rate the economy in a cross-section and nothing about how the same person's rating changed over four years. What does explain the rating is party identification and media diet. The perception preceded the vote: a Biden voter's 2022 rating predicted both switching and staying home in 2024, and none of the 438 who saw improvement in 2022 switched. Whether something else was already moving those voters in 2022 is the question that remains.
 
-**The class gradient is structural and predates the campaign.** Democrats have lost ground in the poorest counties relative to 2012 in every cycle since, at an accelerating rate. No single campaign created it, and the 2024 gradient is the 2020 gradient shifted down.
+**Federal money that visibly arrived moved the county vote, but not through perception.** Counties with more infrastructure and recovery obligations per capita swung about half a point less right per standard deviation, robust to composition, urbanity, and outliers — the one local economic variable that did register in the vote. Their residents rated the economy no better once composition is controlled, and were no less likely to defect. Delivery worked on something other than belief about the economy; the data does not say what.
+
+**The class gradient is structural and predates the campaign — and in 2024 it was not about class.** Democrats have lost ground in the poorest counties relative to 2012 in every cycle since. But the white low-income counties did their moving in 2016 and held; the 2024 movement in the bottom quartile was Hispanic and Black low-income counties. At the individual level, a Biden voter's income did not predict whether they left; being Hispanic did, at every income. The 2024 chapter of the class realignment is an ethnic realignment that shows up as a class gradient because of where Hispanic voters live.
 
 **The information problem is individual, not geographic.** Only 4.7% of the variance in economic perception is between counties, and almost none of that survives controlling for who lives there. Tested directly, the local news environment — 213 counties with no outlet, 1,526 with one — changes neither media diet, nor perception, nor the partisan gap, nor switching. The disconnect between what happened locally and what voters believed tracked the sources people chose within the same county, not the sources available to them. The partisan divergence in perception is widest in the white non-college counties where the structural drift has been strongest.
 

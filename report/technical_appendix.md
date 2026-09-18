@@ -128,6 +128,19 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 **Movers.** 741 panelists (12.0%) report a different county in 2024 than in 2020. The 2024 county's economic record is used; movers are flagged, not dropped.
 
+### A.8 USAspending — county obligations under IIJA and ARPA
+
+**Source:** USAspending API, `POST /api/v2/search/spending_by_geography/` with `geo_layer: county`, filtered by Disaster Emergency Fund Code and time period. No key.
+**Script:** `src/data_collection/usaspending_pull.py` → `data/raw/usaspending/county_delivery.csv` (3,232 counties).
+
+**Programs.** IIJA (P.L. 117-58) is DEFC `1` (non-emergency) and `Z` (emergency), window 2021-11-15 to 2024-11-05: $319.9B by place of performance. ARPA (P.L. 117-2) is DEFC `V`, window 2021-03-11 to 2024-11-05: $620.7B. The Inflation Reduction Act and CHIPS carry no DEFC (regular appropriations and tax expenditure) and cannot be isolated; the Clean Investment Monitor's facility data requires ClimateDeck registration and confirms only state and congressional-district granularity, so it is not used.
+
+**Place of performance vs. recipient location.** Both scopes are pulled. Place of performance credits formula funds to the state agency's county (the state capital) and DOE laboratory funding to the lab's county; recipient location has the mirror problem. Place of performance is used, per capita, with the top 1% winsorized (IIJA at $17,503 per capita, ARPA at $18,131) and log1p-transformed. Los Alamos ($14.2B IIJA), Anderson County TN ($9.0B), and Loving County TX (64 residents) are the kind of artifact the winsorizing addresses; models are also re-run dropping the top 5% of counties per capita.
+
+**Obligated is not built.** The figures are obligations, not outlays or completed projects.
+
+**Distribution.** IIJA per capita is roughly flat across partisanship (population-weighted mean $1,023 in the most Republican tercile of counties, $861 in the most Democratic; correlation with 2020 Dem share −0.04). ARPA is not ($503 vs $1,843; correlation +0.39, with log population +0.23) — the State and Local Fiscal Recovery formula and other ARPA streams favored dense, high-unemployment counties. Models therefore include county composition, the RUCC rural-urban code, and log population.
+
 ---
 
 ## B. Part 1 — Fundamentals model
@@ -494,7 +507,7 @@ The prices scale is compressed (88% in two of five categories), so the R² ratio
 | `gap` | −0.696 (0.097) | — |
 | `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
 
-AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in G.9 applies to this result with only modestly less force than to the economy rating.
+AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in H.9 applies to this result with only modestly less force than to the economy rating.
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
@@ -604,7 +617,84 @@ Sample: reported 2020 major-party vote and a 2024 voter-file match. Biden 2020: 
 
 ---
 
-## G. Limitations
+## G. Part 6 — Bottom quartile and delivery
+
+Notebook `09_bottom_quartile_and_delivery.ipynb`.
+
+### G.1 Bottom quartile by composition
+
+Q1 = poorest quartile of the 3,110-county panel by ACS 2020 median household income (778 counties, 5.5% of 2024 votes; Q2 12.7%, Q3 21.2%, Q4 60.6%). Within Q1, terciles of nonwhite share (1 − `white_nh_share`). Turnout-weighted change in Democratic share versus Obama 2012 (`outputs/tables/q1_by_composition.csv`, `all_by_composition.csv`):
+
+| | Counties | Share of Q1 votes | Nonwhite | White non-college | 2016 | 2020 | 2024 | 2020→24 |
+|---|---|---|---|---|---|---|---|---|
+| Q1 mostly white | 260 | 26.9% | 0.06 | 0.79 | −9.60 | −9.10 | −10.69 | −1.58 |
+| Q1 mixed | 259 | 31.1% | 0.29 | 0.60 | −6.28 | −6.23 | −8.37 | −2.11 |
+| Q1 heavily nonwhite | 259 | 42.0% | 0.61 | 0.33 | −3.23 | −4.59 | −8.87 | −4.26 |
+| All mostly white | 1,037 | 9.9% of all | 0.06 | 0.75 | −9.64 | −7.24 | −8.28 | −1.08 |
+| All mixed | 1,036 | 29.3% | 0.18 | 0.62 | −4.68 | −0.40 | −1.50 | −1.13 |
+| All heavily nonwhite | 1,037 | 60.9% | 0.48 | 0.40 | −0.48 | +2.33 | −0.87 | −3.23 |
+
+Largest Q1 counties by 2024 votes: Bronx NY (nonwhite 0.91; 2024 vs 2012 −18.1), Hidalgo TX (0.94; −22.3), Orleans LA (0.69; +1.9), Cameron TX (0.91; −18.3), Caddo LA, Hinds MS, Doña Ana NM, Richmond GA.
+
+### G.2 Individual income, county income, and ethnicity
+
+CES 2024 recalled-Biden voters with a 2024 major-party vote, N = 20,608, `commonpostweight` (`outputs/tables/switch_by_individual_income.csv`, `switch_by_county_income.csv`, `switch_by_race.csv`, `switch_by_race_x_income.csv`). `faminc` bands: <$30k = codes 1–3, $30–50k = 4–5, $50–100k = 6–9, $100–200k = 10–12, $200k+ = 13–16; 97 (declined) dropped. Race: `hispanic == 1` → Hispanic, else `race == 1` White, `race == 2` Black, else Other.
+
+| Individual income | N | Switch (wtd) | Perceived economy (wtd) |
+|---|---|---|---|
+| <$30k | 3,656 | 7.1% | +0.13 |
+| $30–50k | 3,266 | 6.0% | +0.30 |
+| $50–100k | 6,340 | 6.3% | +0.45 |
+| $100–200k | 4,564 | 6.3% | +0.73 |
+| $200k+ | 1,377 | 6.4% | +0.86 |
+
+County income quartile: Q1 7.2% (926), Q2 5.7%, Q3 6.7%, Q4 6.4%. Cross-level: county Q1 × individual <$50k 5.3% (N = 512); Q1 × $50k+ 9.9% (414); Q4 × <$50k 6.4% (3,453); Q4 × $50k+ 6.4% (9,001).
+
+| Race/ethnicity | N | Switch (wtd) | Perceived economy |
+|---|---|---|---|
+| Hispanic | 1,890 | 10.5% | +0.20 |
+| Other | 1,314 | 7.1% | +0.41 |
+| White | 14,423 | 5.8% | +0.62 |
+| Black | 2,981 | 4.7% | +0.15 |
+
+Race × income (weighted switch): Hispanic 13.6% / 6.6% / 10.8% / 11.4% / 6.9% across the five bands (N 368 / 342 / 604 / 377 / 103); White 5.7 / 6.4 / 5.0 / 6.0 / 6.9; Black 4.8 / 4.2 / 6.2 / 3.7 / 5.1.
+
+Logit, county-clustered: income (16-band code) alone −0.013 (0.020); with Hispanic, Black, `pid7c`, college, age: income −0.008 (0.026), Hispanic +0.588 (0.238), Black +0.161 (0.203); adding county Q1 and log county income: income −0.005 (0.026), Hispanic +0.587 (0.239), county Q1 −0.279 (0.452), log county income −0.315 (0.387).
+
+Panel (contemporaneous, unweighted, events in parentheses): by 2020 income <$30k 3.3% (11), $30–50k 2.8% (8), $50–100k 1.7% (9), $100–200k 1.6% (5), $200k+ 4.9% (3); Hispanic 0.0% (0 of 38), White 2.3% (24 of 1,066), Black 2.9% (9 of 311). Uninformative on the ethnic finding.
+
+### G.3 Delivery
+
+`log_iija_pc`, `log_arpa_pc` = log1p of winsorized per-capita obligations, standardized. Composition = `log_income + college_share + white_nocollege + dem_share_2020`; urban = `C(rucc) + log(population)`. Tables in `outputs/tables/delivery_models.csv`.
+
+**(i) County margin swing 2020→24** (WLS, 2020 turnout weights, HC3; notebook 05 M2 controls; N = 2,913; R² 0.434 → 0.451 with delivery):
+
+| Specification | IIJA pp per SD | ARPA pp per SD |
+|---|---|---|
+| Part 3 controls | +0.548 (0.238) | +0.382 (0.172) |
+| + RUCC + log population | +0.501 (0.227) | +0.433 (0.170) |
+| + RUCC + log pop, top 5% per capita dropped (N = 2,653) | +0.546 (0.292) | +0.778 (0.301) |
+
+**(ii) Perceived economy, CES 2024** (WLS, `commonweight`, county-clustered, N = 56,631):
+
+| Specification | R² | IIJA | ARPA |
+|---|---|---|---|
+| County actual + delivery | 0.020 | −0.025 (0.022) | +0.152 (0.015) |
+| + party ID | 0.342 | +0.003 (0.014) | +0.044 (0.010) |
+| + county composition | 0.345 | +0.015 (0.013) | +0.003 (0.011) |
+| + RUCC + log population | 0.346 | +0.013 (0.013) | +0.002 (0.010) |
+
+Within party, full controls: Democrats IIJA +0.037 (0.020), ARPA +0.004 (0.016); independents −0.009 (0.039), −0.045 (0.027); Republicans −0.007 (0.017), +0.016 (0.014).
+
+**(iii) Switching**, notebook 06 full model + delivery + composition + urban (N = 20,608): IIJA −0.089 (0.125), ARPA −0.128 (0.123); gap −0.814 (0.078).
+
+**(iv) Panel within-person change 2020→24** (WLS, `commonweight_24`, county-clustered, N = 5,772): delivery + party: IIJA +0.110 (0.069), ARPA +0.095 (0.041); + composition + urban: IIJA +0.134 (0.076), ARPA +0.019 (0.048).
+
+The ARPA association with perception in the under-controlled specifications is composition; ARPA per capita correlates +0.39 with 2020 Democratic share. The county-swing effect survives the same controls.
+
+---
+
+## H. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -624,12 +714,15 @@ Sample: reported 2020 major-party vote and a 2024 voter-file match. Biden 2020: 
 16. **Panel events.** The Part 5 timing result rests on 39 switchers (36 in the models with covariates). The monotonic cross-tab and the stability of the coefficient across specifications and across weighted/unweighted estimation are the evidence; interactions and subgroup splits are not supportable. Post-election weights average roughly 2× for switchers, so any cell with a handful of events can produce an extreme weighted rate (F.3, prices).
 17. **Panel attrition and what it hides.** The retained panel is more engaged than the population (A.7). Validated 2024 non-voting of 3–4% among 2020 voters is a floor, and the equality between Biden and Trump 2020 voters on that measure should not be read as evidence against the stronghold turnout loss in Part 2, which the panel cannot see.
 18. **Timing is not identification.** A 2022 rating rules out rationalization of a 2024 decision. It does not rule out a common cause already operating in 2022 — a voter leaving Biden for a non-economic reason and rating the economy worse because of it. Distinguishing those would need either a measure of the non-economic cause in 2022 or an exogenous shock to perception between waves.
+19. **Delivery is obligations, by place of performance, for two programs.** Obligated money is not built infrastructure; place of performance mis-credits state capitals and federal labs (addressed by winsorizing and tail-dropping, not eliminated); IRA and CHIPS are absent. A perception null could reflect voters not crediting delivery or delivery not yet being visible by November 2024.
+20. **A vote effect without a perception effect is unexplained.** The delivery coefficient on the county swing survives every control tried. Its absence from perception, within-person change, and individual switching means the channel is not the one this project can measure. County-level confounding that composition, RUCC, and population do not capture remains possible.
+21. **Race categories are coarse.** CES self-identification; "Other" pools Asian, Native, multiracial, and unspecified. The Hispanic switching rate is a single-wave cross-sectional estimate on recalled 2020 vote; the panel cannot corroborate it (38 Hispanic Biden voters).
 
 ---
 
-## H. Reproducibility
+## I. Reproducibility
 
-### H.1 Environment
+### I.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -637,7 +730,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### H.2 Pipeline
+### I.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -655,6 +748,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 12 | `07_multilevel_model.ipynb` | steps 10, 11 | `data/processed/county_attribution_gap.csv`, tables, figure (≈10 min; the VB mixed logit dominates) |
 | 13 | `python src/data_collection/ces_panel_pull.py` | Dataverse | `data/raw/ces_panel/ces_panel_long.csv`, `ces_panel_wide.csv`, guide PDF |
 | 14 | `08_panel_analysis.ipynb` | steps 8, 13 | `data/processed/panel_biden2020_outcomes.csv`, tables, figure |
+| 15 | `python src/data_collection/usaspending_pull.py` | USAspending API | `data/raw/usaspending/county_delivery.csv` |
+| 16 | `09_bottom_quartile_and_delivery.ipynb` | steps 7, 8, 9, 11, 13, 15 | `data/processed/county_delivery_clean.csv`, tables, figure |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -662,19 +757,21 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### H.3 Keys
+### I.3 Keys
 
 Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key.
 
 ---
 
-## I. Next steps
+## J. Next steps
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
 1. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab.
 2. **A local price measure.** The prices item is the least partisan perception in the survey and predicts switching net of the economy rating in both the cross-section (E.8) and the panel (F.3), but there is nothing to set it against. BEA regional price parities or ACS 1-year rent would allow a prices gap — perceived minus measured.
 3. **More panel.** The 2020–2022 panel (`doi:10.7910/DVN/XV7ABM`) is a different, larger recontact of 2020 respondents; whether any of its members also appear in the 2020–2024 file is undetermined. If so, pooling adds 2022 observations but not 2024 outcomes.
+4. **The delivery mechanism.** Delivery moved the county vote (G.3) without moving perception. The candidates are testable: (a) turnout — regress the Part 2 turnout and share components separately on delivery, as notebook 05 did for the economic variables; (b) a local-conditions perception — the CES has no "your area's economy" item, but the household-income item (`CC24_302` in the common content) is the closest available; (c) organizing — no data. If delivery loads on the turnout component and not the share component, it is a mobilization story, not an attribution one.
+5. **The Hispanic shift.** Part 6 reframes the 2024 class gradient as ethnic. The CES 2024 has the sample to go further (1,890 Hispanic Biden voters): by nativity and language of interview if available, by 2022 perception in the panel (too few), and by whether the prices item carries the switching effect for Hispanic voters as it does overall.
 
 The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
 
