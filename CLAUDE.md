@@ -30,6 +30,7 @@ Output: narrative in `report/main_report.md` + technical appendix in `report/tec
 | CES (Cooperative Election Study) | Individual survey microdata 2016/2020/2024 with county FIPS (~60k/yr) | Harvard Dataverse, no guestbook; `ces_pull.py` harmonizes core vars. **Question numbers and candidate codes differ by year — see `HARMONIZED`/`PRES_CODES` in the script, never use raw `CCyy_*` codes across years** |
 | BLS QCEW | County private employment by NAICS sector (2012/16/20/24) | Annual single-file zips, no key; `bls_qcew_pull.py` caches zips in `data/raw/bls_qcew/` |
 | Census ACS | County income, education, race, unemployment (2020 5-yr) | API; set `CENSUS_API_KEY` env var |
+| CES 2020–2024 Panel | ~6,175 panelists interviewed in 2020, 2022, 2024 with county FIPS, validated turnout, and contemporaneous 2020 and 2024 vote | Dataverse `doi:10.7910/DVN/CETPVT`, no guestbook; `ces_panel_pull.py`. **Panel numbering differs from common content: economy item is `CC24_302` here (not `_301`); prices is `CC24_304`.** Weights `commonweight_24` / `commonpostweight_24` |
 | Medill Local News Initiative | County local-news outlet counts by type (2025), desert/watchlist flags, RUCC, 2024→2025 newspaper change | Undocumented backend API behind the State of Local News explorer; `news_deserts_pull.py`. Server omits its TLS intermediate — script builds a CA bundle rather than disabling verification |
 | GDELT | Media coverage index | BigQuery or bulk download |
 
