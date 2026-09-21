@@ -158,6 +158,23 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 ---
 
+### A.10 New York City election districts, 2020–2025
+
+**Sources.** NYC Board of Elections ED-level CSVs (`vote.nyc/sites/default/files/pdf/election_results/<year>/<date><event>/…EDLevel.csv`): President 2020 (pre-2022 district lines), President 2024, Mayor 2025 general. Ranked-choice contests are published only as round-by-round PDFs and a ballot-level cast vote record (`2025_Primary_CVR_2025-07-17.zip`, 32 spreadsheets, "AD: nn ED: nnn" precinct field, candidacy-id-to-name map); ED first choices and the Mamdani–Cuomo head-to-head are built from it. Department of City Planning election-district shapefiles `nyed_20d`, `24d`, `25b`, `25d` and 2020 census blocks `nycb2020_25d` (`s-media.nyc.gov/…/bytes/`). Census API: 2020 PL P1/P2 at block level; ACS 2023 five-year B19013, B15003, B17021, B25003 at block group.
+**Script:** `src/data_collection/nyc_pull.py` → `data/raw/nyc/nyc_ed_panel.csv` (4,326 EDs × 35) with `prim25_cvr_by_ed.csv` cached.
+
+**BOE format.** Every line of an ED-level CSV carries the eleven column headers as a prefix followed by the eleven data fields; parsed by position. Counter rows (Public Counter, Emergency, Absentee/Military, Federal, Affidavit, Scattered, Early Voting) are excluded from candidate totals. EDs whose status is "COMBINED INTO …" report zero and are dropped.
+
+**Cast vote record.** Ranks 1–5 for Mayor; non-candidate codes (undervote/overvote) treated as blank; first valid rank = first choice; head-to-head = Mamdani ranked above Cuomo vs the reverse (ballots ranking neither excluded). ED first choices sum to 469,960 Mamdani / 387,664 Cuomo against certified first-round 469,984 / 387,748.
+
+**2020 crosswalk.** 2020 EDs (5,838 polygons) → 2020 census blocks by block representative point → current EDs (nyed_25d). Each 2020 ED's votes are spread across its blocks in proportion to 2020 block population and summed within the current ED. 2,276,466 Biden / 684,780 Trump carried over, 98.2% / 99.0% of the BOE totals; the remainder sit in 2020 EDs with no populated block.
+
+**Demographics.** Blocks assigned to nyed_25d EDs by representative point; race/Hispanic shares are block-population-weighted; block-group ACS income, BA share, poverty, and renter share are attached to each block and population-weighted to the ED. 4,193 EDs receive demographics.
+
+**Boundary drift.** 2024 results are on nyed_24d lines, 2025 on 25b/25d, matched by AD-ED number; DCP revisions between versions are small, and the ≥ 50-vote filter in each contest removes most affected EDs.
+
+---
+
 ## B. Part 1 — Fundamentals model
 
 ### B.1 Specification
@@ -1003,7 +1020,25 @@ ANES `V242438` self (0–10) on standardized indices (WLS, HC1, N = 4,644, R² =
 
 ---
 
-## K. Limitations
+## K. Part 10 — New York City precinct overlap
+
+Notebook `17_nyc_precinct_overlap.ipynb`. Data A.10. Usable EDs: ≥ 50 two-party votes in 2020 (crosswalked), 2024, and 2025, not combined, populated: N = 3,870. Citywide on usable EDs: Trump 23.1% (2020) → 31.0% (2024), swing +7.9; Mamdani 51.0% of the mayoral vote, 55.3% of Mamdani + Cuomo, Sliwa 7.0%; primary head-to-head Mamdani 56.6%. Tables `nyc_by_swing_decile.csv`, `nyc_by_trump_decile.csv`, `nyc_by_majority.csv`, `nyc_by_majority_x_income.csv`, `nyc_within_group_models.csv`, `nyc_mamdani_vs_harris_by_swing_decile.csv`, `nyc_mamdani_minus_harris_models.csv`, `nyc_vote_composition_by_majority.csv`; figure `nyc_trump24_vs_mamdani25.png`.
+
+**Correlations** (weighted by 2024 two-party votes): Mamdani share of the mayoral vote with 2024 Trump share −0.80, with the 2020→24 swing −0.10; Mamdani vs Cuomo −0.76 / −0.07; Sliwa +0.74 / +0.14; primary head-to-head −0.31 / −0.05; Mamdani first choices −0.18 / +0.11; corr(swing, 2024 level) +0.36.
+
+**Swing deciles** (1→10; each N = 387): swing −0.3 / 2.6 / 3.6 / 5.1 / 6.9 / 8.2 / 10.3 / 13.0 / 15.9 / 24.0 points; Harris 2024 84.0 / 79.8 / 77.4 / 70.8 / 65.1 / 64.3 / 61.6 / 61.6 / 60.9 / 53.9%; Mamdani Nov 63.8 / 56.3 / 52.6 / 47.9 / 45.4 / 44.4 / 44.0 / 48.0 / 50.0 / 53.5%; Mamdani − Harris −20.2 / −23.5 / −24.7 / −22.8 / −19.6 / −19.9 / −17.6 / −13.6 / −10.9 / −0.4; Cuomo + Sliwa 35.7 / 43.2 / 46.8 / 51.5 / 54.0 / 55.0 / 55.3 / 51.3 / 49.3 / 45.8% against Trump 2024 16.0 / 20.2 / 22.6 / 29.2 / 34.9 / 35.7 / 38.4 / 38.4 / 39.1 / 46.1%; Mamdani vs Cuomo Nov 66.4 / 59.5 / 56.1 / 52.2 / 50.2 / 49.2 / 49.1 / 52.9 / 54.6 / 57.9%; primary head-to-head 67.2 / 59.3 / 55.1 / 53.7 / 55.2 / 52.4 / 50.2 / 52.5 / 51.8 / 57.3%; Nov 2025 votes per 2024 vote 0.90 / 0.85 / 0.82 / 0.81 / 0.80 / 0.79 / 0.77 / 0.75 / 0.71 / 0.88; primary ballots per 2024 vote 0.58 … 0.30 / 0.40. Decile 10 composition: Hispanic 45%, Asian 28%, white 14%, Black 8%; median income $78k; BA 26%. Decile 1: white 53%, Black 19%; $128k; BA 62%.
+
+**By majority group** (Hispanic / Asian / Black / mixed / white; N 723 / 226 / 628 / 1,060 / 1,233): swing +13.6 / +14.8 / +4.5 / +8.6 / +4.9; Harris 70.2 / 53.1 / 89.9 / 69.3 / 61.6%; Mamdani Nov 58.4 / 46.5 / 63.6 / 57.7 / 41.3%; Mamdani vs Cuomo Nov 62.6 / 52.3 / 65.9 / 62.5 / 45.3%; primary head-to-head 55.3 / 61.4 / 43.7 / 64.6 / 56.2%; Mamdani first choice 48.3 / 53.5 / 35.4 / 52.9 / 39.2%, Cuomo first 40.3 / 33.8 / 48.8 / 29.9 / 33.7%; Nov 2025 per 2024 vote 0.69 / 0.79 / 0.67 / 0.81 / 0.92; primary per 2024 vote 0.35 / 0.30 / 0.38 / 0.40 / 0.43. Income terciles within group in `nyc_by_majority_x_income.csv`; low-income Hispanic (N = 490): swing +13.7, Mamdani 56.3%, vs Cuomo 60.2%, primary 47.9%; mid-income Hispanic (173): 63.2%, 68.0%, 68.6%; low-income white (120): swing +5.2, Mamdani 21.9%.
+
+**Within-group WLS** (weights 2024 two-party votes; HC1; regressors swing, 2020 Trump share, log income, BA share, Hispanic / Black / Asian shares). Dependent Mamdani vs Cuomo (Nov), coefficient on swing (SE): Hispanic −0.32 (0.10), Asian +0.03 (0.10), Black −0.62 (0.21), mixed −0.33 (0.08), white −0.47 (0.08), all −0.62 (0.06); on 2020 Trump share −1.18 / −1.48 / −1.65 / −1.18 / −0.83 / −0.86. Primary head-to-head: swing −0.40 / +0.26 / −0.21 / −0.21 / −0.16 / −0.40. Dependent Mamdani Nov share − Harris 2024 share, swing coefficient: Hispanic +0.66 (0.10), Asian +1.05 (0.10), Black +0.37 (0.21), mixed +0.66 (0.08), white +0.53 (0.07), all +0.41 (0.05); R² 0.57 / 0.59 / 0.58 / 0.32 / 0.49 / 0.35. Turnout ratio (Nov 2025 / 2024) on swing: white +6.2 (0.5), Black +7.7 (2.3), mixed +3.3 (0.6), Hispanic −0.4 (0.7), Asian +0.6 (0.2).
+
+**Composition of citywide vote** by ED majority (Hispanic / Asian / Black / mixed / white): Harris 2024 15.6 / 3.8 / 20.8 / 26.1 / 33.7%; Trump 2024 14.8 / 7.5 / 5.2 / 25.8 / 46.8%; Mamdani Nov 15.1 / 4.4 / 16.4 / 29.5 / 34.6%; Cuomo Nov 11.1 / 4.9 / 10.5 / 21.9 / 51.6%; Sliwa 11.0 / 7.1 / 4.9 / 26.1 / 51.0%; Mamdani primary first choices 14.7 / 4.6 / 12.4 / 31.5 / 36.7%; Cuomo first choices 15.0 / 3.5 / 21.0 / 21.8 / 38.7%.
+
+**Reading.** The level and the change tell different but compatible stories. In level, the 2024 swing carries a residual against Mamdani within group (−0.3 to −0.6 per unit) and the 2020 Trump level dominates (−0.8 to −1.6). Against the 2024 baseline, the swing predicts recovery in every group (+0.4 to +1.05), and in the tenth swing decile Mamdani's November share equals Harris's while Cuomo + Sliwa equals Trump's. The Mamdani − Harris measure is partly mechanical where Harris was very high (Cuomo drew moderate Democrats in decile 1), which is why the within-group models control for the 2020 level and composition.
+
+---
+
+## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -1036,12 +1071,13 @@ ANES `V242438` self (0–10) on standardized indices (WLS, HC1, N = 4,644, R² =
 29. **The capture test is indirect.** No survey on disk asks whether the *Democrats* are beholden to corporate interests; I.8 tests whether general anti-corporate sentiment predicts leaving them, and finds the opposite sign. A voter could believe both parties are captured and leave for other reasons; the strong-hand and distrust items that do predict leaving are consistent with an anti-system reading that is not specifically anti-corporate. Sixty-two to sixty-nine events across a dozen items; the per-item coefficients in I.8 should be read as a pattern, not individually.
 30. **The cross-pressure cells depend on the cutoff and on which items the CES asks.** Counting four-four ties as "left" gives a 20% cross-pressured cell voting 68% Trump; excluding them, 13% voting 57%. The ordering — economically-left cultural liberals near-unanimous for Harris, economically-left cultural conservatives majority Trump — holds under both; the shares are a range, not a point. The 2016 economic index is two items and its cells collapse under a strict cutoff; 2016 is a direction, not a measurement.
 31. **Candidate placements are pre-election but not pre-decision.** Most ANES pre-election interviews are in September–October; a switcher who had decided by then may place Trump nearer to themselves as a consequence. The perceived-gap coefficient in J.2 cannot separate "did not see the contrast" from "had already chosen."
+32. **The New York comparison is ecological, single-city, and cross-electorate.** ED co-movement does not identify individuals; the 2024 swing in the outer-borough districts was partly Democratic abstention (Part 7), and 2025 could be return rather than conversion. The November 2025 electorate was 78% of the presidential electorate (92% in white-majority districts, 67% in Black); the primary was registered Democrats. Cuomo carried Trump's endorsement, so Cuomo + Sliwa is a Trump-coalition proxy, not a measurement. The 2020 baseline is crosswalked and carries interpolation noise in small EDs; "Mamdani − Harris" is bounded above where Harris was near 90%. Funding and media coverage are not measured here.
 
 ---
 
-## L. Reproducibility
+## M. Reproducibility
 
-### L.1 Environment
+### M.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -1049,7 +1085,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### L.2 Pipeline
+### M.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -1077,6 +1113,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 22 | `14_anes_salience.ipynb` | step 21 | tables |
 | 23 | `15_corporate_capture.ipynb` | step 21 | tables |
 | 24 | `16_crosspressure_and_perceived_difference.ipynb` | steps 9, 21 | tables |
+| 25 | `python src/data_collection/nyc_pull.py` | BOE, DCP, Census API (≈25 min; the cast vote record is cached after the first run) | `data/raw/nyc/nyc_ed_panel.csv` |
+| 26 | `17_nyc_precinct_overlap.ipynb` | step 25 | tables, figure |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -1084,13 +1122,13 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### L.3 Keys
+### M.3 Keys
 
-Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key; the ANES pull needs the zip placed by hand (A.9).
+Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key; the ANES pull needs the zip placed by hand (A.9); the NYC pull needs `CENSUS_API_KEY`.
 
 ---
 
-## M. Next steps
+## N. Next steps
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
@@ -1105,5 +1143,7 @@ The reduced-form association between living in a news desert and switching does 
 6. **Salience — done (I.7).** The ANES 2024 shows the switchers prioritized prices over immigration two to one and had adopted the Republican claim on prices. What would extend it: the 2016–20–24 ANES panel subsample (2,171 respondents, ids `V200001`/`V160001_orig`) merged to the 2020 and 2016 Time Series files, which would put the anti-elite and cultural items — which the CES does not carry — ahead of the switch the way F.3 does for economic perception.
 
 7. **The corporate-capture hypothesis — tested in I.8; the strong form fails.** Remaining: Working hypothesis: Democrats came to be seen as beholden to corporate elites; that perception, not policy positions, cost them the trust of economically-left, anti-elite voters and left a vacuum Trump filled. I.7 is consistent with it — 95% of switchers say government is run by a few big interests, switchers are +0.87 SD anti-elite, and 73% had transferred the prices issue to Republicans — but it is not yet a test. Done in I.8: item decomposition, `V242166` no-difference, party thermometers and placement. Still open: (d) the 2016–20–24 panel subsample merged to the 2020 and 2016 files, to put the anti-elite items *before* the switch. Outside the ANES: FEC corporate/PAC receipts by candidate and cycle as the "actual" side of the perception gap, and the Pew/Gallup "which party cares about people like me" series for the trend since 2016.
+
+8. **Insurgent primaries — studies A and B.** Part 10 answered the precinct question for New York. Still open: (A) a case dataset of Democratic primaries with a DSA / Justice Democrats-type challenger, 2018–2026, with FEC receipts, small-dollar share, and independent expenditures for and against (AIPAC/UDP, crypto PACs), to test whether insurgents win against a funding deficit and whether outside spending against predicts loss; (B) GDELT coverage volume and tone by source domain (foxnews.com, cnn.com, msnbc.com, nytimes.com) for each insurgent and opponent in the primary window, with establishment-vs-establishment primaries as the control, to test "smeared by all sides." Both need the 2026 primary results, which postdate the analyst's knowledge and must be pulled from the web.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.

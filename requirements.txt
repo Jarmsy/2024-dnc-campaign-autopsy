@@ -11,3 +11,4 @@ requests
 fredapi
 openpyxl
 python-dotenv
+pyogrio
