@@ -926,6 +926,12 @@ Reservoir (`reservoir_2024.csv`): immigration-conservative = 19.4% of Biden-2020
 
 The panel's Trump-2016 share of switchers (I.5: 4% weighted, 8 of 39) is superseded by the cross-section's 27%; recall bias toward the current vote makes 27% an upper bound.
 
+**Robustness** (notebook 13 §3b; `reservoir_cutoffs.csv`, `reservoir_by_pid.csv`, `reservoir_2020_attitudes_panel.csv`). Cutoff: ≥ 0.4 → 42.0% of Biden-2020 voters, switch 11.1% vs 1.0%, 89% of switchers; ≥ 0.5 → 19.4% / 22.0% vs 1.2% / 81%; ≥ 0.6 → 19.3% / 22.1% vs 1.2% / 81%; ≥ 0.8 → 7.4% / 35.9% vs 2.8% / 51%. By party ID (reservoir share; switch reservoir vs rest): strong Democrat 13.8%, 3.7% vs 0.2%; weak/lean Democrat 18.6%, 9.4% vs 0.8%; independent 36.3%, 46.3% vs 3.3%; Republican-identifying Biden voters 63.5%, 74.7% vs 30.1%.
+
+**Pre-switch version.** Panel, reservoir on 2020 attitudes (four 2020 items, cutoff 0.5), 2024 outcome; N = 1,684 Biden-2020 voters, 39 switchers: reservoir 16.7% of the coalition (N = 285); switch 13.5% weighted / 8.1% unweighted (23 events) vs 2.2% / 1.1% (16 events); 55.6% of switchers. At cutoff 0.75: 7.6% (N = 98), 19.9% vs 2.8%, 37.3% of switchers. Medicare-for-all support among the 2020-defined reservoir: 85%. The 2024-attitude figures (I.6 above) include concurrent attitude change; the 2020-attitude figures are the predictive estimate.
+
+**2016 primary, all switchers.** Of the 2,121 Obama→Trump respondents (not only primary voters): 67% voted in a primary; Trump primary 30%, Sanders 15%, Clinton 14%, no primary or other 41%.
+
 ---
 
 ## J. Limitations
