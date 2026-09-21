@@ -893,6 +893,39 @@ Immigration items 2016, conservative share, Obama→Clinton / Obama→Trump / Ro
 
 Primary vote among Obama-2012 voters who voted in a primary (`switchers_2016_primary.csv`): Obama→Clinton (N = 14,012) Clinton 63 / Sanders 33 / Trump 1 / Cruz 0 / Kasich 2; Obama→Trump (1,322) Clinton 21 / Sanders 23 / Trump 47 / Cruz 4 / Kasich 3. Sanders primary voters (N = 6,288): Clinton 86.1%, Trump 13.9%; of those who voted Obama in 2012 (5,146): Trump 7.7%; those 288 Sanders→Trump switchers: imm_cons 0.56, $12 minimum wage 79%, repeal ACA 72%.
 
+### I.6 The 2020 coalition and the reservoir
+
+Notebook `13_coalition_2020_and_reservoir.ipynb`.
+
+**CES 2020** (`CES20_Common_OUTPUT_vv.csv`; `presvote16post` 1 Clinton / 2 Trump / 7 did not vote; `CC20_410` 1 Biden / 2 Trump; `commonpostweight`). Hispanic = `race == 3` or `hispanic == 1` (race-3 respondents were not asked `hispanic`). Immigration index from `CC20_331a` (legal status, oppose), `331b` (border patrol, support), `331d` (cut legal immigration, support), `331e` (wall, support). `CC20_327a` Medicare-for-all, `CC20_350b` $15 minimum wage (1 = support/favor). N with 2020 major-party vote and 2016 status = 43,878. 2020 electorate by 2016 behavior: Clinton 42.0% (Biden 96.2%), Trump 40.3% (Trump 94.9%), other 4.2%, non-voter 13.5% (Biden 59.6%). Biden voters: Clinton 76.1%, non-voter 15.1% (N = 4,077), Trump 3.9% (969). Trump voters: non-voter 11.6%.
+
+Profile by path (`outputs/tables/coalition_2020_by_2016_vote.csv`):
+
+| Path | N | imm_cons | M4A | min wage $15 | abortion cons | econ perception | age | college | white | Hispanic | Black | <$50k | pid7 | validated |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Clinton→Biden | 19,159 | 0.18 | 87% | 92% | 0.15 | −1.54 | 51 | 45% | 58% | 14% | 21% | 42% | 1.76 | 77% |
+| non-voter→Biden | 4,077 | 0.21 | 88% | 89% | 0.23 | −1.30 | 36 | 24% | 48% | 17% | 25% | 56% | 2.33 | 61% |
+| Trump→Biden | 969 | 0.41 | 76% | 75% | 0.32 | −0.94 | 48 | 36% | 72% | 9% | 12% | 41% | 4.01 | 60% |
+| Clinton→Trump | 498 | 0.58 | 56% | 66% | 0.50 | −0.26 | 47 | 34% | 53% | 20% | 18% | 45% | 4.21 | 64% |
+| non-voter→Trump | 2,179 | 0.67 | 42% | 45% | 0.71 | −0.12 | 41 | 18% | 74% | 15% | 5% | 58% | 5.66 | 65% |
+| Trump→Trump | 14,162 | 0.81 | 19% | 27% | 0.79 | +0.23 | 56 | 31% | 87% | 6% | 2% | 39% | 6.05 | 79% |
+
+Immigration items 2020, conservative share, Clinton→Biden / non-voter→Biden / non-voter→Trump / Trump→Trump: oppose legal status 10 / 13 / 49 / 62; border patrol 35 / 36 / 88 / 96; cut legal immigration 17 / 24 / 56 / 73; wall 9 / 13 / 74 / 91.
+
+Immigration-conservative (index ≥ 0.5) share of Biden 2020 voters by 2016 status (`reservoir_2020.csv`): Clinton 17.1% (M4A among them 83%), non-voter 23.8% (86%), Trump 49.7% (76%). Within the surge cohort, immigration-conservative (N = 910) vs rest (3,167): Black 34% vs 21%, white 36% vs 51%, Hispanic 16% vs 17%, age 40 vs 34, abortion-conservative 0.36 vs 0.19, econ perception −0.99 vs −1.40, M4A 86% vs 89% (`surge_cohort_split.csv`).
+
+**CES 2024** (`presvote16post` recalled in 2024; 2024 immigration index from `CC24_323a/b/c`, `340f`, `323d`, cutoff 0.5). Recalled-Biden-2020 voters with validated 2024 vote and choice: N = 16,807, 334 switchers (`switchers_2024_by_2016_vote.csv`):
+
+| 2016 vote | N | Share of Biden-20 voters | Share of switchers | imm-cons share | Switch rate | Switch if imm-cons | Switch if not |
+|---|---|---|---|---|---|---|---|
+| Clinton | 13,297 | 70.2% | 36.7% | 17.3% | 2.7% | 13.5% | 0.5% |
+| Non-voter | 1,707 | 18.2% | 23.6% | 20.1% | 6.8% | 26.7% | 1.8% |
+| Trump | 621 | 4.5% | 27.4% | 48.2% | 32.2% | 56.7% | 9.4% |
+
+Reservoir (`reservoir_2024.csv`): immigration-conservative = 19.4% of Biden-2020 voters; switch rate 22.0% vs 1.2% for the rest; 81% of all switchers. By group: Hispanic (N = 221) 23.6%, Black (607) 15.2%, white (1,775) 23.2%; Medicaid-expansion support 78 / 92 / 84%. Switcher composition vs all Biden-2020 voters: Hispanic 17 vs 12%, Black 17 vs 17%, white 54 vs 63%.
+
+The panel's Trump-2016 share of switchers (I.5: 4% weighted, 8 of 39) is superseded by the cross-section's 27%; recall bias toward the current vote makes 27% an upper bound.
+
 ---
 
 ## J. Limitations
@@ -923,6 +956,7 @@ Primary vote among Obama-2012 voters who voted in a primary (`switchers_2016_pri
 24. **Attitudes are measured after the vote.** Part 8's issue items are from the 2024 wave. A switcher's 2024 immigration position could follow from the switch as much as precede it. The panel carries the same items in 2020 and 2022 but has 39 switchers.
 25. **The cultural axis is what the CES asks, not what the hypothesis names.** No transgender, "wokeness," or salience items exist in the 2024 common content. The finding that immigration dominates among the cultural items measured is not evidence about items not measured.
 26. **The 2016 comparison is across surveys and formats.** The 2016 immigration items are select-all (non-selection coded as opposition), the 2012 vote is recalled in 2016, and the 2024 items are support/oppose. Path-to-path comparisons within each survey are sound; cross-year levels are not. The 2024 switchers' 2016 vote rests on 39 panelists with strong weight sensitivity on the eight who reported a Trump 2016 vote.
+27. **Recalled 2016 vote in the 2024 file favors the current vote.** A 2024 Trump voter is more likely to recall a 2016 Trump vote. The 27% Trump-2016 share of switchers is an upper bound; the panel's 4% (eight people, low weights) is a lower bound. The reservoir result does not depend on 2016 recall.
 
 ---
 
@@ -959,6 +993,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 17 | `10_stronghold_demobilization.ipynb` | steps 3, 6, 9, 13 | tables, figure |
 | 18 | `11_share_and_issues.ipynb` | step 9 | tables, figure |
 | 19 | `12_attitudes_timing_and_2016.ipynb` | steps 9, 13 | tables |
+| 20 | `13_coalition_2020_and_reservoir.ipynb` | step 9 | tables |
 
 Execute notebooks non-interactively with the project kernel:
 

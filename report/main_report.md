@@ -20,7 +20,7 @@ Kamala Harris lost the 2024 presidential election with **49.25% of the two-party
 | **Part 5** | In a panel of the same voters, **how a Biden 2020 voter rated the economy in 2022 predicted whether they voted for Trump in 2024**: 7.9% of those who said "much worse" switched, 0 of 438 who saw improvement did. A rating given two years before the vote cannot be a rationalization of it. The same 2022 rating predicted not voting at all, by voter-file record. Within the same people, county economic change still explained nothing. |
 | **Part 6** | The bottom-quartile shift is not a class story. White low-income counties moved in 2016 and held; **nonwhite low-income counties did the moving in 2024**. At the individual level, income does not predict a Biden voter switching (7.1% under $30k, 6.4% over $200k); ethnicity does (Hispanic 10.5%, White 5.8%, Black 4.7%). Separately, counties that received more Biden-era infrastructure and recovery money **swung less right — about half a point per standard deviation — but their residents did not rate the economy any better.** Delivery moved the vote without moving the perception. |
 | **Part 7** | Democratic strongholds lost **2.9 million votes — 47% of the national Democratic loss — and 97% of it was in safe states.** Conditional on demographics, Biden and Trump 2020 voters stayed home at the same rate; in aggregate more Democratic votes went missing because the coalition is built from lower-turnout groups that surged in 2020 and reverted in 2024 while Republican-area surge voters did not. Swing-state Democratic counties held their turnout. Returning every stay-home at their 2020 vote flips no state under the plainest estimate. **The share shift that decided the Blue Wall was 60% Biden voters switching (3:1 over the reverse) and 35% new voters breaking 58–40 for Trump.** |
-| **Part 8** | The switchers were **economically available and culturally lost.** 77% wanted Medicaid expanded and majorities wanted the wealthy taxed — but they were indistinguishable from Republicans on the wall, asylum, and border patrol, and cultural conservatism predicted switching at 3.5× the marginal effect of economic views, with immigration carrying most of it. 59% placed Harris as "very liberal," a perception that tracked immigration attitudes. Among low-income Biden voters with left economic views, cultural conservatives defected at 23% against 2% for cultural liberals. The panel shows the switchers were already 3× as immigration-conservative as other Biden voters in 2020, before switching. And they were not 2016 Trump voters returning: half had not voted in 2016. The 2016 realignment was twice the size and the same voter type; 2024 was a second wave of it, interrupted by 2020. |
+| **Part 8** | The switchers were **economically available and culturally lost.** 77% wanted Medicaid expanded and majorities wanted the wealthy taxed — but they were indistinguishable from Republicans on the wall, asylum, and border patrol, and cultural conservatism predicted switching at 3.5× the marginal effect of economic views, with immigration carrying most of it. 59% placed Harris as "very liberal," a perception that tracked immigration attitudes. Among low-income Biden voters with left economic views, cultural conservatives defected at 23% against 2% for cultural liberals. The panel shows the switchers were already 3× as immigration-conservative as other Biden voters in 2020, before switching. **Nineteen percent of Biden's 2020 coalition was immigration-conservative; that fifth switched at 22% and supplied 81% of all switchers; the rest switched at 1.2%.** A quarter of switchers were Trump 2016 voters who had gone to Biden and back; the 2016 realignment was twice the size and the same voter type. |
 
 **What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 shows that perception is disconnected from local reality and that misperception travels with vote switching, but in a single cross-section cannot separate cause from effect. Part 5 puts the perception two years ahead of the vote, which rules out the specific objection that decided switchers rated the economy badly *because* they had decided. It does not rule out a slower common cause — a voter already leaving Biden in 2022 for other reasons — and it rests on 39 switchers.
 
@@ -590,43 +590,46 @@ In 2020, before any of them had switched, the future switchers were already thre
 
 ### Did the switch happen in 2016?
 
-Two tests. First, the panel asked its 2020 respondents how they had voted in 2016. If the 2024 switchers were Trump 2016 voters who had briefly gone Biden, they would show up here.
+Three sources bear on this: the panel (2016 vote recalled in 2020, 39 switchers), the 2024 cross-section (2016 vote recalled in 2024, 334 switchers among 16,807 recalled-Biden voters), and the 2016 cross-section (2012 vote recalled in 2016, 2,121 Obama→Trump switchers).
 
-| Recalled 2016 vote | Clinton | Trump | Did not vote |
+**Where the 2024 switchers came from.** By recalled 2016 vote, in the 2024 cross-section:
+
+| 2016 vote | Share of Biden 2020 voters | Share of 2024 switchers | Switch rate |
 |---|---|---|---|
-| Biden→Harris | 70% | 2% | 21% |
-| **Biden→Trump** | **43%** | **4%** (8 of 39 unweighted) | **53%** |
-| Trump→Harris | 22% | 56% | 8% |
-| Trump→Trump | 2% | 75% | 17% |
+| Clinton | 70% | 37% | 2.7% |
+| Did not vote | 18% | 24% | 6.8% |
+| **Trump** | **4.5%** | **27%** | **32.2%** |
 
-They were not. The 2024 switchers were Clinton voters and, in the majority, people who had not voted at all in 2016 — the 2020 surge cohort, pulled in against Trump and then lost to him. The mirror group, Trump→Harris, were 56% Trump 2016 voters: genuine defectors from his coalition. The Biden→Trump switchers were not returning to a party; they were leaving one they had joined four years earlier.
+The 2024 switchers were a mix: a third had voted Clinton, a quarter had not voted in 2016, and **a quarter had voted Trump in 2016, gone to Biden in 2020, and gone back** — a group that is 4.5% of Biden's coalition and switched at 32%. The panel, on eight people, had put that last share at 4%; the cross-section supersedes it. Recall bias runs toward the current vote, so 27% is likely an upper bound, but the round-trippers are real and they are the single most defection-prone group in the coalition.
 
-Second, the 2016 CES asked its respondents how they had voted in 2012, and in the 2016 primary.
+**Who entered in 2020.** The 2020 cross-section can profile the surge cohort — Biden voters who had not voted in 2016, 15% of his coalition — directly, with 4,077 of them:
 
-| | 2016: Obama 2012 → Trump | 2024: Biden 2020 → Trump |
-|---|---|---|
-| Share of the prior Democratic vote that switched | **12.0%** | 5.2% |
-| Reverse switch (Romney→Clinton / Trump→Harris) | 5.9% | 1.6% |
-| Immigration conservatism (vs loyal Dem / loyal Rep) | 0.62 (0.28 / 0.77) | 0.73 (0.19 / 0.85) |
-| Left on the economic item asked | 73% for $12 minimum wage (loyal Dem 92%, loyal Rep 34%) | 77% for Medicaid expansion (95% / 55%) |
-| Right on the healthcare item asked | 72% for repealing the ACA (20% / 95%) | 38% for repealing the ACA (5% / 75%) |
-| College | 23% | — |
-| White non-Hispanic | 80% | 58% of switchers; Hispanic 2× the white rate |
-| Party ID (1–7) | 3.8 | 4.4 |
+| Biden 2020 voters by 2016 status | Immigration conservatism | Medicare-for-all | $15 minimum wage | Age | College | Party ID | Validated 2020 vote |
+|---|---|---|---|---|---|---|---|
+| Clinton 2016 (76%) | 0.18 | 87% | 92% | 51 | 45% | 1.8 | 77% |
+| **Did not vote 2016 (15%)** | **0.21** | 88% | 89% | **36** | **24%** | **2.3** | **61%** |
+| Trump 2016 (4%) | 0.41 | 76% | 75% | 48 | 36% | 4.0 | 60% |
 
-The 2016 switch was more than twice the size of 2024's, and the voter was the same type: in the ideological middle, conservative on immigration, in favor of a higher minimum wage (73%) *and* of repealing Obamacare (72%). Economically populist, culturally conservative, cross-pressured on healthcare — in 2016 white and non-college; in 2024 more Hispanic.
+The surge cohort was not culturally distinct — on immigration it was almost identical to the core of the coalition. It was young, poor, less educated, weakly attached, and forty percent of it cannot be found in a voter file. The Trump-2016 entrants, by contrast, were twice as immigration-conservative as the core and in the middle on party identification.
 
-The primary vote settles what "the switch happened in 2016" means. Among Obama 2012 voters who went Trump in 2016 and voted in a primary, **47% had voted in the Republican primary for Trump**; 23% for Sanders; 21% for Clinton. The Sanders-to-Trump pathway is real — 13.9% of all Sanders primary voters went Trump in the general, 7.7% of those who had voted Obama in 2012 — but it is the minority pathway. Most 2016 switchers had crossed before the general election began.
+**The reservoir.** What distinguishes the switchers is not which cohort they came from but a single attribute that cut across all three: immigration conservatism. In 2020, **19% of Biden's coalition held conservative positions on immigration** — 17% of the Clinton cohort, 24% of the surge cohort, 50% of the Trump-2016 entrants — and those voters supported Medicare-for-all at 83–86%. In 2024, that same fifth of the coalition:
+
+| Biden 2020 voters | Share of coalition | Switched to Trump | Share of all switchers |
+|---|---|---|---|
+| **Immigration-conservative** | **19%** | **22.0%** | **81%** |
+| Not | 81% | 1.2% | 19% |
+
+Within the reservoir, Hispanic and white Biden voters switched at 23–24%, Black at 15%, and all supported Medicaid expansion at 78–92%. The economically-left, immigration-conservative Democrat was a fifth of Biden's coalition, and a fifth of them left.
 
 ### So: was it 2016?
 
-Yes and no, and the distinction matters for the paper.
+Yes and no, and the distinction matters.
 
-**Yes:** 2016 was the larger realignment of this voter type, by a factor of two. The 2016 switchers were the white working-class version — 80% white, 23% college, wanting a $12 minimum wage and the end of Obamacare, and voting for Trump in the primary before they voted for him in November. That cohort is presumably in the Trump→Trump column now.
+**Yes:** 2016 was the larger realignment of this voter type, by a factor of two. The Obama→Trump switchers were the white working-class version — 80% white, 23% college, wanting a $12 minimum wage and the end of Obamacare, and voting for Trump in the primary before they voted for him in November. And a quarter of the 2024 switchers were people who had switched in 2016, returned to Biden in 2020, and switched again.
 
-**No:** the 2024 switchers were not those people. They were a *second wave* of the same voter type — half of them 2016 non-voters — pulled into the Democratic coalition by the 2020 anti-Trump surge, already immigration-conservative when they arrived, and gone by 2024. The realignment did not happen once in 2016 and echo in 2024. It happened in 2016, was interrupted in 2020 when the surge brought in a fresh batch of the same kind of voter, and resumed in 2024 with that batch. 2020 was the anomaly, not the baseline.
+**No:** three-quarters of the 2024 switchers had not voted Trump in 2016. They were Clinton voters and 2020 entrants who shared the 2016 switchers' profile — economically left, immigration-conservative, in the ideological middle — but had stayed in or joined the Democratic coalition through 2020. The realignment did not happen once in 2016 and echo. It happened in 2016; 2020 reversed a piece of it and added a cohort of young, weakly attached, economically left voters who were not culturally distinct; and 2024 took the immigration-conservative fifth of the whole coalition — old core, new entrants, and round-trippers alike.
 
-**On Sanders:** the "snuffed-out populism" pathway exists in the data — 288 respondents who voted Obama, then Sanders, then Trump — and those people are exactly the profile: 79% for the minimum wage, 72% for repealing the ACA, immigration-conservative. But they are a fifth of the 2016 switchers, not the story.
+**On Sanders:** the pathway exists in the data — 288 respondents who voted Obama, then Sanders, then Trump, with exactly the profile — and it is a fifth of the 2016 switchers, not the story.
 
 ### Reading Part 8 against Parts 4 and 5
 
@@ -640,7 +643,7 @@ Parts 4 and 5 found that leavers rated the economy badly, that the rating was se
 
 **The shift was everywhere, but the mechanism differed by place — and the stronghold turnout collapse was compositional, not a Democratic decision to abstain.** Nationally, three-quarters of the Democratic vote loss was share shift. In the largest Democratic counties it was turnout — 2.9M votes, half the national loss, 97% in safe states. But conditional on demographics, Biden and Trump 2020 voters stayed home at the same rate; the coalition lost more votes because it is built from low-propensity groups that surged in 2020 and reverted in 2024 while Republican-area surge voters stayed. Swing-state Democratic counties held their turnout. The Blue Wall was lost on share: Biden voters switching three to one over the reverse, and new voters breaking 58–40 for Trump.
 
-**The switchers were reachable on economics and lost on immigration.** They wanted Medicaid expanded, the ACA kept, and the wealthy taxed, at rates far closer to Democrats than Republicans. They wanted the wall, asylum denied, and more border patrol, at rates indistinguishable from Republicans. Cultural conservatism predicted leaving at three and a half times the marginal effect of economic views, and immigration carried most of it; abortion and marriage half as much; policing none. They saw Harris as "very liberal," and that perception tracked immigration, not social issues. Whether an economic message could have overridden that is the counterfactual the data cannot run; that the voters existed, and were not kept, is not in doubt. They held those immigration views before they switched — in 2020 the future switchers were already three times as conservative on immigration as the Biden voters who stayed — and they were not 2016 Trump voters: half had not voted in 2016 at all. The realignment of the economically-populist, culturally-conservative voter happened in 2016 at twice the scale; 2020 pulled a fresh cohort of the same type into the Democratic column; 2024 lost them.
+**The switchers were reachable on economics and lost on immigration.** They wanted Medicaid expanded, the ACA kept, and the wealthy taxed, at rates far closer to Democrats than Republicans. They wanted the wall, asylum denied, and more border patrol, at rates indistinguishable from Republicans. Cultural conservatism predicted leaving at three and a half times the marginal effect of economic views, and immigration carried most of it; abortion and marriage half as much; policing none. They saw Harris as "very liberal," and that perception tracked immigration, not social issues. Whether an economic message could have overridden that is the counterfactual the data cannot run; that the voters existed, and were not kept, is not in doubt. They held those immigration views before they switched — in 2020 the future switchers were already three times as conservative on immigration as the Biden voters who stayed — and a quarter of them had switched to Trump once already in 2016. Nineteen percent of Biden's 2020 coalition was immigration-conservative — Clinton voters, 2020 entrants, and Trump-2016 returners alike — and that fifth, which supported Medicare-for-all at 85%, is where four-fifths of the 2024 switchers came from. The 2016 realignment was the same voter type at twice the scale; 2024 was its resumption across the whole coalition, not a second cohort.
 
 **The places that moved most were not the places the 2016 narrative would predict.** Diverse, lower-education, urban and border counties swung hardest. White non-college counties, controlling for income and education, swung less than average.
 
