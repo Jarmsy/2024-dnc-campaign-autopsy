@@ -507,7 +507,7 @@ The prices scale is compressed (88% in two of five categories), so the R² ratio
 | `gap` | −0.696 (0.097) | — |
 | `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
 
-AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in I.9 applies to this result with only modestly less force than to the economy rating.
+AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in J.9 applies to this result with only modestly less force than to the economy rating.
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
@@ -728,15 +728,45 @@ From `county_decomposition.csv` (3,111 counties), binned on 2020 Democratic shar
 
 ### H.2 Partisanship of 2024 non-voters
 
-**Cross-section.** CES 2024, `TS_voterstatus` or `TS_g2024` non-missing (matched to TargetSmart) and `presvote20post ∈ {1, 2}`: N = 34,666 (20,348 recalled Biden, 14,318 recalled Trump; ratio 1.42 vs actual 1.09). `stay = 1` if `TS_g2024 == 7` or missing with a registration match. Weights: `vvweight_post`, falling back to `vvweight`, then `commonweight`. Overall stay-home rate 7.5%; Biden-recallers 8.9%, Trump-recallers 5.9%; of 1,961 stay-homes, 64.2% recalled Biden.
+**Cross-section.** CES 2024, `TS_voterstatus` non-missing (matched to TargetSmart) and `presvote20post ∈ {1, 2}`: N = 34,666 (20,348 recalled Biden, 14,318 recalled Trump). `stay = 1` if `TS_g2024 == 7`. Recalled D/R ratio is 1.42 unweighted against actual 1.09; the CES weights rake on 2020 vote and bring it to 1.08 (`commonweight`) or 1.12 (`vvweight`), so no separate recall adjustment is applied. `outputs/tables/stayhome_partisanship.csv`:
 
-**Panel.** Validated 2020 voters with a 2024 match and a 2020 major-party vote reported in 2020: N = 3,982, 136 stay-homes (2.5%); Biden voters 1.9%, Trump voters 3.1%; 40.5% of stay-homes were Biden voters. The panel's stay-home rate is one-third of the cross-section's — attrition removed the disengaged (A.7).
+| Weight | Biden voters stayed home | Trump voters stayed home | Stay-homes who voted Biden |
+|---|---|---|---|
+| Unweighted | 5.7% | 5.6% | 58.9% |
+| `commonweight` (adults) | 4.4% | 3.8% | 55.6% |
+| `vvweight` (registered voters) | 8.0% | 5.9% | 60.5% |
 
-Both in `outputs/tables/stayhome_partisanship.csv`.
+**Panel.** Validated 2020 voters with a 2024 match and a contemporaneous 2020 major-party vote: N = 3,982, 136 stay-homes; unweighted Biden 3.2%, Trump 3.7%; `commonweight_24` 2.4% / 4.6%.
 
-### H.3 Stay-home vs. flip
+**By demographic group** (cross-section, unweighted; `outputs/tables/stayhome_by_group.csv`):
 
-Outcome for 2020 major-party voters with a known 2024 outcome (validated non-vote, or a 2024 post-election vote report); `outputs/tables/stayhome_vs_flip.csv`, weighted:
+| Group | N Biden | Stay, Biden | N Trump | Stay, Trump | Mean `vvweight` Biden / Trump |
+|---|---|---|---|---|---|
+| Black | 3,228 | 10.4% | 262 | 16.8% | 1.12 / 1.90 |
+| Hispanic | 2,161 | 7.5% | 1,057 | 8.5% | 1.08 / 1.20 |
+| Under 35 (other) | 1,650 | 7.7% | 516 | 9.3% | 1.73 / 3.15 |
+| No degree (other) | 5,012 | 5.3% | 6,313 | 5.6% | 0.75 / 1.17 |
+| Other | 8,297 | 3.2% | 6,170 | 4.4% | 0.77 / 1.00 |
+
+Within every group Trump voters stayed home at an equal or higher rate. The weighted aggregate differential arises because Biden voters are concentrated in the high-stay-home groups and the weights up-weight those groups (mean `vvweight` 1.1–1.7 versus 0.75 for the reference group). It is a compositional effect, not a propensity difference.
+
+### H.3 Turnout against 2016
+
+| County 2020 Dem share | Turnout 2016 | 2020 | 2024 | 2016→20 | 2020→24 | 2016→24 |
+|---|---|---|---|---|---|---|
+| <35% | 25.72M | 29.50M | 30.13M | +14.7% | +2.1% | +17.2% |
+| 35–45% | 21.21M | 24.63M | 24.92M | +16.1% | +1.2% | +17.5% |
+| 45–55% | 29.98M | 35.76M | 35.25M | +19.3% | −1.4% | +17.6% |
+| 55–65% | 29.81M | 34.55M | 33.22M | +15.9% | −3.9% | +11.5% |
+| 65%+ | 29.33M | 33.54M | 31.22M | +14.4% | −6.9% | +6.4% |
+
+Democratic votes in 65%+ counties: 21.03M (2016) → 24.69M (2020) → 21.79M (2024), +3.6% over 2016; Democratic share 71.7% → 73.6% → 69.8%.
+
+Swing-state counties Biden won with 55%+, 2020→2024: Pennsylvania (5) turnout +0.1%, components −3k / −37k; Michigan (5) −0.1%, −2k / −71k; Wisconsin (6) +3.5%, +23k / −9k; Georgia (23) +1.3%, +19k / −3k; Arizona (4) −0.8%, −3k / −19k; North Carolina (16) +1.2%, +19k / −19k; Nevada has none. All are 11–22% above 2016.
+
+### H.4 Stay-home vs. flip
+
+Outcome for 2020 major-party voters with a known 2024 outcome (`outputs/tables/stayhome_vs_flip.csv`, weighted):
 
 | | Cross-section Biden (N = 18,182) | Cross-section Trump (13,517) | Panel Biden (1,391) | Panel Trump (1,345) |
 |---|---|---|---|---|
@@ -746,26 +776,94 @@ Outcome for 2020 major-party voters with a known 2024 outcome (validated non-vot
 | Stayed home | 10.0% | 6.3% | 2.4% | 3.7% |
 | **Of leavers:** stayed home / flipped / third | 64 / 30 / 6 | 76 / 19 / 5 | 55 / 31 / 13 | 46 / 36 / 18 |
 
-### H.4 Counterfactual
+### H.5 Counterfactual
 
-Net margin change if 2020 voters who did not vote in 2024 had voted as in 2020: `Biden_2020_votes(state) × stay_rate_Biden(state) − Trump_2020_votes(state) × stay_rate_Trump(state)`, rates from the cross-section by `inputstate`, totals from MIT returns. Recall adjustment scales Biden stay-homes by 1.09 / 1.42 = 0.77 (uniform-bias assumption). `outputs/tables/stayhome_counterfactual.csv`, `outputs/figures/stayhome_counterfactual.png`.
+Net margin change if 2020 voters who did not vote in 2024 had voted as in 2020: `Biden_2020(state) × stay_Biden(state) − Trump_2020(state) × stay_Trump(state)`, rates from the cross-section by `inputstate` under each weight; totals from MIT returns; binomial CI on the unweighted net (`outputs/tables/stayhome_counterfactual.csv`, `outputs/figures/stayhome_counterfactual.png`):
 
-| State | 2024 margin | n Biden / Trump resp. | Stay Biden | Stay Trump | Net to Dem | Adj. | Result / adj. |
-|---|---|---|---|---|---|---|---|
-| Pennsylvania | −120,266 | 1,043 / 855 | 3.2% | 3.5% | −6,625 | −32,543 | no / no |
-| Michigan | −80,103 | 736 / 468 | 11.4% | 3.7% | +221,869 | +147,064 | **flips / flips** |
-| Wisconsin | −29,397 | 457 / 296 | 3.5% | 3.6% | −1,248 | −14,464 | no / no |
-| Georgia | −115,100 | 656 / 471 | 9.7% | 5.7% | +101,013 | +44,856 | no / no |
-| Arizona | −187,382 | 472 / 433 | 5.9% | 3.9% | +34,431 | +11,492 | no / no |
-| Nevada | −46,008 | 243 / 163 | 3.5% | 6.7% | −20,720 | −26,418 | no / no |
-| North Carolina | −183,048 | 617 / 494 | 8.1% | 3.0% | +135,322 | +84,605 | no / no |
-| National | −2,289,953 | 20,348 / 14,318 | 8.9% | 5.9% | +2,802,753 | +1,124,170 | **flips / no** |
+| State | 2024 margin | n Biden / Trump | Unweighted net (95% CI) | `commonweight` | `vvweight` | Flips |
+|---|---|---|---|---|---|---|
+| Pennsylvania | −120,266 | 1,043 / 855 | −22,361 (−76k, +32k) | −17,457 | −17,276 | no |
+| Michigan | −80,103 | 736 / 468 | +20,313 (−50k, +91k) | +51,069 | +182,835 | `vvweight` only |
+| Wisconsin | −29,397 | 457 / 296 | −11,576 (−52k, +29k) | +6,506 | −10,013 | no |
+| Georgia | −115,100 | 656 / 471 | −5,920 (−77k, +65k) | +19,297 | +37,602 | no |
+| Arizona | −187,382 | 472 / 433 | +23,917 (−19k, +67k) | +10,933 | +26,544 | no |
+| Nevada | −46,008 | 243 / 163 | −9,710 (−37k, +18k) | −13,830 | +7,780 | no |
+| North Carolina | −183,048 | 617 / 494 | +58,566 (−6k, +123k) | +113,455 | +127,872 | no |
+| National | −2,289,953 | 20,348 / 14,318 | +434,710 (+54k, +816k) | +763,012 | +2,166,665 | no |
 
-The county-level counterfactual reported in the initial analysis (restore stronghold turnout at 2024 shares: `(2 × dem_share_2024 − 1) × (turnout_2020 − turnout_2024)`) yields +11k Pennsylvania, +1k Michigan, and no flips. It assumes stay-homes vote like 2024 voters, which H.2 shows they do not; it is superseded by the version above.
+Michigan under `vvweight` rests on 41 Biden and 24 Trump stay-homes. An earlier county-level counterfactual (restore stronghold turnout at 2024 shares) gave +11k Pennsylvania and +1k Michigan; it assumed stay-homes mirror 2024 voters and is superseded, though it reaches the same map for a different reason — swing-state strongholds did not lose turnout (H.3).
+
+### H.6 Share decomposition
+
+Notebook `11_share_and_issues.ipynb` §1. Validated 2024 voters (`TS_g2024 ∈ 1–6`) with a 2024 vote (`CC24_410`) and a recalled 2020 status (`presvote20post`): N = 32,531, weighted by `vvweight_post` falling back to `vvweight`. Two-party Democratic share in this sample 49.1% (actual 49.25%). `outputs/tables/share_decomposition.csv`:
+
+| 2020 status | N | Share of 2024 voters | Harris | Trump | Third | Net to Trump (pp of electorate) |
+|---|---|---|---|---|---|---|
+| Biden | 16,807 | 47.7% | 93.8% | 5.2% | 1.0% | −42.32 |
+| Trump | 12,588 | 44.6% | 1.6% | 97.9% | 0.4% | +42.93 |
+| Other | 1,193 | 2.1% | 37.2% | 42.1% | 20.7% | +0.10 |
+| Non-voter | 1,943 | 5.6% | 40.0% | 57.7% | 2.2% | +0.98 |
+
+Net switching: +2.48 − 0.73 = +1.74pp. New voters: +0.98pp. New voters by group (share of new voters; Trump / Harris): white/other 30+ 48.5%, 70.8 / 27.4; under 30 (other) 30.2%, 44.6 / 51.6; Hispanic 13.8%, 64.5 / 34.4; Black 7.6%, 14.7 / 85.0. Mean age 39 (all voters 53); no degree 71% (all 50%).
 
 ---
 
-## I. Limitations
+## I. Part 8 — Issue attitudes of switchers and new voters
+
+Notebook `11_share_and_issues.ipynb` §2–5. Sample as H.6.
+
+### I.1 Items and indices
+
+All items coded 1 = the Democratic-aligned / liberal position, from CES support (1) / oppose (2) responses. **Economic** (8): expand Medicaid (`CC24_328e` support), keep ACA (`CC24_328d` oppose repeal), no Medicaid work requirement (`CC24_328c` oppose), forgive student loans (`CC24_323f` support — misnumbered in the file; counts match the guide's student-loan item), corporate tax to 28% (`CC24_341b` support), tax on $400k+ (`CC24_341c` support), do not extend 2017 cuts (`CC24_341a` oppose), low-income housing incentives (`CC24_328b` support). **Immigration** (5): no wall (`CC24_323c` oppose), allow asylum (`CC24_340f` oppose denial), no more border patrol (`CC24_323b` oppose), legal status for long-employed (`CC24_323a` support), Dreamers (`CC24_323d` support). **Social** (2): abortion as choice (`CC24_324a` support), federal recognition of same-sex marriage (`CC24_340c` support). **Policing** (2): no more police (`CC24_321d` oppose), defund (`CC24_321e` support). `econ_left` = mean of economic items; `cult_cons` = 1 − mean of the nine cultural items; sub-indices likewise. Ideological placement `CC24_330a/d/e` (self / Harris / Trump), 1 very liberal – 7 very conservative, 8 not sure dropped.
+
+The 2024 common content has no item on transgender policy, "wokeness," minimum wage, Medicare-for-all, tariffs, or issue salience.
+
+### I.2 Profiles by path
+
+`outputs/tables/issue_profiles_by_path.csv`, `issue_items_by_path.csv`, weighted:
+
+| Path | N | econ_left | immig_cons | social_cons | police_cons | Self | Harris placed | Trump placed | Harris "very lib" | dist. Harris | dist. Trump |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Biden→Harris | 16,473 | 0.84 | 0.19 | 0.07 | 0.45 | 2.56 | 2.83 | 6.34 | 6.9% | 1.13 | 4.20 |
+| Biden→Trump | 334 | 0.55 | 0.73 | 0.47 | 0.72 | 4.41 | 1.83 | 5.35 | 58.8% | 3.02 | 1.55 |
+| Non-voter→Harris | 1,005 | 0.82 | 0.19 | 0.09 | 0.46 | 2.53 | 2.66 | 6.31 | 13.1% | 1.34 | 4.16 |
+| Non-voter→Trump | 854 | 0.44 | 0.79 | 0.62 | 0.81 | 5.30 | 1.29 | 5.73 | 84.8% | 4.22 | 1.12 |
+| Trump→Harris | 348 | 0.65 | 0.53 | 0.30 | 0.53 | 4.29 | 2.52 | 5.83 | 19.7% | 2.05 | 2.55 |
+| Trump→Trump | 12,240 | 0.30 | 0.85 | 0.70 | 0.91 | 5.86 | 1.11 | 5.66 | 93.7% | 4.83 | 0.85 |
+
+Item-level shares taking the liberal position, Biden→Harris / Biden→Trump / non-voter→Trump / Trump→Trump: expand Medicaid 95 / 77 / 73 / 55; keep ACA 95 / 62 / 39 / 25; no work requirement 62 / 40 / 37 / 29; student loans 84 / 47 / 25 / 13; corporate tax 91 / 60 / 41 / 23; tax $400k+ 91 / 57 / 50 / 34; no 2017 cuts 67 / 21 / 18 / 11; housing 91 / 73 / 67 / 48; no wall 86 / 23 / 8 / 3; allow asylum 64 / 18 / 9 / 6; no more patrol 33 / 8 / 5 / 2; legal status 86 / 43 / 41 / 25; Dreamers 95 / 64 / 53 / 42; abortion choice 93 / 46 / 29 / 21; same-sex marriage 92 / 60 / 48 / 38; no more police 66 / 35 / 28 / 13; defund 44 / 20 / 11 / 5.
+
+### I.3 Models
+
+**Biden 2020 voters → Trump 2024** (`outputs/tables/switch_issue_models.csv`; logit, `vvweight_post`/`vvweight` as normalized frequency weights, county-clustered; N = 16,971, 327 switchers; per-SD coefficients):
+
+| | Issues only | + `pid7`, college, age, Hispanic, Black | Cultural split |
+|---|---|---|---|
+| `econ_left` | −1.587 (0.156) | −1.146 (0.186) | −1.249 (0.180) |
+| `cult_cons` | +1.922 (0.182) | +2.026 (0.210) | |
+| `immig_cons` | | | +1.447 (0.174) |
+| `social_cons` | | | +0.868 (0.110) |
+| `police_cons` | | | −0.021 (0.128) |
+| `pid7` | | +0.775 (0.074) | +0.768 (0.078) |
+| Hispanic | | +0.357 (0.323) | +0.203 (0.320) |
+| Black | | −0.130 (0.309) | −0.323 (0.305) |
+| College | | −0.587 (0.220) | −0.560 (0.230) |
+
+AME per +1 SD, controls model: `econ_left` −0.0215, `cult_cons` +0.0757. Split: `econ_left` −0.0221, `immig_cons` +0.0450, `social_cons` +0.0237, `police_cons` −0.0005.
+
+**New voters → Trump** (`outputs/tables/newvoter_issue_model.csv`; N = 1,943, 854 Trump; no party control): `econ_left` −1.451 (0.205), `immig_cons` +1.282 (0.240), `social_cons` +1.138 (0.135), `police_cons` +0.309 (0.169), Hispanic −0.100 (0.315), Black −2.869 (0.438), college −0.587 (0.282).
+
+**Harris "very liberal" among Biden→Trump switchers** (N = 299; LPM, HC3): `econ_left` −0.111 (0.059), `immig_cons` +0.137 (0.054), `social_cons` +0.035 (0.046), `police_cons` +0.028 (0.055). Base rate 58.9%.
+
+### I.4 Quadrants
+
+Quadrant cutoffs: `econ_left ≥ 0.6` = economically left; `cult_cons ≥ 0.6` = culturally conservative. Composition by path (`outputs/tables/quadrant_by_path.csv`), weighted: Biden→Harris 90% left/liberal, 5% left/conservative, 1% right/conservative; Biden→Trump 29 / 24 / 36 (11% mixed); non-voter→Trump 12 / 20 / 58; Trump→Harris 50 / 13 / 13; Trump→Trump 3 / 10 / 80.
+
+Switch rate among Biden 2020 voters by quadrant and income (`outputs/tables/quadrant_switch_rates.csv`): under $50k — left/liberal 1.8% (N = 4,668), left/conservative 23.3% (360), right/conservative 41.4% (100); $50k+ — left/liberal 1.8% (9,409), left/conservative 20.7% (369), right/conservative 69.1% (191).
+
+---
+
+## J. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -788,14 +886,16 @@ The county-level counterfactual reported in the initial analysis (restore strong
 19. **Delivery is obligations, by place of performance, for two programs.** Obligated money is not built infrastructure; place of performance mis-credits state capitals and federal labs (addressed by winsorizing and tail-dropping, not eliminated); IRA and CHIPS are absent. A perception null could reflect voters not crediting delivery or delivery not yet being visible by November 2024.
 20. **A vote effect without a perception effect is only partly explained.** The delivery coefficient on the county swing survives every control tried and loads on the share component, not turnout (G.3 v), which rules out mobilization. Its absence from perception, within-person change, and individual switching means the remaining channel is not one this project measures: a local-conditions perception the "nation's economy" item does not capture, or county-level confounding that composition, RUCC, and population do not remove.
 21. **Race categories are coarse.** CES self-identification; "Other" pools Asian, Native, multiracial, and unspecified. The Hispanic switching rate is a single-wave cross-sectional estimate on recalled 2020 vote; the panel cannot corroborate it (38 Hispanic Biden voters).
-22. **The stay-home counterfactual rests on survey rates applied to real totals.** State cells are 160–1,040 respondents per party; Michigan's flip rests on a 736-person Biden cell. Recall bias in the cross-section inflates the Democratic share of stay-homes by an amount the uniform adjustment (0.77) only approximates — if 2024 non-voters misremember 2020 more than voters, the true figure is lower. The counterfactual also holds new 2024 voters fixed; roughly 8M entered while 11M 2020 voters dropped out.
-23. **Panel and cross-section disagree on stay-home partisanship** (H.2). The cross-section is preferred because it retains disengaged respondents; the panel's contemporaneous 2020 vote is cleaner but its sample is not the population that stays home. Where both sources measure the same thing on comparable samples — the flip rate among leavers — they agree.
+22. **Stay-home partisanship is a composition effect and its size depends on the weight.** Unweighted, Biden and Trump 2020 voters stayed home at the same rate, and within every demographic group Trump voters stayed home as much or more (H.2). The weighted aggregate gap reflects the Democratic coalition's concentration in low-turnout groups. The counterfactual is reported under three weightings; Michigan flips under one, on 41 stay-homes, with an unweighted CI spanning zero. It holds new 2024 voters fixed.
+23. **Panel and cross-section agree on propensity and cannot both speak to effect.** Both show no propensity difference. The panel's stay-home rate is a third of the cross-section's because it retained the engaged; the cross-section's weighted rates are the population estimate. The 2020 vote in the cross-section is recalled.
+24. **Attitudes are measured after the vote.** Part 8's issue items are from the 2024 wave. A switcher's 2024 immigration position could follow from the switch as much as precede it. The panel carries the same items in 2020 and 2022 but has 39 switchers.
+25. **The cultural axis is what the CES asks, not what the hypothesis names.** No transgender, "wokeness," or salience items exist in the 2024 common content. The finding that immigration dominates among the cultural items measured is not evidence about items not measured.
 
 ---
 
-## J. Reproducibility
+## K. Reproducibility
 
-### J.1 Environment
+### K.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -803,7 +903,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### J.2 Pipeline
+### K.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -824,6 +924,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 15 | `python src/data_collection/usaspending_pull.py` | USAspending API | `data/raw/usaspending/county_delivery.csv` |
 | 16 | `09_bottom_quartile_and_delivery.ipynb` | steps 7, 8, 9, 11, 13, 15 | `data/processed/county_delivery_clean.csv`, tables, figure |
 | 17 | `10_stronghold_demobilization.ipynb` | steps 3, 6, 9, 13 | tables, figure |
+| 18 | `11_share_and_issues.ipynb` | step 9 | tables, figure |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -831,13 +932,13 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### J.3 Keys
+### K.3 Keys
 
 Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key.
 
 ---
 
-## K. Next steps
+## L. Next steps
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
@@ -848,5 +949,8 @@ Part 4 established that perception is disconnected from local reality and travel
 5. **The Hispanic shift.** Part 6 reframes the 2024 class gradient as ethnic. The CES 2024 has the sample to go further (1,890 Hispanic Biden voters): by nativity and language of interview if available, by 2022 perception in the panel (too few), and by whether the prices item carries the switching effect for Hispanic voters as it does overall.
 
 The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
+
+6. **Attitudes before the switch.** The panel has the immigration, abortion, and healthcare items in 2020 and 2022 for the same respondents. With 39 switchers the test is a cross-tab, but it answers whether the switchers' 2024 immigration conservatism predates the switch — the ordering Part 8 cannot establish from the cross-section.
+7. **Salience.** The CES does not ask which issue mattered most. The ANES 2024 does, and its state-level file is public. Whether switchers *prioritized* immigration over healthcare, as opposed to merely holding conservative views on it, is the piece that would turn Part 8's "reachable on economics" into a claim about what would have reached them.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.
