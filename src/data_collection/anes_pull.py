@@ -58,6 +58,21 @@ CORE = {
     "therm_trump":        "V241157",
     "therm_biden":        "V241158",
     "therm_transgender":  "V242151",       # post; 998/999 missing
+    "therm_dem_party":    "V241166",       # pre
+    "therm_rep_party":    "V241167",       # pre
+    "therm_big_business": "V242141",       # post; 998/999 missing
+    "therm_unions":       "V242140",       # post
+    "therm_congress":     "V242145",       # post
+    # Corporate power / economic populism (post)
+    "rich_powerful_block": "V242305",      # 1 not at all well .. 5 extremely well ("because of the rich and powerful it's hard to get ahead")
+    "millionaire_tax":    "V242316a",      # 1 favor 2 oppose 3 neither
+    "campaign_spend_limits": "V242214",    # 1 favor 2 oppose 3 neither
+    # CSES party evaluations (post; 0-10; 96/97/98 missing)
+    "like_dem_party":     "V242432",
+    "like_rep_party":     "V242433",
+    "lr_dem_party":       "V242436",       # 0 left .. 10 right
+    "lr_rep_party":       "V242437",
+    "lr_self":            "V242438",
     # Most important problem (post, open-ended, coded per Appendix B; up to 3 mentions x 5 ideas)
     "mip1_idea1":         "V242165y1",
     "mip1_idea2":         "V242165y2",
@@ -186,7 +201,10 @@ def harmonize(df):
         out[c] = pd.to_numeric(out[c], errors="coerce")
     for c in ("scale_services", "scale_health_ins", "scale_jobs_income"):
         out[c] = out[c].where(out[c] <= 7)
-    out["therm_transgender"] = out["therm_transgender"].where(out["therm_transgender"] <= 100)
+    for c in ("therm_transgender", "therm_big_business", "therm_unions", "therm_congress"):
+        out[c] = out[c].where(out[c] <= 100)
+    for c in ("like_dem_party", "like_rep_party", "lr_dem_party", "lr_rep_party", "lr_self"):
+        out[c] = out[c].where(out[c] <= 10)
 
     # Vote flags
     out["vote24"] = out["presvote_2024"].map({1: "D", 2: "R", 3: "O", 4: "O", 5: "O", 6: "O"})
