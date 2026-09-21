@@ -861,6 +861,38 @@ Quadrant cutoffs: `econ_left ≥ 0.6` = economically left; `cult_cons ≥ 0.6` =
 
 Switch rate among Biden 2020 voters by quadrant and income (`outputs/tables/quadrant_switch_rates.csv`): under $50k — left/liberal 1.8% (N = 4,668), left/conservative 23.3% (360), right/conservative 41.4% (100); $50k+ — left/liberal 1.8% (9,409), left/conservative 20.7% (369), right/conservative 69.1% (191).
 
+### I.5 Attitude timing (panel) and the 2016 switch
+
+Notebook `12_attitudes_timing_and_2016.ipynb`.
+
+**Panel immigration trajectory** (`outputs/tables/panel_immigration_trajectory.csv`). Items: `CC20_331a` / `CC22_331a` / `CC24_331a` (legal status; conservative = oppose), `331b` (border patrol; support), `CC20_331d` / `CC22_331c` / `RC24_331c` (cut legal immigration 50%; support), `CC20_331e` / `CC22_331d` / `RC24_331d` ($25B border security incl. wall; support). Index = mean conservative share; `commonpostweight_24` falling back to `commonweight_24`; path from contemporaneous `CC20_410` and `CC24_410`.
+
+| Path | N | 2020 | 2022 | 2024 | Δ | Abortion-cons 2020 / 2022 / 2024 |
+|---|---|---|---|---|---|---|
+| Biden→Harris | 1,645 | 0.17 | 0.24 | 0.34 | +0.18 | 0.13 / 0.11 / 0.09 |
+| Biden→Trump | 39 | 0.50 | 0.55 | 0.74 | +0.24 | 0.59 / 0.68 / 0.47 |
+| Trump→Harris | 39 | 0.51 | 0.53 | 0.51 | 0.00 | 0.43 / 0.42 / 0.28 |
+| Trump→Trump | 1,643 | 0.81 | 0.82 | 0.85 | +0.04 | 0.81 / 0.83 / 0.80 |
+
+2020 items, conservative share, loyal Dem / Biden→Trump / loyal Rep (`panel_immigration_items_2020.csv`): oppose legal status 10 / 72 / 63; more border patrol 33 / 49 / 98; cut legal immigration 17 / 39 / 74; wall 7 / 40 / 90.
+
+**Recalled 2016 vote** (`presvote16post_20`, asked in 2020; `panel_2016_vote_by_path.csv`), weighted: Biden→Harris Clinton 70.1 / Trump 1.7 / other 7.0 / no vote 21.3; Biden→Trump 42.7 / 3.8 / 0.5 / 53.0 (unweighted 18 / 8 / 2 / 11); Trump→Harris 21.7 / 56.1 / 14.5 / 7.7; Trump→Trump 1.9 / 75.3 / 6.3 / 16.5. The Biden→Trump Trump-2016 share is 4% weighted and 21% unweighted; the eight respondents carry low weights.
+
+**CES 2016** (`CCES16_Common_OUTPUT_Feb2018_VV.tab`; `CC16_326` 2012 vote, `CC16_410a` 2016 vote, `CC16_328` primary; `commonweight_vv_post`). N with both major-party votes = 35,589. Obama→Trump 12.0% of Obama voters (N = 2,121); Romney→Clinton 5.9% (854). Immigration items are select-all (`CC16_331_1` legal status, `_2` border patrol, `_3` Dreamers, `_7` deport all); not-selected is coded as the opposing position, so levels are not comparable to the 2020+ support/oppose format. `CC16_351I` repeal ACA (for = 1), `CC16_351K` $12 minimum wage (for = 1).
+
+Profile (`switchers_2016_profile.csv`):
+
+| Path | N | imm_cons | abortion_cons | repeal ACA | $12 min wage | college | white | Hispanic | pid7 |
+|---|---|---|---|---|---|---|---|---|---|
+| Obama→Clinton | 18,677 | 0.28 | 0.18 | 0.20 | 0.92 | 0.36 | 0.61 | 0.02 | 1.83 |
+| Obama→Trump | 2,121 | 0.62 | 0.42 | 0.72 | 0.73 | 0.23 | 0.80 | 0.02 | 3.82 |
+| Romney→Clinton | 854 | 0.43 | 0.35 | 0.55 | 0.66 | 0.42 | 0.82 | 0.02 | 4.18 |
+| Romney→Trump | 13,937 | 0.77 | 0.72 | 0.95 | 0.34 | 0.28 | 0.89 | 0.02 | 5.88 |
+
+Immigration items 2016, conservative share, Obama→Clinton / Obama→Trump / Romney→Trump: oppose legal status 24 / 54 / 73; more border patrol 34 / 65 / 82; oppose Dreamers 35 / 66 / 78; deport all 20 / 62 / 74.
+
+Primary vote among Obama-2012 voters who voted in a primary (`switchers_2016_primary.csv`): Obama→Clinton (N = 14,012) Clinton 63 / Sanders 33 / Trump 1 / Cruz 0 / Kasich 2; Obama→Trump (1,322) Clinton 21 / Sanders 23 / Trump 47 / Cruz 4 / Kasich 3. Sanders primary voters (N = 6,288): Clinton 86.1%, Trump 13.9%; of those who voted Obama in 2012 (5,146): Trump 7.7%; those 288 Sanders→Trump switchers: imm_cons 0.56, $12 minimum wage 79%, repeal ACA 72%.
+
 ---
 
 ## J. Limitations
@@ -890,6 +922,7 @@ Switch rate among Biden 2020 voters by quadrant and income (`outputs/tables/quad
 23. **Panel and cross-section agree on propensity and cannot both speak to effect.** Both show no propensity difference. The panel's stay-home rate is a third of the cross-section's because it retained the engaged; the cross-section's weighted rates are the population estimate. The 2020 vote in the cross-section is recalled.
 24. **Attitudes are measured after the vote.** Part 8's issue items are from the 2024 wave. A switcher's 2024 immigration position could follow from the switch as much as precede it. The panel carries the same items in 2020 and 2022 but has 39 switchers.
 25. **The cultural axis is what the CES asks, not what the hypothesis names.** No transgender, "wokeness," or salience items exist in the 2024 common content. The finding that immigration dominates among the cultural items measured is not evidence about items not measured.
+26. **The 2016 comparison is across surveys and formats.** The 2016 immigration items are select-all (non-selection coded as opposition), the 2012 vote is recalled in 2016, and the 2024 items are support/oppose. Path-to-path comparisons within each survey are sound; cross-year levels are not. The 2024 switchers' 2016 vote rests on 39 panelists with strong weight sensitivity on the eight who reported a Trump 2016 vote.
 
 ---
 
@@ -925,6 +958,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 16 | `09_bottom_quartile_and_delivery.ipynb` | steps 7, 8, 9, 11, 13, 15 | `data/processed/county_delivery_clean.csv`, tables, figure |
 | 17 | `10_stronghold_demobilization.ipynb` | steps 3, 6, 9, 13 | tables, figure |
 | 18 | `11_share_and_issues.ipynb` | step 9 | tables, figure |
+| 19 | `12_attitudes_timing_and_2016.ipynb` | steps 9, 13 | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -950,7 +984,6 @@ Part 4 established that perception is disconnected from local reality and travel
 
 The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
 
-6. **Attitudes before the switch.** The panel has the immigration, abortion, and healthcare items in 2020 and 2022 for the same respondents. With 39 switchers the test is a cross-tab, but it answers whether the switchers' 2024 immigration conservatism predates the switch — the ordering Part 8 cannot establish from the cross-section.
-7. **Salience.** The CES does not ask which issue mattered most. The ANES 2024 does, and its state-level file is public. Whether switchers *prioritized* immigration over healthcare, as opposed to merely holding conservative views on it, is the piece that would turn Part 8's "reachable on economics" into a claim about what would have reached them.
+6. **Salience.** The CES does not ask which issue mattered most. The ANES 2024 does, and its state-level file is public. Whether switchers *prioritized* immigration over healthcare, as opposed to merely holding conservative views on it, is the piece that would turn Part 8's "reachable on economics" into a claim about what would have reached them.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.
