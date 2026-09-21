@@ -981,7 +981,29 @@ Notebook `15_corporate_capture.ipynb`. Sample, weight, and groups as I.7, plus B
 
 ---
 
-## J. Limitations
+## J. Part 9 — Cross-pressure, perceived difference, and the meaning of "left"
+
+Notebook `16_crosspressure_and_perceived_difference.ipynb`. Tables `crosspressure_2024.csv`, `crosspressure_2016.csv`, `crosspressure_summary.csv`, `trump_share_by_dem_position_2024.csv`, `anes_perceived_candidate_gap.csv`, `anes_perceived_gap_by_group.csv`.
+
+### J.1 Cross-pressure
+
+CES 2024 validated voters with a major-party vote, N = 31,834, `vvweight_post`; indices as I.1; "economically left" = `econ_left` ≥ 0.5, "culturally conservative" = `cult_cons` ≥ 0.5. Cells (share of electorate; Trump share; N): econ-left × cult-lib 43.3%, 3.8%, 15,715; econ-left × cult-cons 20.0%, 67.6%, 5,841; econ-right × cult-cons 35.6%, 98.8%, 9,994; econ-right × cult-lib 1.1%, 44.3%, 284. Economically left: 63.3% of the electorate, Trump 24.0%; 29.8% of Trump voters, of whom 89.2% culturally conservative. Logit, all voters, standardized: econ_left −2.25 (SE 0.05), immig_cons 1.78 (0.04), social_cons 1.11 (0.03), police_cons 0.23 (0.03). Among economically-left voters (N = 21,555): immig_cons 1.61, social_cons 0.97, police_cons 0.38. Trump share among holders of each Democratic-aligned position (holder share of electorate): expand Medicaid 38.4% (75.8%), keep ACA 23.1% (60.2%), no work requirement 33.2% (45.5%), student loans 16.2% (48.7%), corporate tax 23.2% (57.4%), tax $400k+ 29.2% (62.7%), no 2017 cuts 16.3% (38.3%), housing 36.6% (70.5%), no wall 5.2% (44.3%), asylum 10.2% (34.9%), no more border patrol 8.3% (17.9%), legal status 24.6% (56.1%), Dreamers 32.4% (69.1%), abortion 20.4% (56.8%), marriage 30.9% (65.4%), no more police 19.5% (40.3%), defund 12.4% (24.5%).
+
+CES 2016 (N = 40,850, `commonweight_vv_post`): economically left = keep ACA and/or $12 minimum wage (two items, ≥ 0.5); culturally conservative = mean of the four-item immigration index and the abortion item ≥ 0.5. Cells: econ-left × cult-lib 45.2%, 15.0%; econ-left × cult-cons 25.9%, 58.1%; econ-right × cult-cons 23.7%, 96.4%; econ-right × cult-lib 5.2%, 76.1%. 44.9% of Trump 2016 voters economically left; 68.9% of those culturally conservative. Logit: econ_left −1.59, immig_cons 1.22, social_cons 0.63. **Levels are not comparable across years** (two economic items vs eight); the within-year pattern is.
+
+### J.2 Perceived candidate difference (ANES)
+
+Pre-election placements of self, Harris, and Trump on `V241245/V241246/V241247` (health insurance), `V241239/V241240/V241241` (services, reversed so 1 = left), `V241252/V241253/V241254` (guaranteed jobs), `V241248/V241250/V241251` (abortion); 99 → NaN. All respondents with a post weight (N = 4,964): placed both candidates 91.8 / 95.8 / 92.3 / 93.0%; Harris left of Trump 71.5 / 70.9 / 72.6 / 77.6% of all; same point 12.3 / 12.4 / 12.0 / 9.3%; reversed 8.0 / 12.4 / 7.6 / 6.1%; mean Trump − Harris gap among placers 2.8 / 2.4 / 2.8 / 3.3. By group (loyal D / stay-home / Biden→Trump / new→Harris / new→Trump / loyal R): health-insurance gap 3.24 / 2.17 / 1.81 / 2.53 / 2.36 / 3.27; services 3.64 / 2.05 / 1.84 / 2.64 / 0.50 / 2.05; jobs 3.36 / 2.64 / 1.38 / 2.86 / 2.16 / 3.24; abortion 4.03 / 3.44 / 2.89 / 3.56 / 2.51 / 3.37; mean economic gap 3.42 / 2.30 / 1.66 / 2.72 / 1.63 / 2.82. Cannot place one or both, health insurance: 5.3 / 11.3 / 11.3 / 6.3 / 12.5 / 7.4%. Harris at ≤ 3 on health insurance: 62 / 50 / 43 / 54 / 60 / 76%; Trump at ≥ 5: 84 / 65 / 54 / 74 / 56 / 69%. Own position closer to Trump than to Harris on the mean of the three economic scales: loyal 8%, switchers 53%. Switching logit among Biden-2020 voters (N = 1,922, 63 events; standardized): econ_gap −0.42 (0.14), abortion_gap −0.12 (0.11), econ_left −0.29 (0.12), immig_cons 0.51 (0.13), culture_cons 0.96 (0.18).
+
+### J.3 What self-placement measures
+
+ANES `V242438` self (0–10) on standardized indices (WLS, HC1, N = 4,644, R² = 0.43): econ_left −0.16 (0.07), immig_cons 0.71 (0.07), culture_cons 1.14 (0.07). Democratic Party placement `V242436` (N = 4,625, R² = 0.09): econ_left +0.54, immig_cons −0.06, culture_cons −0.33. Republican Party `V242437` (R² = 0.02): −0.45 / −0.12 / −0.35. Among Biden-2020 voters, self minus Democratic Party (N = 1,912, R² = 0.12): econ_left −0.44 (0.11), immig_cons −0.08 (0.13), culture_cons +0.65 (0.11). CES 2024 `CC24_330a` self-ideology (N = 31,366, R² = 0.69): econ_left −0.59 (0.02), immig_cons 0.48 (0.02), social_cons 0.56 (0.02), police_cons 0.28 (0.02). Harris placement `CC24_330d` (N = 30,818, R² = 0.41): +0.35 / −0.29 / −0.14 / −0.11.
+
+**Media.** Biden-2020 voters, CES 2024 (N = 16,251): Harris placement on positions, `pid7`, and `CC24_300b_4/5/6` (CNN / Fox / MSNBC watched yesterday): R² = 0.04; Fox −0.14 (SE 0.10, p = 0.17). Share placing Harris "very liberal": Fox 23.8% vs 8.6%; within immigration-conservative Biden voters 40.6% vs 22.2%. Switching logit (299 events): econ_left −0.54, immig_cons 0.75, social_cons 0.41, police_cons −0.20, pid7 0.70, Fox +0.96 (0.17), MSNBC −1.48 (0.23), CNN +0.10 (0.16), Harris placement −0.48 (0.07). Diet, not exposure to any story; association, not effect.
+
+---
+
+## K. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -1012,12 +1034,14 @@ Notebook `15_corporate_capture.ipynb`. Sample, weight, and groups as I.7, plus B
 27. **Recalled 2016 vote in the 2024 file favors the current vote.** A 2024 Trump voter is more likely to recall a 2016 Trump vote. The 27% Trump-2016 share of switchers is an upper bound; the panel's 4% (eight people, low weights) is a lower bound. The reservoir result does not depend on 2016 recall.
 28. **The ANES salience results rest on 69 switchers.** Every switcher percentage in I.7 carries roughly a ±10-point interval; the logits are indicative. The ANES also over-represents Harris voters by ~5 points and under-recruits the young, weakly attached voters who make up the new-voter groups. Salience, importance, and ownership are all post-election and cannot separate reason from rationalization; the CES panel's timing test (F.3, I.5) does not extend to salience because the CES does not ask it. MIP family assignments are the script's own; reassigning borderline codes (32 race relations, 37 justice, 55 economics-other) does not change the prices-vs-immigration comparison.
 29. **The capture test is indirect.** No survey on disk asks whether the *Democrats* are beholden to corporate interests; I.8 tests whether general anti-corporate sentiment predicts leaving them, and finds the opposite sign. A voter could believe both parties are captured and leave for other reasons; the strong-hand and distrust items that do predict leaving are consistent with an anti-system reading that is not specifically anti-corporate. Sixty-two to sixty-nine events across a dozen items; the per-item coefficients in I.8 should be read as a pattern, not individually.
+30. **The cross-pressure cells depend on a 0.5 cutoff and on which items the CES asks.** The 20% cross-pressured share moves with the cutoff and would move with a different item set; the 2016 economic index is two items. The finding that the economically-left cultural liberal votes 4% Trump and the economically-left cultural conservative 68% is robust to the cutoff; the shares are not precise.
+31. **Candidate placements are pre-election but not pre-decision.** Most ANES pre-election interviews are in September–October; a switcher who had decided by then may place Trump nearer to themselves as a consequence. The perceived-gap coefficient in J.2 cannot separate "did not see the contrast" from "had already chosen."
 
 ---
 
-## K. Reproducibility
+## L. Reproducibility
 
-### K.1 Environment
+### L.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -1025,7 +1049,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### K.2 Pipeline
+### L.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -1052,6 +1076,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 21 | manual browser download of the ANES 2024 zip (A.9), then `python src/data_collection/anes_pull.py` | `data/raw/anes/*.zip` | `data/raw/anes/anes_2024_core.csv` |
 | 22 | `14_anes_salience.ipynb` | step 21 | tables |
 | 23 | `15_corporate_capture.ipynb` | step 21 | tables |
+| 24 | `16_crosspressure_and_perceived_difference.ipynb` | steps 9, 21 | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -1059,13 +1084,13 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### K.3 Keys
+### L.3 Keys
 
 Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key; the ANES pull needs the zip placed by hand (A.9).
 
 ---
 
-## L. Next steps
+## M. Next steps
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 

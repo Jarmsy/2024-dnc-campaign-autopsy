@@ -120,6 +120,12 @@ CORE = {
     "scale_services":     "V241239",       # 1 many fewer services .. 7 many more
     "scale_health_ins":   "V241245",       # 1 govt plan .. 7 private
     "scale_jobs_income":  "V241252",       # 1 govt guarantee .. 7 on own
+    "scale_abortion":     "V241248",       # 7-pt abortion self: 1 always permitted .. 7 never permitted
+    # Candidate placements on the same 7-pt scales (pre; 99 = haven't thought / DK about candidate)
+    "harris_services":    "V241240", "trump_services":    "V241241",
+    "harris_health_ins":  "V241246", "trump_health_ins":  "V241247",
+    "harris_jobs_income": "V241253", "trump_jobs_income": "V241254",
+    "harris_abortion":    "V241250", "trump_abortion":    "V241251",
     "income_gap":         "V241363x",
     "paid_leave":         "V241369x",
     "min_wage":           "V242350",       # post; 1 raised 2 same 3 lowered 4 eliminated
@@ -199,7 +205,9 @@ def harmonize(df):
     # post/panel weights are blank (" ") for respondents outside that weight's universe
     for c in ("weight_pre", "weight_post", "weight_panel_post"):
         out[c] = pd.to_numeric(out[c], errors="coerce")
-    for c in ("scale_services", "scale_health_ins", "scale_jobs_income"):
+    for c in ("scale_services", "scale_health_ins", "scale_jobs_income", "scale_abortion",
+              "harris_services", "trump_services", "harris_health_ins", "trump_health_ins",
+              "harris_jobs_income", "trump_jobs_income", "harris_abortion", "trump_abortion"):
         out[c] = out[c].where(out[c] <= 7)
     for c in ("therm_transgender", "therm_big_business", "therm_unions", "therm_congress"):
         out[c] = out[c].where(out[c] <= 100)
