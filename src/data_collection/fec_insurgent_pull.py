@@ -105,6 +105,31 @@ def primary_date(state, cycle):
     return ds[0] if ds else None
 
 
+def ie_pre_primary(cid, cycle, primary_date):
+    """Itemized Schedule E for the candidate, summed by support/oppose over expenditures disseminated or
+    dated on or before the primary. Keyset-paginated; the server-side date filter is not reliable, so the
+    cutoff is applied client-side on min(expenditure_date, dissemination_date)."""
+    if not primary_date:
+        return None, None
+    cutoff = pd.Timestamp(primary_date)
+    sup = opp = 0.0
+    params = dict(candidate_id=cid, cycle=cycle, is_notice="false", per_page=100, max_expenditure_date=str(cutoff.date()))
+    for page in range(30):
+        j = get("/schedules/schedule_e/", **params)
+        for r in j.get("results", []):
+            ds = [d for d in (r.get("expenditure_date"), r.get("dissemination_date")) if d]
+            if not ds or min(pd.Timestamp(d) for d in ds) > cutoff:
+                continue
+            amt = float(r.get("expenditure_amount") or 0)
+            if r.get("support_oppose_indicator") == "S": sup += amt
+            elif r.get("support_oppose_indicator") == "O": opp += amt
+        li = j.get("pagination", {}).get("last_indexes") or {}
+        if not li or not j.get("results"):
+            break
+        params.update({"last_index": li.get("last_index"), "last_expenditure_date": li.get("last_expenditure_date")})
+    return sup, opp
+
+
 def ie_totals(cid, cycle):
     j = get("/schedules/schedule_e/by_candidate/", candidate_id=cid, cycle=cycle, per_page=100)
     sup = sum(float(r["total"] or 0) for r in j.get("results", []) if r["support_oppose_indicator"] == "S")
@@ -143,17 +168,19 @@ def main():
             pdate = r.date if isinstance(r.date, str) and re.match(r"\d{4}-\d", r.date) else primary_date(r.st, int(r.cycle_fec))
             pre, unit, asof = pre_primary_receipts(cid, int(r.cycle_fec), pdate)
             sup, oppose, top = ie_totals(cid, int(r.cycle_fec))
+            sup_pre, opp_pre = ie_pre_primary(cid, int(r.cycle_fec), pdate)
             tot = next((d for d in dems if d["candidate_id"] == cid), {})
             fnum = lambda v: float(v) if v not in (None, "") else None
             row = {"cycle": r.cycle, "candidate": r.cand, "state": r.st, "district": r.dist_no, "jd_incumbent": r.incumbent_jd, "primary_date": pdate, "prim_result": r.prim_result, "prim_pct": r.prim_pct,
                    "fec_id": cid, "cycle_receipts": fnum(tot.get("receipts")), "cycle_unitemized": fnum(tot.get("individual_unitemized_contributions")), "pre_primary_receipts": pre, "pre_primary_unitemized": unit, "pre_primary_asof": asof,
-                   "ie_support": sup, "ie_oppose": oppose, "ie_top_opposers": top,
+                   "ie_support": sup, "ie_oppose": oppose, "ie_top_opposers": top, "ie_support_pre": sup_pre, "ie_oppose_pre": opp_pre,
                    "opp_name": opp["name"] if opp else None, "opp_fec_id": opp["candidate_id"] if opp else None, "opp_is_incumbent": bool(inc), "opp_type": "incumbent" if inc else ("other_dem" if opp else "none")}
             if opp:
                 p2, u2, a2 = pre_primary_receipts(opp["candidate_id"], int(r.cycle_fec), pdate)
                 s2, o2, t2 = ie_totals(opp["candidate_id"], int(r.cycle_fec))
+                s2p, o2p = ie_pre_primary(opp["candidate_id"], int(r.cycle_fec), pdate)
                 row.update({"opp_cycle_receipts": fnum(opp.get("receipts")), "opp_cycle_unitemized": fnum(opp.get("individual_unitemized_contributions")), "opp_pre_primary_receipts": p2, "opp_pre_primary_unitemized": u2,
-                            "opp_ie_support": s2, "opp_ie_oppose": o2, "opp_ie_top_opposers": t2})
+                            "opp_ie_support": s2, "opp_ie_oppose": o2, "opp_ie_top_opposers": t2, "opp_ie_support_pre": s2p, "opp_ie_oppose_pre": o2p})
             rows.append(row)
             print(f"{r.cycle} {r.cand:28s} {r.st}-{r.dist_no:02d} pre ${(pre or 0)/1e6:.2f}M IE +{sup/1e6:.2f}/-{oppose/1e6:.2f} | opp {row['opp_name']} pre ${(row.get('opp_pre_primary_receipts') or 0)/1e6:.2f}M IE +{row.get('opp_ie_support', 0)/1e6:.2f}/-{row.get('opp_ie_oppose', 0)/1e6:.2f} ({row['opp_type']})")
         except Exception as ex:
