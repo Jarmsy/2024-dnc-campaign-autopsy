@@ -7,9 +7,9 @@
 
 ## Executive summary
 
-Kamala Harris lost the 2024 presidential election with **49.25% of the two-party popular vote**, down from Biden's 52.27% in 2020. Democrats received 6.25 million fewer votes than in 2020 in an electorate that was 3.3 million votes smaller. This report examines that result through six lenses: what structural conditions predicted, how the vote loss decomposes geographically, what county economic characteristics explain the shift, whether voters perceived the economy their county actually had, whether — following 6,175 of the same people from 2020 to 2024 — what they believed in 2022 predicted what they did in 2024, and finally who in the poorest counties actually moved and whether federal money that visibly arrived made any difference.
+Kamala Harris lost the 2024 presidential election with **49.25% of the two-party popular vote**, down from Biden's 52.27% in 2020. Democrats received 6.25 million fewer votes than in 2020 in an electorate that was 3.3 million votes smaller. This report examines that result through seven lenses: what structural conditions predicted, how the vote loss decomposes geographically, what county economic characteristics explain the shift, whether voters perceived the economy their county actually had, whether — following 6,175 of the same people from 2020 to 2024 — what they believed in 2022 predicted what they did in 2024, who in the poorest counties actually moved and whether federal money that visibly arrived made any difference, and finally how large the turnout collapse in Democratic strongholds was and whether it decided anything.
 
-**Six findings:**
+**Seven findings:**
 
 | | Finding |
 |---|---|
@@ -19,6 +19,7 @@ Kamala Harris lost the 2024 presidential election with **49.25% of the two-party
 | **Part 4** | The measured economic record of a respondent's county explains **0.6% of the variance** in how they rate the economy; party identification explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among 2020 Biden voters, **31.6% of those who said the economy got "much worse" voted for Trump, against 1.5% of those who said "much better"** — but that association runs in both causal directions. Prices were the least filtered item: 80% of Democrats and 95% of Republicans said they rose, though Republicans were twice as likely to say "a lot," and saying "a lot" rather than "somewhat" predicted switching independently of the economy rating. Media diet, not media environment, is where the remaining signal is. |
 | **Part 5** | In a panel of the same voters, **how a Biden 2020 voter rated the economy in 2022 predicted whether they voted for Trump in 2024**: 7.9% of those who said "much worse" switched, 0 of 438 who saw improvement did. A rating given two years before the vote cannot be a rationalization of it. The same 2022 rating predicted not voting at all, by voter-file record. Within the same people, county economic change still explained nothing. |
 | **Part 6** | The bottom-quartile shift is not a class story. White low-income counties moved in 2016 and held; **nonwhite low-income counties did the moving in 2024**. At the individual level, income does not predict a Biden voter switching (7.1% under $30k, 6.4% over $200k); ethnicity does (Hispanic 10.5%, White 5.8%, Black 4.7%). Separately, counties that received more Biden-era infrastructure and recovery money **swung less right — about half a point per standard deviation — but their residents did not rate the economy any better.** Delivery moved the vote without moving the perception. |
+| **Part 7** | Democratic strongholds lost **2.9 million votes — 47% of the national Democratic loss — and 97% of it was in safe states.** Among 2020 voters, **8.9% of Biden voters did not vote in 2024 against 5.9% of Trump voters** (voter-file validated); of Biden voters who left, two stayed home for every one who flipped. Had the stay-homes voted as in 2020, Michigan flips and nothing else does. Demobilization was real, partisan, and worth one state. |
 
 **What this does not show.** Parts 1–3 are descriptive: they establish where the vote moved and what kinds of places moved most. Part 4 shows that perception is disconnected from local reality and that misperception travels with vote switching, but in a single cross-section cannot separate cause from effect. Part 5 puts the perception two years ahead of the vote, which rules out the specific objection that decided switchers rated the economy badly *because* they had decided. It does not rule out a slower common cause — a voter already leaving Biden in 2022 for other reasons — and it rests on 39 switchers.
 
@@ -302,7 +303,7 @@ The 2022 prices item points the same way: among Biden voters who said prices had
 
 The same 2022 rating predicts the other exit from the coalition. Among Biden 2020 voters matched to a voter file, the share with no validated 2024 vote runs from 9.0% ("much worse" in 2022) to 1.7% ("somewhat better"); the logit coefficient is −0.79 (p = 0.03) with party, education, and age controlled. Perception in 2022 predicted both switching and staying home in 2024.
 
-The level of non-voting does not distinguish the coalitions: 3.9% of Biden 2020 voters and 4.2% of Trump 2020 voters had no validated 2024 vote. In this panel there is no differential demobilization — but the panel retained engaged voters, so both figures are floors, and the population-level turnout loss in Democratic strongholds that Part 2 found is not something this sample can see.
+The level of non-voting does not distinguish the coalitions: 3.9% of Biden 2020 voters and 4.2% of Trump 2020 voters had no validated 2024 vote. In this panel there is no differential demobilization — but the panel retained engaged voters, so both figures are floors. Part 7 returns to this with the much larger cross-section and finds the differential the panel cannot see: 8.9% of Biden voters versus 5.9% of Trump voters.
 
 Among the 1,784 Biden 2020 voters with a known 2024 outcome (weighted): 92.9% voted for Harris, 2.9% for Trump, 1.0% for another candidate, 3.3% did not vote. In this engaged panel, defection to Trump and demobilization were the same size.
 
@@ -378,11 +379,79 @@ Neither program moved total turnout. IIJA counties swung less right because Repu
 
 ---
 
+## Part 7: Stronghold demobilization — how big, and did it matter?
+
+Part 2 found that Democratic strongholds lost votes through turnout while the rest of the map lost them through share. This part sizes that loss, identifies who the stay-homes were, and asks whether their staying home changed any result.
+
+### How big
+
+| County type (2020 Dem share) | Share of 2020 votes | Dem vote change | Turnout change | Dem share change |
+|---|---|---|---|---|
+| Republican strongholds (<35%) | 19% | −0.16M | +2.1% | −1.1 |
+| 35–45% | 16% | −0.29M | +1.2% | −1.6 |
+| Competitive (45–55%) | 23% | −1.20M | −1.4% | −2.7 |
+| Lean Democratic (55–65%) | 22% | −1.68M | −3.9% | −2.7 |
+| **Democratic strongholds (65%+)** | **21%** | **−2.90M** | **−6.9%** | **−3.8** |
+
+The 150 counties Biden won with 65% or more held 21% of all votes and 30% of Democratic votes. They lost **2.9 million Democratic votes** — from 24.7M to 21.8M, a 12% drop — while Republican votes in the same counties *rose* by 600,000. That is **47% of the entire national Democratic loss** and **68% of the national turnout component**. Turnout rose in Republican counties and fell in Democratic ones, monotonically across every bin.
+
+The losses are where one would guess: Los Angeles (−612k, 380k of it turnout), Cook (−278k), Queens, Alameda, Santa Clara, Brooklyn, the Bronx. **2.81M of the 2.9M was in safe states**; California, New York, and Illinois alone account for 1.79M. The seven swing states together: −0.10M.
+
+### Who stayed home
+
+County returns cannot say whether the missing votes were Democrats who stayed home or something else. The CES can: 34,666 respondents in 2024 were matched to the TargetSmart voter file, which records whether they voted, and reported their 2020 vote.
+
+| 2020 vote | Did not vote in 2024 (validated) |
+|---|---|
+| Biden | **8.9%** |
+| Trump | 5.9% |
+
+Of the validated non-voters, 64% had voted for Biden. The sample over-remembers Biden votes — the recalled 2020 ratio is 1.42 Biden per Trump against an actual 1.09 — and correcting for that, uniformly, puts the Democratic share of stay-homes near 58%. Either way: Democrats lost their 2020 voters to the couch at about one and a half times the Republican rate.
+
+The panel disagrees, and is the wrong instrument here. Among its validated 2020 voters, Trump voters stayed home slightly *more* (3.1% vs 1.9%). But the panel's overall stay-home rate is 2.5% against 7.5% in the cross-section: it retained the engaged and shed the people this question is about. Where the two sources agree — the flip rate — they agree closely.
+
+### Stay home or flip?
+
+Among Biden 2020 voters who did not vote for Harris:
+
+| | Cross-section (N = 1,709) | Panel (N = 112) |
+|---|---|---|
+| Stayed home | **64%** | 55% |
+| Flipped to Trump | **30%** | 31% |
+| Third party | 6% | 13% |
+
+Two stay-homes for every flip. Trump 2020 voters who left his column stayed home in even greater proportion — 76% — and flipped less (19%). The Democratic coalition lost more of its voters, and the ones it lost were more likely than Republican leavers to cross over.
+
+### The counterfactual
+
+The county-level version of this question — restore stronghold turnout to 2020 levels with voters at 2024 shares — finds nothing, because it assumes the stay-homes look like the people who did vote. They did not. The right counterfactual returns each 2020 voter who stayed home at their own 2020 vote, using the CES stay-home rates by state and party applied to actual 2020 totals.
+
+| | Trump margin 2024 | Net to Democrats if stay-homes return | Recall-adjusted | Result |
+|---|---|---|---|---|
+| **Michigan** | −80k | **+222k** | +147k | **flips** |
+| North Carolina | −183k | +135k | +85k | no |
+| Georgia | −115k | +101k | +45k | no |
+| Arizona | −187k | +34k | +11k | no |
+| Pennsylvania | −120k | −7k | −33k | no |
+| Wisconsin | −29k | −1k | −14k | no |
+| Nevada | −46k | −21k | −26k | no |
+| National popular vote | −2.29M | +2.80M | +1.12M | flips unadjusted, not adjusted |
+
+Michigan flips under either version — Biden voters there stayed home at 11.4% against 3.7% for Trump voters, on a 736-respondent cell. Georgia and North Carolina close much of the gap and stay Republican. Pennsylvania, Wisconsin, and Nevada do not move: in those states Democrats and Republicans stayed home at the same rate, and the loss was persuasion. The electoral map does not change. The popular vote flips before the recall correction and does not after it.
+
+### What it means
+
+Demobilization was the largest single source of lost Democratic votes and it was partisan — Biden voters really did stay home more than Trump voters. But it was concentrated where it could not matter, and in the states that decided the election it was worth Michigan. Everywhere else in the Blue Wall, the coalition's problem was not that its voters stayed home; it was that they voted for the other side or were replaced by people who did.
+
+This is also the resolution of Part 5's puzzle. The panel found no partisan difference in validated non-voting and read it as "no differential demobilization." The panel was right about its own respondents and wrong about the electorate: the demobilized were the disengaged, and the disengaged had left the panel.
+
+---
+
 ## Synthesis
 
 **The structural conditions predicted a narrow loss, and a narrow loss is what happened.** A 38%-approval incumbent party with an open seat is expected to lose. Harris's result sits within the model's error band on either side of the prediction, depending on specification.
 
-**The shift was everywhere, but the mechanism differed by place.** Nationally, three-quarters of the Democratic vote loss was share shift. In the largest Democratic counties it was turnout. The two are not in conflict: strongholds bled turnout while the share fell across the rest of the map.
+**The shift was everywhere, but the mechanism differed by place.** Nationally, three-quarters of the Democratic vote loss was share shift. In the largest Democratic counties it was turnout — 2.9M votes, half the national loss, from 150 counties. Biden voters stayed home at one and a half times the rate Trump voters did, by voter-file record. But 97% of the stronghold loss was in safe states, and returning every stay-home at their 2020 vote flips Michigan and nothing else. In Pennsylvania and Wisconsin the parties' voters stayed home at the same rate; those states were lost on persuasion.
 
 **The places that moved most were not the places the 2016 narrative would predict.** Diverse, lower-education, urban and border counties swung hardest. White non-college counties, controlling for income and education, swung less than average.
 

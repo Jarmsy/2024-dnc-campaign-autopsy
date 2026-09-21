@@ -507,7 +507,7 @@ The prices scale is compressed (88% in two of five categories), so the R² ratio
 | `gap` | −0.696 (0.097) | — |
 | `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
 
-AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in H.9 applies to this result with only modestly less force than to the economy rating.
+AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in I.9 applies to this result with only modestly less force than to the economy rating.
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
@@ -707,7 +707,65 @@ Neither program predicts the turnout component or total turnout change. IIJA's s
 
 ---
 
-## H. Limitations
+## H. Part 7 — Stronghold demobilization
+
+Notebook `10_stronghold_demobilization.ipynb`.
+
+### H.1 County size
+
+From `county_decomposition.csv` (3,111 counties), binned on 2020 Democratic share (`outputs/tables/stayhome_by_county_bin.csv`):
+
+| 2020 Dem share | Counties | Share of 2020 votes | Share of 2020 Dem votes | ΔDem | Turnout comp. | Share comp. | Turnout change | Dem share change |
+|---|---|---|---|---|---|---|---|---|
+| <35% | 1,903 | 18.7% | 9.6% | −0.16M | +0.17M | −0.32M | +2.1% | −1.1 |
+| 35–45% | 539 | 15.6% | 12.2% | −0.29M | +0.11M | −0.40M | +1.2% | −1.6 |
+| 45–55% | 322 | 22.6% | 21.9% | −1.20M | −0.27M | −0.93M | −1.4% | −2.7 |
+| 55–65% | 197 | 21.9% | 25.8% | −1.68M | −0.80M | −0.88M | −3.9% | −2.7 |
+| 65%+ | 150 | 21.2% | 30.5% | −2.90M | −1.72M | −1.19M | −6.9% | −3.8 |
+| All | 3,111 | — | — | −6.22M | −2.51M | −3.71M | −2.0% | — |
+
+65%+ counties: Dem votes 24.69M → 21.79M (−11.8%); non-Dem votes 8.84M → 9.43M; 47% of national ΔDem, 68% of national turnout component; −0.10M in the seven swing states, −1.79M in CA+NY+IL. Ten largest losses: Los Angeles −611,776 (turnout −380,665), Cook −278,152, Queens −131,756, Alameda −118,108, Santa Clara −107,223, Kings −102,045, Bronx −93,704, Dallas −87,458, King WA −74,704, New York County −69,258.
+
+### H.2 Partisanship of 2024 non-voters
+
+**Cross-section.** CES 2024, `TS_voterstatus` or `TS_g2024` non-missing (matched to TargetSmart) and `presvote20post ∈ {1, 2}`: N = 34,666 (20,348 recalled Biden, 14,318 recalled Trump; ratio 1.42 vs actual 1.09). `stay = 1` if `TS_g2024 == 7` or missing with a registration match. Weights: `vvweight_post`, falling back to `vvweight`, then `commonweight`. Overall stay-home rate 7.5%; Biden-recallers 8.9%, Trump-recallers 5.9%; of 1,961 stay-homes, 64.2% recalled Biden.
+
+**Panel.** Validated 2020 voters with a 2024 match and a 2020 major-party vote reported in 2020: N = 3,982, 136 stay-homes (2.5%); Biden voters 1.9%, Trump voters 3.1%; 40.5% of stay-homes were Biden voters. The panel's stay-home rate is one-third of the cross-section's — attrition removed the disengaged (A.7).
+
+Both in `outputs/tables/stayhome_partisanship.csv`.
+
+### H.3 Stay-home vs. flip
+
+Outcome for 2020 major-party voters with a known 2024 outcome (validated non-vote, or a 2024 post-election vote report); `outputs/tables/stayhome_vs_flip.csv`, weighted:
+
+| | Cross-section Biden (N = 18,182) | Cross-section Trump (13,517) | Panel Biden (1,391) | Panel Trump (1,345) |
+|---|---|---|---|---|
+| Same party | 84.4% | 91.8% | 95.7% | 92.0% |
+| Flipped | 4.7% | 1.5% | 1.4% | 2.9% |
+| Third party | 0.9% | 0.4% | 0.6% | 1.4% |
+| Stayed home | 10.0% | 6.3% | 2.4% | 3.7% |
+| **Of leavers:** stayed home / flipped / third | 64 / 30 / 6 | 76 / 19 / 5 | 55 / 31 / 13 | 46 / 36 / 18 |
+
+### H.4 Counterfactual
+
+Net margin change if 2020 voters who did not vote in 2024 had voted as in 2020: `Biden_2020_votes(state) × stay_rate_Biden(state) − Trump_2020_votes(state) × stay_rate_Trump(state)`, rates from the cross-section by `inputstate`, totals from MIT returns. Recall adjustment scales Biden stay-homes by 1.09 / 1.42 = 0.77 (uniform-bias assumption). `outputs/tables/stayhome_counterfactual.csv`, `outputs/figures/stayhome_counterfactual.png`.
+
+| State | 2024 margin | n Biden / Trump resp. | Stay Biden | Stay Trump | Net to Dem | Adj. | Result / adj. |
+|---|---|---|---|---|---|---|---|
+| Pennsylvania | −120,266 | 1,043 / 855 | 3.2% | 3.5% | −6,625 | −32,543 | no / no |
+| Michigan | −80,103 | 736 / 468 | 11.4% | 3.7% | +221,869 | +147,064 | **flips / flips** |
+| Wisconsin | −29,397 | 457 / 296 | 3.5% | 3.6% | −1,248 | −14,464 | no / no |
+| Georgia | −115,100 | 656 / 471 | 9.7% | 5.7% | +101,013 | +44,856 | no / no |
+| Arizona | −187,382 | 472 / 433 | 5.9% | 3.9% | +34,431 | +11,492 | no / no |
+| Nevada | −46,008 | 243 / 163 | 3.5% | 6.7% | −20,720 | −26,418 | no / no |
+| North Carolina | −183,048 | 617 / 494 | 8.1% | 3.0% | +135,322 | +84,605 | no / no |
+| National | −2,289,953 | 20,348 / 14,318 | 8.9% | 5.9% | +2,802,753 | +1,124,170 | **flips / no** |
+
+The county-level counterfactual reported in the initial analysis (restore stronghold turnout at 2024 shares: `(2 × dem_share_2024 − 1) × (turnout_2020 − turnout_2024)`) yields +11k Pennsylvania, +1k Michigan, and no flips. It assumes stay-homes vote like 2024 voters, which H.2 shows they do not; it is superseded by the version above.
+
+---
+
+## I. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
 2. **No causal identification.** Every regression is descriptive. Nothing here distinguishes economic composition causing the swing from economic composition proxying for culture, media environment, or partisanship.
@@ -730,12 +788,14 @@ Neither program predicts the turnout component or total turnout change. IIJA's s
 19. **Delivery is obligations, by place of performance, for two programs.** Obligated money is not built infrastructure; place of performance mis-credits state capitals and federal labs (addressed by winsorizing and tail-dropping, not eliminated); IRA and CHIPS are absent. A perception null could reflect voters not crediting delivery or delivery not yet being visible by November 2024.
 20. **A vote effect without a perception effect is only partly explained.** The delivery coefficient on the county swing survives every control tried and loads on the share component, not turnout (G.3 v), which rules out mobilization. Its absence from perception, within-person change, and individual switching means the remaining channel is not one this project measures: a local-conditions perception the "nation's economy" item does not capture, or county-level confounding that composition, RUCC, and population do not remove.
 21. **Race categories are coarse.** CES self-identification; "Other" pools Asian, Native, multiracial, and unspecified. The Hispanic switching rate is a single-wave cross-sectional estimate on recalled 2020 vote; the panel cannot corroborate it (38 Hispanic Biden voters).
+22. **The stay-home counterfactual rests on survey rates applied to real totals.** State cells are 160–1,040 respondents per party; Michigan's flip rests on a 736-person Biden cell. Recall bias in the cross-section inflates the Democratic share of stay-homes by an amount the uniform adjustment (0.77) only approximates — if 2024 non-voters misremember 2020 more than voters, the true figure is lower. The counterfactual also holds new 2024 voters fixed; roughly 8M entered while 11M 2020 voters dropped out.
+23. **Panel and cross-section disagree on stay-home partisanship** (H.2). The cross-section is preferred because it retains disengaged respondents; the panel's contemporaneous 2020 vote is cleaner but its sample is not the population that stays home. Where both sources measure the same thing on comparable samples — the flip rate among leavers — they agree.
 
 ---
 
-## I. Reproducibility
+## J. Reproducibility
 
-### I.1 Environment
+### J.1 Environment
 
 Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. Register the kernel once:
 
@@ -743,7 +803,7 @@ Python 3.8 virtual environment at `.venv`; dependencies in `requirements.txt`. R
 python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dnc-autopsy)"
 ```
 
-### I.2 Pipeline
+### J.2 Pipeline
 
 | Step | Command / notebook | Reads | Writes |
 |---|---|---|---|
@@ -763,6 +823,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 14 | `08_panel_analysis.ipynb` | steps 8, 13 | `data/processed/panel_biden2020_outcomes.csv`, tables, figure |
 | 15 | `python src/data_collection/usaspending_pull.py` | USAspending API | `data/raw/usaspending/county_delivery.csv` |
 | 16 | `09_bottom_quartile_and_delivery.ipynb` | steps 7, 8, 9, 11, 13, 15 | `data/processed/county_delivery_clean.csv`, tables, figure |
+| 17 | `10_stronghold_demobilization.ipynb` | steps 3, 6, 9, 13 | tables, figure |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -770,13 +831,13 @@ Execute notebooks non-interactively with the project kernel:
 jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 ```
 
-### I.3 Keys
+### J.3 Keys
 
 Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key.
 
 ---
 
-## J. Next steps
+## K. Next steps
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
