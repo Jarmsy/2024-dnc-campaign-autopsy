@@ -185,6 +185,14 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 ---
 
+### A.12 Justice Democrats endorsements and FEC primary finance
+
+**Cases.** The Justice Democrats Wikipedia article's per-cycle endorsement tables (raw wikitext, `data/raw/insurgent/justice_democrats_wiki.txt`, parsed to `jd_house_endorsements_raw.csv`): 144 House rows 2018–2026 with primary date (2018 only), result, and vote share; 133 matched to FEC candidate ids (unmatched: D'Allesandro IA-3 2018, Treviño TX-23 2018, Gómez CA-53 2020; rowspan continuation rows dropped). Result overrides for runoffs and blanks: Cisneros 2022 lost the runoff 49.69%; Collins 2022 lost 45.72%; Newman 2022 lost 29.23%; Burch 2018 won the runoff.
+
+**FEC** (`src/data_collection/fec_insurgent_pull.py`; api.open.fec.gov with a personal key — `DEMO_KEY` is 40 calls/hour). Candidate id by name/state/district/cycle search. Opponent: the Democratic incumbent in the district-cycle from `/candidates/totals/` (`incumbent_challenge == "I"`), else the best-funded other Democrat; for districts where the FEC still lists a retired or otherwise-running incumbent, an `OPEN_SEAT` override (Tlaib and Omar 2018; Sedillo Lopez, Matias, Vilela, Ing 2018; Turner 2021; Pearson, Rabb, Valdez, Chakrabarti, Abughazaleh, Haynes, Ahmed 2026) removes them. Primary date from `/election-dates/` (first House primary in the state-cycle) where the table lacks one. Pre-primary receipts = `total_receipts_ytd` on the last `/reports/house-senate/` filing on or before the primary date plus the prior calendar year's year-end YTD; unitemized likewise. Independent expenditures from `/schedules/schedule_e/by_candidate/` for the cycle, support and oppose summed over committees, top three opposing committees retained. All responses cached under `data/raw/insurgent/fec/`. Output `jd_cases_fec.csv`.
+
+---
+
 ## B. Part 1 — Fundamentals model
 
 ### B.1 Specification
@@ -1058,6 +1066,22 @@ Notebook `18_nyc_money_media_history.ipynb`. Data A.11. Tables `nyc_ie_by_candid
 
 ---
 
+## K-bis. Part 11 — Insurgent primaries
+
+Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-primary receipts + IE for + IE against the other. Contested = JD vote share < 99%. Tables `insurgent_winrate_by_money.csv`, `insurgent_challengers_vs_incumbents.csv`, `insurgent_models.csv`.
+
+**Counts.** 133 cases, 111 contested: JD incumbent 28 (25 won), challenger vs incumbent 24 (11), open/other 59 (21). By cycle (contested N, wins, outspent share): 2018 58 / 18 / 66%; 2020 12 / 9 / 42%; 2021 1 / 0; 2022 11 / 8 / 18%; 2024 7 / 5 / 29%; 2026 22 / 17 / 36%. Win rate by outspent: JD incumbent not outspent 25/25, outspent 0/3 (mean share 38.8%); challenger not outspent 1/5 (mean 48.0%), outspent 10/19 (39.6%); open not outspent 12/26 (36.0%), outspent 9/33 (26.2%). Median opponent:JD money ratio 0.01 / 2.41 / 1.28.
+
+**Challenger cases** (JD pre-primary $M, opponent $M, IE against JD $M, ratio, result): Pressley–Capuano 0.90 / 2.08 / 0 / 2.4 W; Ocasio-Cortez–Crowley 0.37 / 5.54 / 0.63 / 16.0 W; Newman–Lipinski 2018 1.60 / 1.63 / 0.93 / 0.8 L; Bush–Clay 2018 0.09 / 0.66 / 0 / 7.1 L; Rao–DeGette 0.45 / 1.30 / 0 / 2.9 L; S. Smith–A. Smith 0.09 / 0.92 / 0 / 10.3 adv.; Clark–Davis 0.12 / 0.39 / 0 / 3.3 L; Mustafa–Quigley 0.21 / 1.74 / 0 / 8.3 L; Richardson–Murphy 0.06 / 3.87 / 0 / 40 L; Bowman–Engel 1.33 / 3.20 / 0.81 / 2.1 W; Bush–Clay 2020 0.75 / 1.27 / 0.02 / 1.3 W; Cisneros–Cuellar 2020 2.31 / 3.34 / 0.07 / 0.9 L; Newman–Lipinski 2020 2.89 / 2.27 / 0.01 / 0.6 W; Morse–Neal 1.66 / 6.54 / 1.23 / 2.7 L; Harper–Beatty 1.33 / 3.50 / 0 / 2.7 L; Cisneros–Cuellar 2022 2.33 / 3.93 / 1.44 / 0.6 L; Collins–Davis 2022 0.95 / 0.79 / 0 / 0.9 L; Kiros–DeGette 1.30 / 2.42 / 0.68 / 2.5 W; McKinney–Thanedar 2.13 / 3.34 / 0.27 / 1.7 W; Avila Chevalier–Espaillat 1.07 / 3.23 / 1.53 / 2.6 W; Allam–Foushee 0.92 / 0.93 / 0 / 1.1 L; Bush–Bell 2026 5.53 / 4.85 / 3.60 / 1.7 L; Vang–Matsui 1.10 / 3.71 / 0 / 2.1 adv.; Gonzales-Torres–Gomez 0.33 / 1.92 / 0 / 5.7 adv.
+
+**Incumbent losses.** Bowman 2024: IE against 12.04 (UDP 9.87, Fairshake 2.08), side 8.8 vs 24.8; Bush 2024: 7.34 (UDP 5.24, Fairshake 1.41, Mainstream Democrats 0.60), 7.3 vs 17.5; Newman 2022: 0.50 (DMFI), member-vs-member after redistricting.
+
+**Opposing committees** (sum of top-three-per-case tallies, $M): UDP 22.45 (two spellings), Congressional Leadership Fund 6.30, Fairshake 3.49, DMFI 2.97, NRCC 2.66, Americans for Tomorrow's Future 2.42, Chicago Progressive Partnership 1.84, Bold America 1.52. Win rate with > $250k against: 11/21 (52%); without 47/90 (52%).
+
+**Models** (contested, N = 111, HC1). OLS vote share: log(opponent:JD ratio, clipped 0.05–50) −6.85 (SE 1.30); log1p(IE against, $M) +4.85 (3.46); challenger-vs-incumbent +15.2 (3.2); JD incumbent +18.5 (5.0); 2022+ +2.7 (3.2). Logit win: −0.48 (0.19); −0.44 (0.61); +0.75 (0.58); +1.54 (0.76); +0.77 (0.55). Small-dollar (unitemized) share of pre-primary receipts, medians: JD incumbents 0.28 vs opponents 0.05; challengers 0.39 vs 0.02; open 0.35 vs 0.12; winners 0.34 vs losers 0.35; pre-primary receipts winners $2.09M vs losers $0.50M; money ratio 0.35 vs 1.60.
+
+---
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
@@ -1093,6 +1117,7 @@ Notebook `18_nyc_money_media_history.ipynb`. Data A.11. Tables `nyc_ie_by_candid
 31. **Candidate placements are pre-election but not pre-decision.** Most ANES pre-election interviews are in September–October; a switcher who had decided by then may place Trump nearer to themselves as a consequence. The perceived-gap coefficient in J.2 cannot separate "did not see the contrast" from "had already chosen."
 32. **The New York comparison is ecological, single-city, and cross-electorate.** ED co-movement does not identify individuals; the 2024 swing in the outer-borough districts was partly Democratic abstention (Part 7), and 2025 could be return rather than conversion. The November 2025 electorate was 78% of the presidential electorate (92% in white-majority districts, 67% in Black); the primary was registered Democrats. Cuomo carried Trump's endorsement, so Cuomo + Sliwa is a Trump-coalition proxy, not a measurement. The 2020 baseline is crosswalked and carries interpolation noise in small EDs; "Mamdani − Harris" is bounded above where Harris was near 90%. Funding and media coverage are not measured here.
 33. **Cross-cycle mayoral shares are not like-for-like.** 2017 and 2021 were two-way races against Republicans who drew 27–28%; 2025 was a three-way race in which the Trump-endorsed independent drew 41% and the Republican 7%. The decline in the Democratic nominee's share in the outer-borough districts between 2021 and 2025 is partly the different opponent; the Mamdani-vs-Cuomo two-way share is the closer comparison and shows the same direction. IE totals count only CFB-reported spending; GDELT tone is a lexicon score, not audience exposure.
+34. **The insurgent-primary universe is Justice Democrats' endorsement list,** which changed character across cycles (broad 2018 slate, targeted later slates), so the cycle trend in win rate is partly selection. Opponents are identified mechanically; open-seat "opponents" are one of several. Pre-primary receipts are the last filing before the primary (self-funding counts as receipts — Thanedar 2026). IE totals are cycle totals and include general-election spending for incumbents. 2026 FEC data is partial. Twenty-four challenger cases and three incumbent losses are the whole basis of the incumbent-vs-money finding.
 
 ---
 
@@ -1138,6 +1163,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 26 | `17_nyc_precinct_overlap.ipynb` | step 25 | tables, figure |
 | 27 | `python src/data_collection/nyc_cfb_pull.py`; `python src/data_collection/nyc_history_pull.py`; `python src/data_collection/gdelt_nyc_pull.py` | CFB, BOE, DCP, GDELT (history ≈25 min for the 2021 CVR; GDELT ≈1 h at the rate limit) | `data/raw/nyc_cfb/*.csv`, `data/raw/nyc/nyc_ed_history.csv`, `data/raw/gdelt_nyc/gdelt_nyc_daily.csv` |
 | 28 | `18_nyc_money_media_history.ipynb` | steps 25, 27 | tables, figures |
+| 29 | `python src/data_collection/fec_insurgent_pull.py` (needs `FEC_API_KEY`; JD wikitext fetched by hand from `?action=raw`) | FEC API | `data/raw/insurgent/jd_cases_fec.csv` |
+| 30 | `19_insurgent_primaries.ipynb` | step 29 | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -1147,7 +1174,7 @@ jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --Execu
 
 ### M.3 Keys
 
-Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key; the ANES pull needs the zip placed by hand (A.9); the NYC pull needs `CENSUS_API_KEY`.
+Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key; the ANES pull needs the zip placed by hand (A.9); the NYC pull needs `CENSUS_API_KEY`; the FEC pull needs `FEC_API_KEY` (free personal key; `DEMO_KEY` is 40 calls/hour).
 
 ---
 
