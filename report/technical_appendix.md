@@ -143,6 +143,21 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 ---
 
+### A.9 ANES 2024 Time Series
+
+**Source:** American National Election Studies, 2024 Time Series Study, full release 2026-05-19 (`anes_timeseries_2024_csv_20260519.zip`, 6,516,359 bytes; 5,521 respondents × 1,738 variables). Free registration at electionstudies.org.
+**Script:** `src/data_collection/anes_pull.py` → `data/raw/anes/anes_2024_core.csv` (107 harmonized columns).
+
+**Download.** The ANES site's WAF returns 403 to python-requests regardless of headers but serves the file to a browser. The zip was fetched in the in-app browser and transferred as base64 in thirteen chunks, reassembled and verified byte-exact (`zipfile.testzip()` None). The script does not attempt the HTTP fetch; it extracts and harmonizes whatever zip is on disk.
+
+**Sample.** Three components: 2016–20–24 panel (2,171, carrying `V200001` and `V160001_orig` ids into the 2020 and 2016 files), fresh web (2,308), fresh face-to-face (1,042). Weight `V240107b` (post-election, full sample + PAPI) throughout, because every salience item is post-election; 557 respondents without a post interview drop. Post-weighted two-party vote is Harris 54.4 / Trump 45.6 against a certified 49.2 / 50.8; the ANES over-represents the losing side's voters by ~5 points, so group comparisons, not levels, are the object.
+
+**Variables** (codes verified against the codebook PDF in the zip). Vote: `V242096x` (pre-post summary 2024 presidential vote), `V242095x` (turnout), `V241106x` (recalled 2020 vote), `V241107/V241108` (recalled 2016). Most important problem: open-ended, coded by ANES to Appendix B codes, up to three mentions × five ideas (`V242165y1–y5`, `V242167y1–y5`, `V242169y1–y5`); a "single most important" follow-up (`V242171y1`) asked only when more than one problem was given. Analytic MIP = `V242171y1` when present, else `V242165y1`. Family groupings are the script's `MIP_FAMILY` (economy/prices = codes 50, 54, 53, 15, 30; immigration = 41; democracy/govt = 43, 44, 45, 47, 48, 49, 78, 81, 39, 42, 80, 36; culture/moral = 61, 64, 66, 68, 75, 79, 32; etc.). Importance battery `V242172–V242181` (1 extremely – 5 not at all; illegal immigration, cost of living, climate, guns, abortion, crime, Gaza, schools, democracy, racial inequality). Party-better battery `V242182–V242189` (`V242190/V242191`, democracy and racial inequality, were PAPI-only, N ≈ 200, and are not used). Party better on own first-mentioned problem `V242166`. Anti-elite: `V241231` (few big interests), `V241233` (corrupt), `V241229` (trust govt), `V241120` (outraged), `V242200/V242201` (officials don't care / no say), `V242411` (strong leader), `V242413` (business leaders should run), `V242415` (referendums). Economic: `V241239` (services), `V241245` (govt vs private insurance), `V241252` (guaranteed jobs), `V242350` (minimum wage), `V241369x` (paid leave). Immigration: `V241395x` (wall), `V241392x` (Dreamers), `V241389x` (birthright), `V242227` (levels), `V242231x` (crime), `V242234x` (path to citizenship). Cultural: `V241372x` (trans bathrooms), `V241375x` (trans sports ban), `V242364x` (trans military), `V241288` (campus DEI), `V242349x` (diversity), `V241385x` (gay marriage), `V241302` (abortion). Thermometers `V241156/V241157/V241158/V242151`.
+
+**Missing codes.** Negative values (−9 refused, −8 DK, −7/−5 partial, −6 no post interview, −4 error, −2 DK/RF in a component, −1 inapplicable) → NaN; 99 on 7-point scales ("haven't thought") → NaN; thermometer 998/999 → NaN. Post and panel weights are blank strings outside their universe and are coerced.
+
+---
+
 ## B. Part 1 — Fundamentals model
 
 ### B.1 Specification
@@ -932,6 +947,22 @@ The panel's Trump-2016 share of switchers (I.5: 4% weighted, 8 of 39) is superse
 
 **2016 primary, all switchers.** Of the 2,121 Obama→Trump respondents (not only primary voters): 67% voted in a primary; Trump primary 30%, Sanders 15%, Clinton 14%, no primary or other 41%.
 
+### I.7 Salience and anti-elite attitudes (ANES 2024)
+
+Notebook `14_anes_salience.ipynb`. Data A.9; post weight `V240107b`; N = 4,964 with a post interview. Groups by recalled 2020 × 2024 vote: Biden→Harris 1,945; Biden→Trump 69; new (2020 non-voter)→Harris 166; new→Trump 198; Trump→Harris 58; Trump→Trump 1,437. Among Biden-2020 voters the weighted switch rate is 3.8% (CES cross-section 5.2%); among Trump-2020 voters 3.9% (CES 2.6%). Tables `anes_*.csv`.
+
+**Most important problem** (single most important, family shares, row %; N with a coded MIP 1,863 / 62 / 158 / 186 / 1,349): economy/prices 17.7 / **34.8** / 21.5 / **34.5** / 31.1; immigration 3.3 / **16.2** / 5.8 / **19.6** / 31.0; democracy/govt 30.2 / 6.2 / 16.0 / 7.5 / 10.4; culture/moral 10.5 / 5.2 / 18.9 / 4.2 / 3.5; economy other 12.0 / 16.8 / 16.2 / 11.3 / 7.9. Top single codes among switchers: 54 inflation 29.1%, 41 immigration 16.2%, 800 other 12.0%, 55 economics (other) 11.5%. Any mention in up to three problems: economy/prices 33.7 / 59.9 / 42.2 / 57.4 / 65.5; immigration 17.2 / 36.4 / 23.2 / 39.2 / 63.3.
+
+**Closed-ended importance** ("extremely important", %): cost of living 53.7 / 64.0 / 65.2 / 73.6 / 71.4; illegal immigration 19.7 / 33.9 / 21.6 / 60.7 / 71.7; democracy 77.1 / 33.3 / 54.2 / 42.9 / 58.2; abortion 48.9 / 29.6 / 47.5 / 30.6 / 27.7; racial inequality 46.3 / 23.4 / 48.8 / 20.1 / 12.5. Within-respondent, immigration rated above cost of living: 6.2 / **4.5** / 7.2 / 14.6 / 13.2; below: 60.5 / 38.3 / 67.7 / 28.5 / 14.0; tied: 33.3 / 57.2 / 25.1 / 56.8 / 72.8.
+
+**Ownership** (Republicans better, %): cost of living 8.6 / **72.7** / 13.9 / **83.1** / 91.1 (Democrats 57.7 / 10.9 / 51.8 / 2.1 / 1.6); illegal immigration 17.8 / 86.8 / 24.1 / 85.7 / 94.5; crime 12.9 / 80.9 / 19.3 / 75.5 / 89.8; abortion 2.4 / 42.6 / 2.7 / 57.4 / 64.4. Party better on own first-mentioned problem: Republicans 4.1 / 69.7 / 5.6 / 83.6 / 90.5.
+
+**Indices** (0–1; component items A.9, each rescaled so 1 = the named direction, mean of available items): anti-elite 0.48 / 0.62 / 0.53 / 0.58 / 0.62; economic-left 0.77 / 0.59 / 0.79 / 0.56 / 0.41; immigration-conservative 0.35 / 0.56 / 0.38 / 0.61 / 0.69; cultural-conservative 0.27 / 0.54 / 0.28 / 0.58 / 0.67. Single items: government run by a few big interests 76 / 95 / 85 / 82 / 92%; strong leader who bends rules (agree, 0–1) 0.24 / 0.58 / 0.32 / 0.53 / 0.59; prefers government insurance plan (scale ≤ 3) 71 / 46 / 76 / 37 / 17%; raise minimum wage 83 / 44 / 87 / 47 / 34%; transgender thermometer 68 / 44 / 69 / 37 / 34. Switcher minus loyal-Democrat gap in pooled SDs: anti-elite +0.87, economic-left −0.67, immigration +0.92, cultural +1.06. Share of switchers immigration-conservative (index ≥ 0.5): 60% (CES five-item index, I.6: 81%); among Biden→Harris 19%.
+
+**Models** (weighted logit, HC1, Biden-2020 voters, indices standardized; `anes_switch_models.csv`). M1 (N = 1,951, 64 events): anti-elite 0.81 (SE 0.16), economic-left −0.39 (0.12), immigration 0.47 (0.15), cultural 0.86 (0.17). M2 adds MIP = immigration 1.23 (0.45) and MIP = prices 1.04 (0.30); attitude coefficients unchanged. M3 adds "Republicans better on prices" 2.52 (0.29); cultural falls to 0.57, MIP-immigration to 0.76 (p = 0.11), the rest hold. M4 (immigration and cultural only): 0.56 vs 1.13. Partition of Biden-2020 voters, immigration-conservative × MIP = immigration: neither 1.8% (N = 1,537, 20 events); position only 12.5% (317, 31); salience only 15.6% (40, 3); both 21.3% (31, 8). New voters, Trump vs Harris (N = 349): anti-elite 0.29 (0.18), economic-left −0.83 (0.20), immigration 0.77 (0.23), cultural 1.74 (0.25); mean age 35 vs 36; weighted Trump share 55% (CES 58%).
+
+**Reading.** Salience and position give different answers, and both are in the report. On salience the switchers were price voters (2:1 over immigration; 4.5% immigration-first) who had adopted the Republican claim on prices (73%). On position they were the culturally conservative, anti-elite, immigration-conservative fifth, and those positions — not the priority given immigration — are what separates them from Democrats who stayed. All items post-election; the ownership items in particular are as much a rationalization of the vote as a cause, and a Trump voter credits Republicans on crime and abortion too.
+
 ---
 
 ## J. Limitations
@@ -963,6 +994,7 @@ The panel's Trump-2016 share of switchers (I.5: 4% weighted, 8 of 39) is superse
 25. **The cultural axis is what the CES asks, not what the hypothesis names.** No transgender, "wokeness," or salience items exist in the 2024 common content. The finding that immigration dominates among the cultural items measured is not evidence about items not measured.
 26. **The 2016 comparison is across surveys and formats.** The 2016 immigration items are select-all (non-selection coded as opposition), the 2012 vote is recalled in 2016, and the 2024 items are support/oppose. Path-to-path comparisons within each survey are sound; cross-year levels are not. The 2024 switchers' 2016 vote rests on 39 panelists with strong weight sensitivity on the eight who reported a Trump 2016 vote.
 27. **Recalled 2016 vote in the 2024 file favors the current vote.** A 2024 Trump voter is more likely to recall a 2016 Trump vote. The 27% Trump-2016 share of switchers is an upper bound; the panel's 4% (eight people, low weights) is a lower bound. The reservoir result does not depend on 2016 recall.
+28. **The ANES salience results rest on 69 switchers.** Every switcher percentage in I.7 carries roughly a ±10-point interval; the logits are indicative. The ANES also over-represents Harris voters by ~5 points and under-recruits the young, weakly attached voters who make up the new-voter groups. Salience, importance, and ownership are all post-election and cannot separate reason from rationalization; the CES panel's timing test (F.3, I.5) does not extend to salience because the CES does not ask it. MIP family assignments are the script's own; reassigning borderline codes (32 race relations, 37 justice, 55 economics-other) does not change the prices-vs-immigration comparison.
 
 ---
 
@@ -1000,6 +1032,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 18 | `11_share_and_issues.ipynb` | step 9 | tables, figure |
 | 19 | `12_attitudes_timing_and_2016.ipynb` | steps 9, 13 | tables |
 | 20 | `13_coalition_2020_and_reservoir.ipynb` | step 9 | tables |
+| 21 | manual browser download of the ANES 2024 zip (A.9), then `python src/data_collection/anes_pull.py` | `data/raw/anes/*.zip` | `data/raw/anes/anes_2024_core.csv` |
+| 22 | `14_anes_salience.ipynb` | step 21 | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -1009,7 +1043,7 @@ jupyter nbconvert --to notebook --execute notebooks/0N_*.ipynb --inplace --Execu
 
 ### K.3 Keys
 
-Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key.
+Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never commit `.env`. The CES and BLS pulls need no key; the ANES pull needs the zip placed by hand (A.9).
 
 ---
 
@@ -1025,6 +1059,8 @@ Part 4 established that perception is disconnected from local reality and travel
 
 The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
 
-6. **Salience.** The CES does not ask which issue mattered most. The ANES 2024 does, and its state-level file is public. Whether switchers *prioritized* immigration over healthcare, as opposed to merely holding conservative views on it, is the piece that would turn Part 8's "reachable on economics" into a claim about what would have reached them.
+6. **Salience — done (I.7).** The ANES 2024 shows the switchers prioritized prices over immigration two to one and had adopted the Republican claim on prices. What would extend it: the 2016–20–24 ANES panel subsample (2,171 respondents, ids `V200001`/`V160001_orig`) merged to the 2020 and 2016 Time Series files, which would put the anti-elite and cultural items — which the CES does not carry — ahead of the switch the way F.3 does for economic perception.
+
+7. **The corporate-capture hypothesis (next session).** Working hypothesis: Democrats came to be seen as beholden to corporate elites; that perception, not policy positions, cost them the trust of economically-left, anti-elite voters and left a vacuum Trump filled. I.7 is consistent with it — 95% of switchers say government is run by a few big interests, switchers are +0.87 SD anti-elite, and 73% had transferred the prices issue to Republicans — but it is not yet a test. What the ANES can do: (a) decompose the anti-elite index item by item among Biden-2020 voters (big interests, corrupt, officials don't care, no say, strong leader) and ask which item predicts switching net of culture and immigration; (b) party-better-on-own-problem (`V242166`) and the "no difference" share as a trust measure — is the switcher's move to Republicans on prices a positive judgment or a loss of faith in Democrats?; (c) Democratic-party thermometer and like/dislike (`V242432/V242434`) against the Republican equivalents; (d) the 2016–20–24 panel subsample merged to the 2020 and 2016 files, to put the anti-elite items *before* the switch. Outside the ANES: FEC corporate/PAC receipts by candidate and cycle as the "actual" side of the perception gap, and the Pew/Gallup "which party cares about people like me" series for the trend since 2016.
 
 CDC WONDER overdose mortality remains a planned Part 3 covariate; nothing in Part 4 depends on it.

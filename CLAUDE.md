@@ -32,6 +32,7 @@ Output: narrative in `report/main_report.md` + technical appendix in `report/tec
 | Census ACS | County income, education, race, unemployment (2020 5-yr) | API; set `CENSUS_API_KEY` env var |
 | CES 2020–2024 Panel | ~6,175 panelists interviewed in 2020, 2022, 2024 with county FIPS, validated turnout, and contemporaneous 2020 and 2024 vote | Dataverse `doi:10.7910/DVN/CETPVT`, no guestbook; `ces_panel_pull.py`. **Panel numbering differs from common content: economy item is `CC24_302` here (not `_301`); prices is `CC24_304`.** Weights `commonweight_24` / `commonpostweight_24` |
 | Medill Local News Initiative | County local-news outlet counts by type (2025), desert/watchlist flags, RUCC, 2024→2025 newspaper change | Undocumented backend API behind the State of Local News explorer; `news_deserts_pull.py`. Server omits its TLS intermediate — script builds a CA bundle rather than disabling verification |
+| ANES 2024 Time Series | 5,521 respondents; open-ended most-important-problem (coded), issue importance and party-ownership batteries, anti-elite/populism and culture-war items the CES lacks; 2016–20–24 panel ids | **Site WAF blocks python-requests (403); download the zip in a browser** into `data/raw/anes/`, then `anes_pull.py` extracts and harmonizes. Post weight `V240107b` for anything using post-election items |
 | GDELT | Media coverage index | BigQuery or bulk download |
 
 Store raw data under `data/raw/` (gitignored). Processed/cached data under `data/processed/`.
