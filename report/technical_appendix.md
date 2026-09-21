@@ -175,6 +175,16 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 ---
 
+### A.11 NYC Campaign Finance Board and historical mayoral returns
+
+**CFB.** Independent expenditures have no bulk file; `src/data_collection/nyc_cfb_pull.py` scrapes the per-cycle summary (`vsapps/WebForm_Finance_Independent.aspx?as_election_cycle=YYYY`) for spender ids and each spender's detail page (`IndependentSpenderSummary.aspx?spender_id=…`) for the candidate × support/oppose/not-determined table and reported contributions; 2013 (50 spenders), 2017 (16), 2021 (41), 2025 (63). Output `data/raw/nyc_cfb/independent_expenditures_by_candidate.csv`. Candidate committees from the Data Library `EC{cycle}_FinancialAnalysis*.csv` (office code 1 = Mayor in 2013/2017/2025, 11 in 2021); `net_expnd`, `net_cntns`, `pubfnd_pmt`, `cntrs_no`, `sml_amt` (contributions ≤ $175 in 2021/2025, ≤ $250 earlier) → `mayor_candidate_finance_summary.csv`. Figures are as filed through the current statement (2025 page dated 2026-09-18).
+
+**Historical returns.** `src/data_collection/nyc_history_pull.py`: 2017 general and Democratic primary (ordinary CSV format, no header prefix), 2021 general (header-prefixed), 2021 Democratic primary from the cast vote record (`PE2021_CVR_Final.zip`, same structure as 2025; first choices and Adams-vs-Garcia / Adams-vs-Wiley head-to-heads). All on the 2012 district lines (`nyed_17d`, `nyed_21d`); crosswalked to `nyed_25d` through 2020 blocks as in A.10. Carried: 2017 general 747k of 760k de Blasio; 2017 primary 449k of 461k; 2021 general 1,097k of 1,118k total; 2021 primary 925k of 944k ballots. 2013 is published only as PDF recaps and is not included. Citywide results 1989–2025 hand-entered from the certified figures on Wikipedia into `nyc_mayoral_generals_1989_2025.csv`.
+
+**GDELT.** `src/data_collection/gdelt_nyc_pull.py`: DOC 2.0 API `timelinevol` and `timelinetone`, daily, per candidate-name phrase per source domain (nypost, foxnews, cnn, msnbc, nytimes, nydailynews, wsj, gothamist, thecity, all English), windows Jan 1–Nov 3 2021 and Jan 1–Nov 5 2025. The API enforces one request per five seconds and imposes a multi-minute penalty on violation; the script spaces requests at 15 s and resumes from its CSV.
+
+---
+
 ## B. Part 1 — Fundamentals model
 
 ### B.1 Specification
@@ -1036,6 +1046,16 @@ Notebook `17_nyc_precinct_overlap.ipynb`. Data A.10. Usable EDs: ≥ 50 two-part
 
 **Reading.** The level and the change tell different but compatible stories. In level, the 2024 swing carries a residual against Mamdani within group (−0.3 to −0.6 per unit) and the 2020 Trump level dominates (−0.8 to −1.6). Against the 2024 baseline, the swing predicts recovery in every group (+0.4 to +1.05), and in the tenth swing decile Mamdani's November share equals Harris's while Cuomo + Sliwa equals Trump's. The Mamdani − Harris measure is partly mechanical where Harris was very high (Cuomo drew moderate Democrats in decile 1), which is why the within-group models control for the 2020 level and composition.
 
+### K.2 Money, media, and the 2017–2021 coalitions
+
+Notebook `18_nyc_money_media_history.ipynb`. Data A.11. Tables `nyc_ie_by_candidate.csv`, `nyc_money_sides.csv`, `nyc_history_by_majority.csv`, `nyc_history_by_swing_decile.csv`, `nyc_history_by_income.csv`, `nyc_history_correlations.csv`; figure `nyc_three_mayors_by_swing.png`.
+
+**Independent expenditures on Mayor, support / oppose ($M).** 2013: Thompson 3.08 / 0; Quinn 0.83 / 1.00; Lhota 0.52 / 1.04; de Blasio 0.51 / 0.02. 2021: Adams 8.04 / 0.01; Donovan 6.49 / 0; McGuire 5.75 / 0; Stringer 4.75 / 0; Yang 3.85 / 0.17; Wiley 1.98 / 0. 2025: Cuomo 31.02 / 1.67; Mamdani 4.83 / 21.93; Sliwa 0.79 / 2.82. 2025 spenders: Fix the City 19.30 for Cuomo, 10.63 against Mamdani, 0.89 against Sliwa (contributions reported $35.6M); For Our City 2.51 for Cuomo / 4.85 against Mamdani; Stop the Socialists 1.79 / 2.14 (+1.52 against Sliwa); Defend NYC 2.49 / 2.21; Housing for All 2.50 for Cuomo; New Yorkers for Lower Costs 2.72 for Mamdani; WFP 0.98 against Cuomo. Total mayoral IE: 2013 ≈ 9, 2021 ≈ 27, 2025 ≈ 83.
+
+**Committees ($M spent; contributors; small-dollar share).** 2013 de Blasio 13.5 (12,267; 7%), Quinn 6.9, Thompson 6.5. 2021 Adams 18.3 (15,483; 14%), McGuire 11.9, Yang 10.5, Stringer 10.2, Garcia 8.6, Wiley 7.6. 2025 Mamdani 16.4 (40,835; 55%; public funds 13.2), Cuomo 14.1 (10,400; 14%; public funds 8.1), Lander 8.2, Sliwa 6.9. Sides (committee + IE for + IE against the other): 2013 de Blasio 15.1 vs Quinn 7.7 / Thompson 9.6; 2021 Adams 26.3 vs Garcia 8.6 / Yang 14.3; 2025 Mamdani 22.9 vs Cuomo 67.0 (ratio 2.92).
+
+**Coalitions** (3,790 EDs usable in all of 2017, 2020, 2021, 2024, 2025). By swing decile 1 … 10: de Blasio 2017 general 74.5 / 70.7 / 68.7 / 63.3 / 59.9 / 58.8 / 62.2 / 67.1 / 70.9 / 72.5%; Adams 2021 general 78.3 / 74.2 / 72.7 / 65.5 / 61.2 / 59.3 / 59.6 / 62.7 / 64.9 / 68.5%; Harris 84.4 … 54.2%; Mamdani 64.1 / 56.1 / 52.7 / 47.8 / 45.9 / 43.7 / 44.5 / 47.9 / 49.5 / 53.6%; Adams vs Garcia 2021 primary 33.7 / 45.7 / 49.2 / 53.2 / 51.4 / 53.5 / 59.0 / 60.3 / 62.0 / 51.8%; Adams vs Wiley 40.2 … 57.8%; Wiley first choices 29.3 … 16.4%; Mamdani vs Cuomo 67.5 / 59.1 / 55.1 / 53.5 / 55.2 / 52.5 / 50.2 / 52.5 / 51.6 / 57.1%. By majority (Hispanic / Asian / Black / mixed / white): de Blasio 2017 83.1 / 54.2 / 92.0 / 68.5 / 50.1; Adams 2021 75.8 / 51.6 / 90.9 / 66.9 / 57.8; Mamdani 58.4 / 46.5 / 63.6 / 57.7 / 41.3; Adams vs Garcia 62.4 / 45.7 / 84.1 / 50.0 / 29.4; Adams vs Wiley 59.9 / 56.6 / 71.3 / 50.7 / 45.6; Mamdani vs Cuomo 55.3 / 61.4 / 43.8 / 64.6 / 56.2. ED-level correlations weighted by 2025 votes: Mamdani general with de Blasio 2017 0.80, Harris 0.79, Adams 2021 0.72, Wiley first 0.81; Mamdani primary head-to-head with Wiley first 0.82, with Adams-vs-Wiley −0.84, with Adams-vs-Garcia −0.54, with Harris 0.39. General votes 2025 / 2021: Hispanic 2.10, Asian 2.00, mixed 2.09, white 1.99, Black 1.66. Primary ballots 2025 / 2021: white 1.25, mixed 1.19, Hispanic 1.13, Black 0.97, Asian 0.92; income terciles low 1.02, mid 1.14, high 1.24.
+
 ---
 
 ## L. Limitations
@@ -1072,6 +1092,7 @@ Notebook `17_nyc_precinct_overlap.ipynb`. Data A.10. Usable EDs: ≥ 50 two-part
 30. **The cross-pressure cells depend on the cutoff and on which items the CES asks.** Counting four-four ties as "left" gives a 20% cross-pressured cell voting 68% Trump; excluding them, 13% voting 57%. The ordering — economically-left cultural liberals near-unanimous for Harris, economically-left cultural conservatives majority Trump — holds under both; the shares are a range, not a point. The 2016 economic index is two items and its cells collapse under a strict cutoff; 2016 is a direction, not a measurement.
 31. **Candidate placements are pre-election but not pre-decision.** Most ANES pre-election interviews are in September–October; a switcher who had decided by then may place Trump nearer to themselves as a consequence. The perceived-gap coefficient in J.2 cannot separate "did not see the contrast" from "had already chosen."
 32. **The New York comparison is ecological, single-city, and cross-electorate.** ED co-movement does not identify individuals; the 2024 swing in the outer-borough districts was partly Democratic abstention (Part 7), and 2025 could be return rather than conversion. The November 2025 electorate was 78% of the presidential electorate (92% in white-majority districts, 67% in Black); the primary was registered Democrats. Cuomo carried Trump's endorsement, so Cuomo + Sliwa is a Trump-coalition proxy, not a measurement. The 2020 baseline is crosswalked and carries interpolation noise in small EDs; "Mamdani − Harris" is bounded above where Harris was near 90%. Funding and media coverage are not measured here.
+33. **Cross-cycle mayoral shares are not like-for-like.** 2017 and 2021 were two-way races against Republicans who drew 27–28%; 2025 was a three-way race in which the Trump-endorsed independent drew 41% and the Republican 7%. The decline in the Democratic nominee's share in the outer-borough districts between 2021 and 2025 is partly the different opponent; the Mamdani-vs-Cuomo two-way share is the closer comparison and shows the same direction. IE totals count only CFB-reported spending; GDELT tone is a lexicon score, not audience exposure.
 
 ---
 
@@ -1115,6 +1136,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 24 | `16_crosspressure_and_perceived_difference.ipynb` | steps 9, 21 | tables |
 | 25 | `python src/data_collection/nyc_pull.py` | BOE, DCP, Census API (≈25 min; the cast vote record is cached after the first run) | `data/raw/nyc/nyc_ed_panel.csv` |
 | 26 | `17_nyc_precinct_overlap.ipynb` | step 25 | tables, figure |
+| 27 | `python src/data_collection/nyc_cfb_pull.py`; `python src/data_collection/nyc_history_pull.py`; `python src/data_collection/gdelt_nyc_pull.py` | CFB, BOE, DCP, GDELT (history ≈25 min for the 2021 CVR; GDELT ≈1 h at the rate limit) | `data/raw/nyc_cfb/*.csv`, `data/raw/nyc/nyc_ed_history.csv`, `data/raw/gdelt_nyc/gdelt_nyc_daily.csv` |
+| 28 | `18_nyc_money_media_history.ipynb` | steps 25, 27 | tables, figures |
 
 Execute notebooks non-interactively with the project kernel:
 

@@ -65,9 +65,10 @@ def read_boe_edlevel(path):
     rows = []
     with open(path, encoding="utf-8", errors="replace", newline="") as f:
         for parts in csv.reader(f):
-            if len(parts) < 22:
-                continue
-            rows.append(parts[11:22])
+            if len(parts) >= 22:          # 2020+ format: header prefixed to every row
+                rows.append(parts[11:22])
+            elif len(parts) == 11 and parts[0] != "AD":   # 2017 format: ordinary CSV
+                rows.append(parts)
     df = pd.DataFrame(rows, columns=["AD", "ED", "County", "EDAD Status", "Event", "Party", "Office", "District Key", "VoteFor", "Unit Name", "Tally"])
     df["AD"] = df["AD"].astype(int); df["ED"] = df["ED"].astype(int); df["Tally"] = pd.to_numeric(df["Tally"], errors="coerce").fillna(0).astype(int)
     df["ElectDist"] = df["AD"] * 1000 + df["ED"]
