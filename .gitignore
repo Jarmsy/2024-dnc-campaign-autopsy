@@ -16,3 +16,6 @@ __pycache__/
 outputs/figures/
 outputs/tables/
 outputs/report/
+
+# Local Claude Code settings
+.claude/settings.local.json
