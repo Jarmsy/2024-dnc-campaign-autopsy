@@ -113,8 +113,13 @@ def main():
                 continue
             hits += 1
             page = d.get("print_page")
+            head = (d.get("headline") or {}).get("main") or ""
+            # Scoreable text is headline + abstract ONLY. lead_paragraph is populated for 98.7% of
+            # 2021 records and 0% of 2025 ones, so including it would score the two cycles on
+            # different amounts of text and make every cross-cycle comparison an artifact.
             rows.append({
                 "cycle": year, "date": (d.get("pub_date") or "")[:10],
+                "text": (head + ". " + (d.get("abstract") or "")).strip(),
                 "candidates": "|".join(who), "n_candidates": len(who),
                 "headline": (d.get("headline") or {}).get("main"),
                 "print_page": pd.to_numeric(page, errors="coerce"),

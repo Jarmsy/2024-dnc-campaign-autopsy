@@ -12,3 +12,4 @@ fredapi
 openpyxl
 python-dotenv
 pyogrio
+vaderSentiment
