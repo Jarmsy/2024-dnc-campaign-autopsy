@@ -7,10 +7,13 @@ Rate limit: one request per 5 seconds (enforced here). Tone is GDELT's document-
 articles that day matching the query. Both are per candidate-name phrase per source domain.
 Outputs one long CSV: cycle, candidate, domain, date, volume, tone.
 
-Throttling: the API returns HTTP 429 ("limit requests to one every 5 seconds") in bursts even at one
-request per 20 s; per-attempt acceptance was ~23% and about a third of fetches went through with no
-wait at all, so it is intermittent server load, not a per-IP cooldown. Retries are therefore flat
-and fairly short (RETRY s) rather than escalating; every timeout and 429 is logged with the body.
+Retry pacing is set from the logs, not from the API's advice. Acceptance is ~21% per attempt and
+does not improve with longer waits (23.0% at 120-360 s vs 20.5% at 60 s, z = 0.61), so there is no
+cooldown to wait out. Rejections do cluster -- runs of 6+ consecutive refusals are twice as common as
+a memoryless process would give -- so some of the wait is a real server-side bad patch that polling
+cannot shorten; it can only be detected sooner. Measured elasticity between the two runs: polling
+1.85x faster raised the reject count 1.16x and cut total wait 37%. Hence a short flat retry (RETRY s),
+which still works out to about one request per 32 s while throttled, well inside the stated 5 s floor.
 Progress is checkpointed per candidate x domain; series the API returns empty (a domain GDELT does
 not index) are recorded in empty_series.txt so they are not re-fetched.
 """
@@ -37,7 +40,7 @@ DOMAINS = ["foxnews.com", "cnn.com", "msnbc.com", "nytimes.com", "ALL", "nypost.
 # Domains GDELT may not index at all: checked once with a generic query and skipped if empty.
 PROBE_DOMAINS = ["nypost.com", "nydailynews.com"]
 PAUSE = 20
-RETRY = 60
+RETRY = 20
 
 
 def fetch(query, mode, start, end):
