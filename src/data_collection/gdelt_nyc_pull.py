@@ -36,9 +36,10 @@ CANDIDATES = [
     (2025, "sliwa", '"Curtis Sliwa"'), (2025, "lander", '"Brad Lander"'), (2021, "sliwa", '"Curtis Sliwa"'), (2021, "stringer", '"Scott Stringer"'),
     (2025, "adams", '"Eric Adams"'), (2025, "stringer", '"Scott Stringer"'),
 ]
-DOMAINS = ["foxnews.com", "cnn.com", "msnbc.com", "nytimes.com", "ALL", "nypost.com", "nydailynews.com"]
+DOMAINS = ["foxnews.com", "cnn.com", "msnbc.com", "nytimes.com", "ALL", "nypost.com", "nydailynews.com",
+           "washingtonpost.com", "gothamist.com", "politico.com", "wsj.com", "apnews.com"]
 # Domains GDELT may not index at all: checked once with a generic query and skipped if empty.
-PROBE_DOMAINS = ["nypost.com", "nydailynews.com"]
+PROBE_DOMAINS = ["nypost.com", "nydailynews.com", "washingtonpost.com", "gothamist.com", "politico.com", "wsj.com", "apnews.com"]
 PAUSE = 20
 RETRY = 20
 
