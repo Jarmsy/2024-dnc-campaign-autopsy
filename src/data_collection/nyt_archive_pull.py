@@ -14,7 +14,10 @@ pieces have no print page and are kept with print_page = NaN rather than dropped
 
 Needs NYT_API_KEY (free, developer.nytimes.com, "Archive API" enabled on the app).
 One request per month; the documented limits are 5/minute and 500/day, so requests are spaced 15 s.
-Monthly JSON is cached raw under data/raw/nyt_archive/ (each month is 20-30 MB) and never refetched.
+Monthly JSON is cached raw under data/raw/nyt_archive/ (7-25 MB each) and never refetched. The API
+drops large bodies mid-transfer and returns intermittent 5xx, both of which are retried. Errors are
+raised without the request URL: it carries the api-key, and requests' own raise_for_status would
+put that key into the traceback and from there into any log.
 """
 
 from pathlib import Path
@@ -49,21 +52,35 @@ CANDIDATES = {
 RACE_TERMS = r"\bmayor|mayoral|City Hall|primary|ranked[- ]choice\b"
 
 
-def fetch_month(year, month, key):
+def fetch_month(year, month, key, tries=5):
+    """One month of the archive. Responses are 7-25 MB and the connection is dropped mid-body often
+    enough to matter, so a truncated read is retried rather than fatal. The cache is written only
+    after the body parses, so a partial download can never poison it."""
     cache = RAW / f"{year}-{month:02d}.json"
     if cache.exists():
         return json.loads(cache.read_text(encoding="utf-8"))
-    r = requests.get(API.format(year=year, month=month), params={"api-key": key}, timeout=120)
-    if r.status_code == 401:
-        raise SystemExit("NYT_API_KEY rejected (401). Check the key and that the app has the Archive API enabled.")
-    if r.status_code == 429:
-        print("    rate limited; waiting 60 s", flush=True); time.sleep(60)
-        return fetch_month(year, month, key)
-    r.raise_for_status()
-    j = r.json()
-    cache.write_text(json.dumps(j), encoding="utf-8")
-    time.sleep(PAUSE)
-    return j
+    for attempt in range(1, tries + 1):
+        try:
+            r = requests.get(API.format(year=year, month=month), params={"api-key": key}, timeout=300)
+            if r.status_code == 401:
+                raise SystemExit("NYT_API_KEY rejected (401). Check the key and that the app has the Archive API enabled.")
+            if r.status_code in (429, 500, 502, 503, 504):
+                wait = 30 * attempt
+                print(f"    HTTP {r.status_code} on {year}-{month:02d} (attempt {attempt}/{tries}); waiting {wait} s", flush=True)
+                time.sleep(wait); continue
+            if r.status_code != 200:
+                # raise_for_status puts the full URL, and therefore the key, into the traceback
+                raise SystemExit(f"{year}-{month:02d}: unexpected HTTP {r.status_code}")
+            j = r.json()
+        except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout, json.JSONDecodeError) as e:
+            wait = 20 * attempt
+            print(f"    {type(e).__name__} on {year}-{month:02d} (attempt {attempt}/{tries}); waiting {wait} s", flush=True)
+            time.sleep(wait); continue
+        cache.write_text(json.dumps(j), encoding="utf-8")
+        time.sleep(PAUSE)
+        return j
+    raise SystemExit(f"{year}-{month:02d} failed after {tries} attempts")
 
 
 def main():
