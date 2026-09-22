@@ -6,9 +6,17 @@ Rate limit: one request per 5 seconds (enforced here). Tone is GDELT's document-
 (positive minus negative word share, roughly -10..+10); volume is the share of all monitored
 articles that day matching the query. Both are per candidate-name phrase per source domain.
 Outputs one long CSV: cycle, candidate, domain, date, volume, tone.
+
+Throttling: the API returns HTTP 429 ("limit requests to one every 5 seconds") in bursts even at one
+request per 20 s; per-attempt acceptance was ~23% and about a third of fetches went through with no
+wait at all, so it is intermittent server load, not a per-IP cooldown. Retries are therefore flat
+and fairly short (RETRY s) rather than escalating; every timeout and 429 is logged with the body.
+Progress is checkpointed per candidate x domain; series the API returns empty (a domain GDELT does
+not index) are recorded in empty_series.txt so they are not re-fetched.
 """
 
 from pathlib import Path
+import json
 import time
 import urllib.parse
 import pandas as pd
@@ -18,38 +26,64 @@ RAW = Path("data/raw/gdelt_nyc")
 API = "https://api.gdeltproject.org/api/v2/doc/doc"
 UA = {"User-Agent": "Mozilla/5.0 dnc-autopsy/0.1"}
 WINDOWS = {2021: ("20210101000000", "20211103000000"), 2025: ("20250101000000", "20251105000000")}
-CANDIDATES = {
-    2021: {"adams": '"Eric Adams"', "yang": '"Andrew Yang"', "garcia": '"Kathryn Garcia"', "wiley": '"Maya Wiley"', "stringer": '"Scott Stringer"', "sliwa": '"Curtis Sliwa"'},
-    2025: {"mamdani": "Mamdani", "cuomo": '"Andrew Cuomo"', "lander": '"Brad Lander"', "sliwa": '"Curtis Sliwa"', "adams": '"Eric Adams"', "stringer": '"Scott Stringer"'},
-}
-DOMAINS = ["nypost.com", "foxnews.com", "cnn.com", "msnbc.com", "nytimes.com", "ALL"]
+# Ordered: the candidates the notebook's tone-gap comparison needs come first so a partial run is usable.
+CANDIDATES = [
+    (2025, "mamdani", "Mamdani"), (2025, "cuomo", '"Andrew Cuomo"'),
+    (2021, "adams", '"Eric Adams"'), (2021, "garcia", '"Kathryn Garcia"'), (2021, "wiley", '"Maya Wiley"'), (2021, "yang", '"Andrew Yang"'),
+    (2025, "sliwa", '"Curtis Sliwa"'), (2025, "lander", '"Brad Lander"'), (2021, "sliwa", '"Curtis Sliwa"'), (2021, "stringer", '"Scott Stringer"'),
+    (2025, "adams", '"Eric Adams"'), (2025, "stringer", '"Scott Stringer"'),
+]
+DOMAINS = ["foxnews.com", "cnn.com", "msnbc.com", "nytimes.com", "ALL", "nypost.com", "nydailynews.com"]
+# Domains GDELT may not index at all: checked once with a generic query and skipped if empty.
+PROBE_DOMAINS = ["nypost.com", "nydailynews.com"]
+PAUSE = 20
+RETRY = 60
 
 
 def fetch(query, mode, start, end):
     q = urllib.parse.quote(query)
     url = f"{API}?query={q}&mode={mode}&startdatetime={start}&enddatetime={end}&format=json"
-    # The API throttles intermittently (HTTP 429 with a rate-limit message) even at slow, steady pacing;
-    # wait it out rather than fail. Progress is checkpointed per candidate x domain in main().
     attempt = 0
     while True:
+        t0 = time.time()
         try:
-            r = requests.get(url, headers=UA, timeout=60)
-        except requests.RequestException:
-            time.sleep(60); continue
+            r = requests.get(url, headers=UA, timeout=900)
+        except requests.RequestException as e:
+            print(f"    {type(e).__name__} after {time.time() - t0:.0f} s; waiting 120 s", flush=True)
+            time.sleep(120); continue
         if r.status_code == 200 and r.text.startswith("{"):
-            j = r.json()
-            series = j.get("timeline", [])
+            series = r.json().get("timeline", [])
+            if attempt or time.time() - t0 > 30:
+                print(f"    ok after {attempt} throttles, {time.time() - t0:.0f} s", flush=True)
             if not series:
                 return pd.DataFrame(columns=["date", "value"])
             return pd.DataFrame(series[0]["data"])
         attempt += 1
-        print(f"    throttled ({r.status_code}), attempt {attempt}; waiting 120 s", flush=True)
-        time.sleep(120)
+        body = r.text.strip().replace("\n", " ")[:120]
+        print(f"    throttled ({r.status_code}) attempt {attempt}, {time.time() - t0:.0f} s: {body!r}; waiting {RETRY} s", flush=True)
+        time.sleep(RETRY)
+
+
+def probe_domains():
+    """One generic query per doubtful domain over the 2025 window; empty means GDELT does not carry the site."""
+    cache = RAW / "domain_probe.json"
+    dead = json.loads(cache.read_text()) if cache.exists() else {}
+    for dom in PROBE_DOMAINS:
+        if dom in dead:
+            continue
+        start, end = WINDOWS[2025]
+        df = fetch(f"mayor domain:{dom}", "timelinevol", start, end)
+        dead[dom] = bool(df.empty or df.value.sum() == 0)
+        print(f"probe {dom}: days={len(df)} total={df.value.sum() if len(df) else 0:.4f} -> {'SKIP' if dead[dom] else 'ok'}", flush=True)
+        cache.write_text(json.dumps(dead, indent=1))
+        time.sleep(PAUSE)
+    return {d for d, v in dead.items() if v}
 
 
 def main():
     RAW.mkdir(parents=True, exist_ok=True)
     out = RAW / "gdelt_nyc_daily.csv"
+    empties = RAW / "empty_series.txt"
     done = set()
     if out.exists():
         prev = pd.read_csv(out)
@@ -57,20 +91,27 @@ def main():
         frames = [prev]
     else:
         frames = []
-    for cycle, cands in CANDIDATES.items():
+    if empties.exists():
+        done |= {(int(c), a, d) for c, a, d in (l.split(",") for l in empties.read_text().split("\n") if l.strip())}
+    skip = probe_domains()
+    for cycle, cand, phrase in CANDIDATES:
         start, end = WINDOWS[cycle]
-        for cand, phrase in cands.items():
-            for dom in DOMAINS:
-                if (cycle, cand, dom) in done:
-                    continue
-                query = phrase + (f" domain:{dom}" if dom != "ALL" else " sourcelang:english")
-                vol = fetch(query, "timelinevol", start, end); time.sleep(20)
-                tone = fetch(query, "timelinetone", start, end); time.sleep(20)
-                df = vol.rename(columns={"value": "volume"}).merge(tone.rename(columns={"value": "tone"}), on="date", how="outer")
-                df["cycle"] = cycle; df["candidate"] = cand; df["domain"] = dom
-                frames.append(df)
-                pd.concat(frames, ignore_index=True).to_csv(out, index=False)
-                print(f"{cycle} {cand:9s} {dom:16s} days={len(df)} mean_vol={df.volume.mean():.4f} mean_tone={df.tone.mean():+.2f}")
+        for dom in DOMAINS:
+            if (cycle, cand, dom) in done or dom in skip:
+                continue
+            query = phrase + (f" domain:{dom}" if dom != "ALL" else " sourcelang:english")
+            vol = fetch(query, "timelinevol", start, end); time.sleep(PAUSE)
+            tone = fetch(query, "timelinetone", start, end); time.sleep(PAUSE)
+            df = vol.rename(columns={"value": "volume"}).merge(tone.rename(columns={"value": "tone"}), on="date", how="outer")
+            if df.empty:
+                with empties.open("a") as f:
+                    f.write(f"{cycle},{cand},{dom}\n")
+                print(f"{cycle} {cand:9s} {dom:16s} EMPTY (recorded)", flush=True)
+                continue
+            df["cycle"] = cycle; df["candidate"] = cand; df["domain"] = dom
+            frames.append(df)
+            pd.concat(frames, ignore_index=True).to_csv(out, index=False)
+            print(f"{cycle} {cand:9s} {dom:16s} days={len(df)} mean_vol={df.volume.mean():.4f} mean_tone={df.tone.mean():+.2f}", flush=True)
     print("wrote", out)
 
 
