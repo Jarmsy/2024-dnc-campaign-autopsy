@@ -1104,6 +1104,19 @@ Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-pr
 
 ---
 
+### K-bis.2 Coverage of the challenger cases
+
+`src/data_collection/gdelt_insurgent_pull.py`, notebook 19 section 6. Window: the 90 days ending on each case's primary date, all English sources (`sourcelang:english`), one series per candidate per case; the post-primary period is excluded because coverage after a result is largely caused by it. Opponent names are mapped from FEC filer format to press usage by hand (`OPP_NAME`). 42 candidate-series, 41 with ≥ 10 covered days (Sameena Mustafa IL-5 2018 has 3 and is dropped); median covered days 45 challengers, 64 incumbents.
+
+**By tier** (challengers, volume-weighted tone; volume is mean daily intensity × 1000): DSA n = 8, tone −1.10 (sd 0.87), volume mean 1.69 / median 1.18; JD-only n = 12, tone −0.89 (sd 0.55), volume 1.95 / 1.42. Differences −0.21 (p = 0.558) and −0.27 (p = 0.660), both null.
+
+**Paired, challenger minus incumbent** (n = 20): tone gap mean +0.70, median +0.42, one-sample t = 3.71 (p = 0.001); 5 of 20 challengers covered more negatively than their opponent. By tier: DSA +1.16, JD-only +0.39. Volume ratio challenger/incumbent median 0.69 (DSA 0.64, JD-only 0.71). Largest gaps: Bush–Clay 2020 +2.61, Bush–Clay 2018 +1.98, Avila Chevalier–Espaillat +1.83, McKinney–Thanedar +1.67, Bowman–Engel +1.37 — incumbents carrying scandals, so the gap reflects incumbent coverage rather than challenger favourability.
+
+**By outcome**: winners (n = 8) tone −1.08, volume 2.13; losers (n = 12) −0.90, 1.66; differences −0.18 (p = 0.625) and +0.47 (p = 0.500). The descriptive difference is null, so no outcome model on tone net of money is estimated — with 20 cases and 8 wins a control cannot recover a signal the raw comparison does not contain, and pre-primary coverage is partly a consequence of expected viability.
+
+**Limits.** Queries are name phrases without district context, so common names accumulate unrelated coverage; Marie Newman's 2018 challenger volume (3.75) exceeds Lipinski's (0.48) in a race she lost by two points, which is contamination. Danny Davis, Mike Quigley and Wesley Bell carry the same risk on the incumbent side. GDELT tone measures lexical valence and not framing (K.2); the null results bound aggregate sentiment only. Tables `insurgent_media_by_tier.csv`, `insurgent_media_paired.csv`.
+
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.

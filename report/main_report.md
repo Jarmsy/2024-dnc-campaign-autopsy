@@ -944,6 +944,26 @@ Counting only expenditures made before each primary, 16 contested JD candidates 
 
 Across the 106 contested cases, doubling the opponent's money ratio costs the JD candidate about 5.5 points of primary vote share. The candidates raised their money differently from the people they ran against: a median 39% of challengers' pre-primary receipts were unitemized small-dollar contributions against 2% for the incumbents they challenged, and 35% against 12% in open seats. Winners and losers do not differ on that share (34% vs 35%); they differ on how much they raised — a median $2.5M for winners against $0.5M for losers — and on which tier they came from.
 
+### Coverage of the challenger cases
+
+The same GDELT pipeline was run on the twenty-one contested challenger races, each insurgent and the incumbent they ran against, over the ninety days ending on the primary date. The window stops at the primary because coverage after a result is mostly a consequence of it — Ocasio-Cortez's volume rose roughly a hundredfold the week she won.
+
+House primary challengers turned out to be far more visible than expected: 41 of 42 candidate-series have at least twenty days with coverage, the exception being Sameena Mustafa in IL-5. Median covered days are 45 for challengers and 64 for the incumbents.
+
+| Challenger coverage, 90 days pre-primary | n | Tone | Volume ×1000 |
+|---|---|---|---|
+| DSA tier | 8 | −1.10 | 1.69 |
+| Justice Democrats only | 12 | −0.89 | 1.95 |
+| *difference* | | −0.21 (p = 0.56) | −0.27 (p = 0.66) |
+
+**There is no DSA penalty in the coverage.** Tone and volume are indistinguishable between the two tiers — which matters because the DSA tier is where Part 11's *money* results concentrate (DSA challengers won six of eight while outspent in every case). Whatever explains that, it is not differential press treatment measured this way.
+
+**Challengers were covered slightly more positively than the incumbents they faced**, not less: a mean tone gap of +0.70, significant across the twenty paired cases (t = 3.71, p = 0.001), with only five challengers covered more negatively than their opponent. The gap is larger in the DSA tier (+1.16) than the JD-only tier (+0.39). This is not evidence of favourable treatment so much as of *incumbent* trouble — the largest gaps belong to Bush against Lacy Clay (+2.61), Avila Chevalier against Espaillat (+1.83) and Bowman against Engel (+1.37), all races where the incumbent was carrying a scandal or a hot-mic episode into the primary. Challengers did get less coverage than incumbents: a median volume ratio of 0.69.
+
+**Coverage does not separate winners from losers.** Winning challengers averaged tone −1.08 and volume 2.13; losers −0.90 and 1.66. Neither difference approaches significance (p = 0.63 and p = 0.50). Because the raw difference is null before any control is applied, no model of outcome on tone net of money is fitted: with twenty cases and eight wins there is nothing for a control to recover, and pre-primary coverage partly reflects expected viability in any case, so a coefficient would confuse cause with consequence.
+
+The honest summary is that the "smeared by all sides" hypothesis does not survive contact with this measure — but it is the same measure Part 10 shows to be nearly blind to framing, and the caveat transfers whole. Queries are bare name phrases with no district context, so common names collect unrelated coverage; Marie Newman's 2018 volume exceeds Lipinski's eight to one in a race she narrowly lost, which is almost certainly contamination rather than a finding.
+
 ### What this says about the New York case
 
 Mamdani's primary — outspent 2.9:1, $21.9M against him — sits inside the pattern of the DSA-tier incumbent challenges: Ocasio-Cortez won at 14:1, Avila Chevalier at 2.6:1 with $1.5M against, Kiros at 2.5:1 with $0.7M against, Bowman at 2.2:1 with $0.8M. What those wins share is not money parity but a structure — a long-serving incumbent or establishment favorite in a safe Democratic seat, a challenger who had raised enough to be seen (the winners' median $2.5M) largely in small dollars, and an electorate small enough that organization moves it. The money ratio predicts the margin everywhere; it decides the race for the conventional-progressive slate in open seats and for incumbents facing AIPAC-scale spending, and it has not decided it for the democratic socialists running against incumbents, who are eight for eight in being outspent and six for eight in winning.
