@@ -898,6 +898,24 @@ Against the rest of his own field, Mamdani's coverage raised religion at 7.0% ag
 
 Two things must be said about that table. Mamdani is the first Muslim nominee for the office, so some identity coverage is simply news — but of the 30 articles raising his religion, only 8 use a "first Muslim" or "first South Asian" framing; **22 raise it without that hook.** And salience is not hostility: an article can raise a candidate's faith respectfully, and many did. What the numbers establish is narrower and firmer than either the accusation or the denial — that his religion, the Gaza conflict, and his socialism were present in his coverage at rates no other candidate in either cycle approached, that the differential is large and statistically unambiguous, and that it is invisible to every tone measure in this section.
 
+**Which register each outlet used.** Salience says what a piece raised; this says what it *called him*. Using the same split built for Part 11 — his own term against the loaded one — on article headlines per outlet, with Cuomo as a control so that an outlet's house style differences out:
+
+| Mamdani 2025 headlines | n | His own term | Loaded register | Ratio |
+|---|---|---|---|---|
+| foxnews.com | 394 | 2.8% | **13.5%** | 4.8 : 1 loaded |
+| nypost.com | 701 | 1.4% | **8.6%** | 6.0 : 1 loaded |
+| nydailynews.com | 170 | 0.6% | 3.5% | 6.0 : 1 loaded |
+| **nytimes.com** (census) | 582 | **7.6%** | 2.1% | **1 : 3.6 — inverted** |
+| cnn.com | 121 | 2.5% | **0.0%** | none |
+
+The ratio is the finding. The *Post* called him a democratic socialist or a progressive in 1.4% of its headlines about him and reached for *radical*, *far-left* or bare *socialist* in 8.6% — six to one. Fox is 4.8 to one. The *Times* inverts it, using his own term nearly four times as often as the loaded one, and CNN used the loaded register in none of its 121 headlines. These are the same two registers describing the same candidate; what differs is which one each newsroom reached for.
+
+Against Cuomo inside each outlet, one comparison survives cleanly. **In the *Post*, Mamdani drew a loaded label in 8.6% of headlines against Cuomo's 2.1% — a gap of 6.5 points, p = 0.0004.** Fox's gap (13.5% against 8.5%) is not significant, because Fox ran loaded language about the whole race; the *Daily News* gap is nil. That control needed cleaning first: 52.8% of Cuomo headlines also name Mamdani, and "Cuomo vows to stand up to the far left" scores as a loaded label for Cuomo, so his rate is inflated by coverage of his opponent (7.1% in headlines naming Mamdani, 3.0% in those that do not, p = 0.027). The comparison uses only Cuomo headlines that leave Mamdani out.
+
+Threat language is flat across outlets (0.8–3.1%) and no higher for Mamdani than Cuomo anywhere. As in Part 11, the fear connotation rides on the label, not on separate threat vocabulary.
+
+Two absences are themselves findings. **GDELT returns no `washingtonpost.com` articles whatsoever for 2025** — not for Mamdani, not for Cuomo, not for a generic query — so a *Post*-style national paper cannot be assessed here at all. And GDELT's `nytimes.com` crawl is the 5.8%-recall artifact documented above, which is why the *Times* row comes from the paper's own archive. Two of the three most-cited national newspapers are effectively invisible in the crawl, which is a caution about every aggregate in this section, not only this table.
+
 What the coverage data support, then, is narrower than the claim they are usually asked to carry. Mamdani was not covered more negatively than the last Democratic nominee; he was covered far more, and once nominated, somewhat more negatively than his opponent on every outlet including the nominally friendly ones. The Fox and *Post* numbers are the clearest outlet-level signal — the most coverage relative to Cuomo and the most negative tone — which is where a socialist nominee would expect it; the point is that the *Daily News* and CNN moved the same way, by less. What none of it measures is what any voter read: these are publication counts, not audience, and the individual articles a reader might remember as decisive are invisible in an average. That limit is worth stating precisely, because it is the one most likely to be forgotten. **Sentiment scoring cannot detect framing.** A headline can raise a candidate's religion, or his associations, or his foreign policy, in a way a reader experiences as an accusation, while scoring neutral or positive on every lexicon here — and 582 articles averaged to +0.11 would not move. The finding is that neither GDELT nor the *Times* census shows a negative shift in aggregate sentiment. That is evidence against one specific claim, the claim of broadly more hostile coverage than a comparable nominee received. It is not evidence about any particular article, and nothing in this section should be read as adjudicating one.
 
 ### What this does and does not show
