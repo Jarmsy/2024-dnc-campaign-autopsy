@@ -1117,6 +1117,23 @@ Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-pr
 **Limits.** Queries are name phrases without district context, so common names accumulate unrelated coverage; Marie Newman's 2018 challenger volume (3.75) exceeds Lipinski's (0.48) in a race she lost by two points, which is contamination. Danny Davis, Mike Quigley and Wesley Bell carry the same risk on the incumbent side. GDELT tone measures lexical valence and not framing (K.2); the null results bound aggregate sentiment only. Tables `insurgent_media_by_tier.csv`, `insurgent_media_paired.csv`.
 
 
+### K-bis.3 Framing of the challenger cases
+
+`src/data_collection/gdelt_artlist_pull.py`, `src/analysis/framing.py`, notebook 19 section 7. GDELT DOC `mode=artlist` returns one record per article with title, domain, date and URL; 10,516 de-duplicated articles for the 21 challengers over the same 90-day pre-primary windows, across 2,145 domains.
+
+**Cap handling.** Each query returns at most 250 records sorted by date, and truncation is not random — it retains the end of the window. Cori Bush 2020 returned 250 articles spanning 11 days of a 90-day window; Kina Collins returned 113 over 38 days and was complete. `fetch_window` detects a cap-hit and bisects recursively to a 12-hour floor: 1 query for quiet candidates, up to 29 for Ayanna Pressley (1,927 articles). One sub-window (Cori Bush, 2–3 Aug 2018) remained capped at the floor and is flagged in the output.
+
+**Lexicon registers.** Self-description `progressive|democratic[\s-]socialis|left[\s-]wing|liberal`; loaded `radical|far[\s-]left|hard[\s-]left|ultra[\s-]left|extremis|extreme|marxis|communis|socialist|socialism|leftis`; threat `threat|danger|takeover|purge|purity|war on|destroy|attack on|assault on|coup|invasion`; delegitimising `fringe|upstart|unqualified|gadfly|novice|unknown|inexperienc`; plus identity, Israel/Gaza, insurgency and policy. A headline matching `democratic socialist` is reclassified out of "loaded" unless it also carries an independently loaded term, so accurate description of a DSA member is not scored as hostile labelling. `loaded_share` = loaded headlines ÷ headlines carrying any ideological label.
+
+**By tier** (rates over headlines): DSA n = 2,899 — self-description 14.4%, loaded 1.7%, threat 0.6%, identity 1.4%, Israel/Gaza 3.7%, loaded share 10.5%. JD-only n = 7,617 — 9.7%, 0.2%, 0.6%, 0.5%, 0.8%, 2.1%. Welch p: loaded 1.7 × 10⁻⁹, identity 1.4 × 10⁻⁴, Israel/Gaza 1.4 × 10⁻¹⁵, threat 0.89 (null). Decomposition of the 49 loaded DSA headlines: 29 contain bare `socialist`, 14 contain `radical|far-left|Marxist|extremist`; the radical-family rate is 0.48% (DSA) vs 0.12% (JD-only).
+
+**By outlet class** (right = 15 named conservative domains, mainstream = 16 named national outlets, other = the remaining 2,114): right/DSA n = 148, loaded 14.9%, threat 3.4%, loaded share 68.8%; right/JD-only n = 159, 3.1%, 2.5%, 26.3%; mainstream/DSA n = 266, 0.4%, 1.9%, 3.0%; mainstream/JD-only n = 597, 0.0%, 0.2%, 0.0%; other/DSA n = 2,485, 1.0%; other/JD-only n = 6,861, 0.2%. Right vs mainstream within tier: DSA p = 2.5 × 10⁻⁶, JD-only p = 0.025; DSA vs JD-only within right outlets p = 3.8 × 10⁻⁴. Right-leaning outlets are 2.9% of articles and 41.5% of loaded headlines; mainstream supply 1.5%.
+
+**By cycle** (DSA only): 2018 n = 635, loaded 1.6%, Israel/Gaza 0.3%, loaded share 8.7%; 2020 n = 1,476, 0.1%, 3.1%, 1.1%; 2026 n = 788, 4.7%, 7.6%, 22.3%.
+
+**Limits.** Headlines only, so body framing is unobserved. The lexicon counts mentions, not stance: "Fox News Keeps Accidentally Making Really Good Arguments for Socialism" matches loaded while being sympathetic, and attributed labels ("Republicans call her a radical") score as labels. Outlet classification is by hand-listed domain and covers 2.9% of articles as right and 8.2% as mainstream; 89% fall in an unclassified tail. Name-phrase queries carry the contamination risk noted in K-bis.2. No individual article is characterised. Tables `insurgent_framing_by_tier.csv`, `insurgent_framing_by_outlet.csv`, `insurgent_framing_by_cycle.csv`.
+
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.

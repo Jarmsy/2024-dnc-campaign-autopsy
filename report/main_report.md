@@ -964,6 +964,36 @@ House primary challengers turned out to be far more visible than expected: 41 of
 
 The honest summary is that the "smeared by all sides" hypothesis does not survive contact with this measure — but it is the same measure Part 10 shows to be nearly blind to framing, and the caveat transfers whole. Queries are bare name phrases with no district context, so common names collect unrelated coverage; Marie Newman's 2018 volume exceeds Lipinski's eight to one in a race she narrowly lost, which is almost certainly contamination rather than a finding.
 
+### How they were framed
+
+Tone answers the wrong question, for the reason Part 10 documents: it scores word valence and is nearly blind to framing. The claim actually made about insurgent-left candidates is not that the average adjective in their coverage is negative — it is that a particular description gets reached for. That is measurable. Article-level headlines for all twenty-one challengers (10,516 articles, 2,145 domains, same ninety-day pre-primary windows) were classified by which register of label they use.
+
+The design turns on one distinction. **Calling a DSA member a "democratic socialist" is accurate reporting**, so a raw socialist-mention rate would score description and smear identically and then discover, uselessly, that socialists get called socialists. Labels are split into the candidate's own register (*democratic socialist*, *progressive*) and the loaded one (*radical*, *far-left*, *Marxist*, *communist*, *extremist*, and bare *socialist* without *democratic*), with threat framing (*dangerous*, *takeover*, *purge*) counted separately because fear framing needs no label.
+
+| Challenger headlines | Self-description | Loaded label | Threat | Israel / Gaza | Loaded share |
+|---|---|---|---|---|---|
+| DSA tier (n = 2,899) | 14.4% | **1.7%** | 0.6% | **3.7%** | **10.5%** |
+| Justice Democrats only (n = 7,617) | 9.7% | 0.2% | 0.6% | 0.8% | 2.1% |
+
+DSA challengers draw loaded labels at roughly eight times the rate (p < 10⁻⁸), and the Israel–Gaza frame at nearly five times (p < 10⁻¹⁴). But the first number needs deflating: of the 49 loaded DSA headlines, **29 are the bare word *socialist* and only 14 are *radical*, *far-left*, *Marxist* or *extremist*.** Most of the tier gap is a description that happens to be true. The genuinely loaded family runs 0.48% against 0.12% — a real fourfold difference on a very small base. Threat framing is identical across tiers (0.6% each, p = 0.89).
+
+**The framing is almost entirely a right-media phenomenon.** Splitting by publisher is what the aggregate was hiding:
+
+| | Loaded label | Threat | Loaded share |
+|---|---|---|---|
+| Right-leaning outlets, DSA (n = 148) | **14.9%** | 3.4% | **68.8%** |
+| Right-leaning outlets, JD-only (n = 159) | 3.1% | 2.5% | 26.3% |
+| Mainstream outlets, DSA (n = 266) | 0.4% | 1.9% | 3.0% |
+| Mainstream outlets, JD-only (n = 597) | 0.0% | 0.2% | 0.0% |
+
+In right-leaning outlets a DSA challenger's headline carries a loaded label 14.9% of the time against 0.4% in mainstream ones (p = 2.5 × 10⁻⁶), and when such a headline reaches for an ideological label it picks the hostile register **69%** of the time against 3%. The concentration is the single starkest number in this section: **right-leaning outlets are 2.9% of the articles and 41.5% of the loaded headlines; mainstream outlets supply 1.5%.**
+
+**And it intensified.** Across DSA challengers the loaded share runs 8.7% in 2018, 1.1% in 2020, and 22.3% in 2026, with the Israel–Gaza frame rising 0.3% → 3.1% → 7.6% across the same cycles.
+
+Two limits. The lexicon counts *mentions, not stance*: "Fox News Keeps Accidentally Making Really Good Arguments for Socialism" matches the loaded pattern while being sympathetic, and "Republicans call her a radical" scores the same as "the radical candidate." And the outlet classes are small — 307 of 10,516 articles are in named right or mainstream domains, with 89% in a long tail of 2,145 mostly local and aggregator sites, where the DSA loaded rate sits between the two at 1.0%. The direction is unambiguous; the magnitudes rest on a few hundred headlines.
+
+So the answer to "smeared by all sides" is no, and the precision matters: they were labelled hostilely by one side, at a high rate, increasingly over time, while mainstream coverage used the loaded register almost never.
+
 ### What this says about the New York case
 
 Mamdani's primary — outspent 2.9:1, $21.9M against him — sits inside the pattern of the DSA-tier incumbent challenges: Ocasio-Cortez won at 14:1, Avila Chevalier at 2.6:1 with $1.5M against, Kiros at 2.5:1 with $0.7M against, Bowman at 2.2:1 with $0.8M. What those wins share is not money parity but a structure — a long-serving incumbent or establishment favorite in a safe Democratic seat, a challenger who had raised enough to be seen (the winners' median $2.5M) largely in small dollars, and an electorate small enough that organization moves it. The money ratio predicts the margin everywhere; it decides the race for the conventional-progressive slate in open seats and for incumbents facing AIPAC-scale spending, and it has not decided it for the democratic socialists running against incumbents, who are eight for eight in being outspent and six for eight in winning.
