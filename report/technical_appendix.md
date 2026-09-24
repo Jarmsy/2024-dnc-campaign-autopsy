@@ -1140,6 +1140,28 @@ Notebook 17 section 4d. 3,848 EDs with at least 100 enrolled Democrats in Februa
 
 ---
 
+### K.2d Replication: June 2026 congressional primaries
+
+`src/data_collection/nyc_2026_primary_pull.py`, notebook 17 section 4e. NYC BOE ED-level CSVs for the 23 June 2026 Democratic House primaries (`election_results/2026/20260623Primary Election/`). Congressional primaries are not ranked-choice and are published by ED in the header-prefixed format `nyc_pull.read_boe_edlevel` parses. BOE also publishes a "Crossover" file for each multi-county district; each was checked to equal exactly the union of that district's county files (no crossover-only EDs), so only county files are read. Rows labelled Public Counter, Manually Counted Emergency, Absentee / Military, Federal and Affidavit are ballot-method tallies and are summed separately as ballots; the remainder are candidate votes. Extracted candidate totals reconcile exactly to the BOE's district totals.
+
+**Races and classification.** Left candidate by the candidates' own positioning, not the result: NY-7 (open) Valdez, DSA, 39,626 vs Reynoso 25,127; NY-10 Lander 58,047 vs incumbent Goldman 29,781; NY-13 Avila Chevalier, DSA, 36,292 vs incumbent Espaillat 33,555; NY-6 Park 14,335 vs incumbent Meng 18,971 (Park ran to Meng's left on AIPAC funding and the Mets casino); NY-15 Blake 7,474 vs incumbent Torres 24,598 (on Israel, AIPAC and affordability). NY-3, 9, 11, 12 and 14 are pulled but lack an establishment-versus-left axis of this kind and are not used.
+
+**District lines.** 99.7% of the 2026 in-play ED numbers exist in the November 2025 panel. Registered totals per ED correlate 0.994 between the February and November 2025 snapshots (0.2% of EDs changing more than 25%) but only 0.882 between November 2025 and February 2026, with 6.9% changing more than 25% in both directions — boundary edits rather than a purge, which would move one way. Those EDs (`lines_changed`) are excluded from the main estimates and restored as a robustness check.
+
+**Sample.** EDs with at least 25 votes in the 2026 contest, at least 25 ballots in the 2025 primary, a 2020 and 2024 presidential result, not combined, and plausible turnout (0–1.2 of enrolment): 1,639; 1,520 with stable lines.
+
+**Within-race weighted correlation of the 2026 left head-to-head share with Mamdani's 2025 head-to-head share** (stable lines / all EDs): NY-10 0.958 / 0.950; NY-7 0.917 / 0.918; NY-13 0.899 / 0.901; NY-6 0.872 / 0.860; NY-15 0.695 / 0.682. Correlation with the 2020→2024 swing: NY-13 −0.467, NY-10 −0.207, NY-6 +0.089, NY-7 −0.025, NY-15 −0.026. Aggregate head-to-head in the same EDs, Mamdani 2025 → left 2026: NY-10 68.7 → 67.0; NY-7 76.2 → 62.4; NY-13 60.2 → 52.2; NY-6 50.8 → 42.8; NY-15 39.4 → 22.9.
+
+**Pooled WLS, race fixed effects, weighted by 2026 votes, HC1** (`nyc_2026_replication_models.csv`), stable lines: Mamdani share only, coefficient 0.952 (SE 0.012), R² 0.896 (all EDs 0.889); demographics only (age 18–34 share, BA share, 2024 swing, Hispanic, Black and Asian shares, log income), R² 0.545, with BA share +0.432 (0.052) and swing −0.453 (0.106) and age +0.059 (0.041, n.s.); both, R² 0.907, Mamdani share 0.975 (0.013), age −0.081 (0.017), BA share +0.014 (0.020), swing −0.069 (0.030). Once the Mamdani geography is in the model, the demographic terms add about one point of R², and the age term changes sign: within a race, young districts were not additionally favourable beyond what the 2025 map already captured.
+
+**Turnout** (`nyc_2026_replication_turnout.csv`), quintiles of Mamdani 2025 share formed within race; turnout is primary ballots as a share of total Democratic enrolment at the snapshot six days after each cycle's 14 February party-change deadline (2025-02-20 and 2026-02-20): Q1 25.8% → 16.7%, Q2 27.9 → 16.5, Q3 31.8 → 18.3, Q4 37.8 → 21.9, Q5 40.5 → 22.8. Strongest-to-weakest ratio 1.57 in 2025, 1.36 in 2026; share of 2025 turnout retained, 0.649 in Q1 falling to 0.562 in Q5.
+
+**Swing.** WLS with race fixed effects, 2026 left head-to-head on the 2020→2024 swing to Trump: −0.402 (SE 0.090) alone; −0.103 (0.028, p = 0.0003) net of Mamdani's 2025 share.
+
+**Limits.** Ecological: the same places, not demonstrably the same voters. The level comparison crosses different opponents — Cuomo in 2025, five establishment candidates in 2026 — so the shortfall bounds a decline rather than measuring one. A midterm-year congressional primary and a mayoral primary differ in turnout structurally; the gradient, not the level, is the comparable quantity. NY-13's two leading candidates were both Dominican-American and NY-6's both Asian-American, so candidate ethnicity is held roughly constant there but not in general. Five races in one city.
+
+---
+
 ### K.3 Mamdani in office, 2026 (scope note)
 
 Hand-entered from pollster releases into `data/raw/nyc/mamdani_approval_polls.csv`, with a `verified` column marking primary-source against secondary entries; regional and demographic crosstabs in `mamdani_favorability_crosstabs_siena_aug2026.csv`. Three distinct constructs are kept apart and not blended.
