@@ -1075,9 +1075,19 @@ Turnout exists everywhere. Democratic House primary votes by district, from the 
 
 Individual races moved a great deal — Bowman's NY-16 primary nearly tripled (2.96×) and Pressley's MA-7 rose 2.69× — but so did Saira Rao's CO-1 at 2.06×, where she took 31.7% and lost. Turnout growth does not track insurgent success, and in a cycle when every district's primary grew, a district that grew is not evidence of anything in particular.
 
-**Two of the most significant cases have no computable ratio, and the reason is substantive.** Both Ocasio-Cortez's NY-14 and Richardson's FL-7 followed a cycle in which the Democratic incumbent faced *no primary at all*. Crowley was unopposed in 2016; Ocasio-Cortez's 29,778-vote contest in 2018 has no baseline to grow from. The insurgency did not expand an existing contest — it created one. That is invisible in a ratio and is arguably the more important pattern.
+**The 2026 cases need a different benchmark and give the same answer.** The FEC publishes its compilation after each general election, so neither 2024 nor 2026 exists yet; totals for every district in the five relevant states were taken from the state election articles instead, which allows each insurgent district to be compared with the others in its own state and cycle rather than with a national figure:
 
-So the New York result does not generalise on this measure. Mamdani's turnout gradient was measured *within* a single city across 3,800 election districts against a fixed enrolment baseline; this is a comparison of fourteen whole districts against a national trend, a far weaker design, and it returns nothing. What travels from New York is not established here.
+| 2026 case | Turnout growth 2024→2026 | State median | |
+|---|---|---|---|
+| Kiros, CO-1 | 2.01× | 1.69× (n=7) | above |
+| McKinney, MI-13 | 1.38× | 1.58× (n=5) | **below** |
+| Bush, MO-1 | 1.14× | 1.59× (n=7) | **below** |
+
+Two of the three fall below their own state's median, and Cori Bush's attempted comeback in MO-1 had the second-lowest turnout growth of any Missouri district. Seventeen cases now have a computable ratio and none of them shows insurgent races expanding the electorate beyond what their cycle and state were doing anyway.
+
+**Four cases have no computable ratio, and that is the finding the ratio cannot express.** Ocasio-Cortez's NY-14 in 2018, Richardson's FL-7 in 2018, Avila Chevalier's NY-13 in 2026 and Allam's NC-4 in 2026 all followed a cycle in which the Democratic incumbent faced *no primary whatsoever* — Crowley, Murphy, Espaillat and Foushee each advanced without appearing on a ballot. Ocasio-Cortez's 29,778-vote contest has nothing to grow from. **Nearly a fifth of the contested challenges, and two of the eight wins, came in seats where no primary had been held the cycle before.** The insurgency did not expand an existing contest; it created one where the party had stopped holding them.
+
+So the New York result does not generalise on this measure. Mamdani's turnout gradient was measured *within* one city across 3,800 election districts against a fixed enrolment baseline; this compares seventeen whole districts against a cycle or state trend, a far weaker design, and it returns nothing. What travels from New York is not established here — though the four canceled-primary cases suggest the more consequential act may be contesting a seat at all, which no turnout ratio can measure.
 
 ### What this says about the New York case
 
