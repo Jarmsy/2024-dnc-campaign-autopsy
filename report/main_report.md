@@ -1058,6 +1058,27 @@ Two limits. The lexicon counts *mentions, not stance*: "Fox News Keeps Accidenta
 
 So the answer to "smeared by all sides" is no, and the precision matters: they were labelled hostilely by one side, at a high rate, increasingly over time, while mainstream coverage used the loaded register almost never.
 
+### Did the insurgents expand the electorate?
+
+Part 10 found that Mamdani's strongest districts both added Democrats and voted at far higher rates. Whether House insurgents did the same cannot be asked of registration: **twelve of the twenty-one cases are in states that do not register voters by party at all** — Illinois, Missouri, Texas, Michigan and Ohio — so the question is undefined there rather than unmeasured, and the nine that remain are a closed-primary subset that would not stand for the rest.
+
+Turnout exists everywhere. Democratic House primary votes by district, from the FEC's biennial compilation, compared with the same district in the preceding cycle:
+
+| | National median | Insurgent cases |
+|---|---|---|
+| 2018 vs 2016 | 1.24× (n = 241) | 1.25× (n = 6) |
+| 2020 vs 2018 | 1.53× (n = 271) | 1.67× (n = 6) |
+| 2022 vs 2020 | 0.62× (n = 240) | 0.61× (n = 2) |
+| *pooled* | *1.09×* | *1.29×* |
+
+**Within cycle, insurgent races tracked the national trend.** Every difference is null (p = 0.36, 0.38, 0.49). The pooled row looks like a finding and is an artifact: primary turnout swings enormously between cycles, the case set is concentrated in the two cycles when it rose and thin in the one when it collapsed, and pooling converts that imbalance into a spurious 20-point gap.
+
+Individual races moved a great deal — Bowman's NY-16 primary nearly tripled (2.96×) and Pressley's MA-7 rose 2.69× — but so did Saira Rao's CO-1 at 2.06×, where she took 31.7% and lost. Turnout growth does not track insurgent success, and in a cycle when every district's primary grew, a district that grew is not evidence of anything in particular.
+
+**Two of the most significant cases have no computable ratio, and the reason is substantive.** Both Ocasio-Cortez's NY-14 and Richardson's FL-7 followed a cycle in which the Democratic incumbent faced *no primary at all*. Crowley was unopposed in 2016; Ocasio-Cortez's 29,778-vote contest in 2018 has no baseline to grow from. The insurgency did not expand an existing contest — it created one. That is invisible in a ratio and is arguably the more important pattern.
+
+So the New York result does not generalise on this measure. Mamdani's turnout gradient was measured *within* a single city across 3,800 election districts against a fixed enrolment baseline; this is a comparison of fourteen whole districts against a national trend, a far weaker design, and it returns nothing. What travels from New York is not established here.
+
 ### What this says about the New York case
 
 Mamdani's primary — outspent 2.9:1, $21.9M against him — sits inside the pattern of the DSA-tier incumbent challenges: Ocasio-Cortez won at 14:1, Avila Chevalier at 2.6:1 with $1.5M against, Kiros at 2.5:1 with $0.7M against, Bowman at 2.2:1 with $0.8M. What those wins share is not money parity but a structure — a long-serving incumbent or establishment favorite in a safe Democratic seat, a challenger who had raised enough to be seen (the winners' median $2.5M) largely in small dollars, and an electorate small enough that organization moves it. The money ratio predicts the margin everywhere; it decides the race for the conventional-progressive slate in open seats and for incumbents facing AIPAC-scale spending, and it has not decided it for the democratic socialists running against incumbents, who are eight for eight in being outspent and six for eight in winning.

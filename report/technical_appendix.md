@@ -1173,6 +1173,22 @@ Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-pr
 **Limits.** Queries are name phrases without district context, so common names accumulate unrelated coverage; Marie Newman's 2018 challenger volume (3.75) exceeds Lipinski's (0.48) in a race she lost by two points, which is contamination. Danny Davis, Mike Quigley and Wesley Bell carry the same risk on the incumbent side. GDELT tone measures lexical valence and not framing (K.2); the null results bound aggregate sentiment only. Tables `insurgent_media_by_tier.csv`, `insurgent_media_paired.csv`.
 
 
+### K-bis.4 Primary turnout expansion
+
+`src/data_collection/fec_primary_turnout_pull.py`, notebook 19 section 8. Democratic House primary votes per district from the FEC biennial compilation `federalelections<year>.xlsx`, sheet "US House Results by State" (document ids 1890/2706/4228/5676 for 2016/2018/2020/2022; they are not derivable and are read off each year's page). The sheet interleaves candidate rows with summary rows keyed by the TOTAL VOTES column; a district's Democratic primary turnout is the `Party Votes:` row with `PARTY == "D"`. The 2016 workbook names the district column `D` and later ones `DISTRICT`. Extracted: 255 / 308 / 287 / 277 districts for 2016 / 2018 / 2020 / 2022.
+
+**Registration is not available for this question.** Twelve of the twenty-one contested challenger cases sit in states without party registration — IL (5), MO (3), TX (2), MI (1), OH (1) — so the NYC enrollment design (K.2c) cannot be replicated; the nine in NY, CO, MA, FL and NC are a closed-primary subset and would give district-level n = 9 with no within-case variation.
+
+**Coverage.** 14 of 21 cases have both their own cycle and the preceding one. Five are 2026 cases, for which no FEC compilation exists (2024 and 2026 are both unpublished). Two — Ocasio-Cortez NY-14 2018 and Richardson FL-7 2018 — had an **unopposed** Democratic primary in the prior cycle, so the ratio is undefined; this is recorded as substantive rather than missing.
+
+**Within-cycle comparison against all districts with the same cycle pair** (`outputs/tables/insurgent_turnout_vs_national.csv`): 2018 national median 1.24 (n = 241) vs insurgent 1.25 (n = 6), Mann-Whitney p = 0.361; 2020 1.53 (271) vs 1.67 (6), p = 0.376; 2022 0.62 (240) vs 0.61 (2), p = 0.490. Pooled across cycles the medians are 1.09 against 1.29, which is a composition artifact of the case set overweighting 2018 and 2020 and is reported only to show the trap.
+
+**Per case** (`insurgent_primary_turnout.csv`), growth high to low: Bowman NY-16 2.96; Pressley MA-7 2.69; Rao CO-1 2.06; Morse MA-1 2.04; Cisneros TX-28 2020 1.91; Bush MO-1 2018 1.61; Harper OH-3 1.43; Newman IL-3 2020 1.16; Bush MO-1 2020 1.05; Newman IL-3 2018 0.88; Mustafa IL-5 0.83; Cisneros TX-28 2022 0.66; Clark IL-7 0.64; Collins IL-7 2022 0.57. By tier: DSA n = 3 median 1.61, JD-only n = 11 median 1.16. By outcome: winners n = 4 median 1.93, losers n = 10 median 1.16.
+
+**Limits.** District numbers do not denote the same territory across a redistricting, so the two 2022 cases (IL-7, TX-28) mix turnout change with boundary change and are flagged `crosses_redistricting`. Tier and outcome splits rest on three and four cases respectively and are descriptive only. The design is between-district across fourteen cases against a national trend, far weaker than K.2c's within-city comparison across 3,800 election districts with a fixed enrollment denominator; a null here does not establish that the New York mechanism is absent, only that this measure does not detect it.
+
+---
+
 ### K-bis.3 Framing of the challenger cases
 
 `src/data_collection/gdelt_artlist_pull.py`, `src/analysis/framing.py`, notebook 19 section 7. GDELT DOC `mode=artlist` returns one record per article with title, domain, date and URL; 10,516 de-duplicated articles for the 21 challengers over the same 90-day pre-primary windows, across 2,145 domains.
