@@ -573,6 +573,12 @@ AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp 
 
 Notebook 07 §1b, §2, §5b. CES 2024 respondents by county news environment: 547 in 112 news deserts, 8,003 in 1,253 single-outlet counties, 48,085 in 1,288 counties with 2+ outlets; 8,188 in nonmetro counties. Among recalled Biden voters: 164 in deserts, 2,073 in single-outlet counties.
 
+**Resolution of the media-diet measure, and what it bounds.** The CES media battery is `CC24_300_1..5` (past 24 hours, check-all: social media, TV news, newspaper, radio, none) plus `CC24_300b_1..8` for networks. Its resolution is very uneven, and this limits what the diet results can be read to mean. Reported use in the past 24 hours: social media 79–82% across all three news environments, against newspaper 26–34%, local TV 41–46%, Fox 17–19%, CNN 12–16%, MSNBC 9–13%. **A variable with 81% prevalence and no variation across environments cannot discriminate.** It asks whether a respondent opened a social platform, not which one, whose accounts, or what politics the feed carried; and it is silent on podcasts, YouTube, Substack, partisan digital outlets and group chats, which are not in the instrument at all.
+
+The consequence is that coefficient magnitudes in E.3 and E.4 partly track measurement resolution rather than substantive importance. Fox is measured sharply and returns −0.880 in the media-only gap model and +1.868 in the switching logit; social media is measured bluntly and returns −0.094 and −0.619. That ordering should not be read as "Fox matters and social media does not" — the sharp instrument moves and the blunt one cannot. **The media-diet findings in Part 4 are therefore scoped to legacy television and print, where the instrument discriminates, and are close to uninformative about social and digital media.**
+
+This does not disturb the environment-versus-diet conclusion, which rests on the variance decomposition of the *outcome*: only 4.7% of the variance in perceived economy lies between counties at all, falling to 0.5% after composition, and no predictor's measurement quality changes that. Poorly measured diet cannot rescue a geographic story. What it does disturb is any ranking of which diets matter.
+
 **Media diet by environment** (`outputs/tables/multilevel_news_media_diet.csv`, unweighted shares, past 24 h):
 
 | | N | Newspaper | Local TV | Fox | MSNBC | CNN | Social | No news |
@@ -1089,6 +1095,22 @@ Tables `nyt_census_tone.csv`, `nyt_census_tone_validation.csv`, `nyt_census_tone
 *Two-candidate contamination.* 52.8% of Cuomo headlines name Mamdani, and Cuomo's loaded rate is 7.1% in those against 3.0% in the rest (p = 0.027) — headlines like "Cuomo vows to stand up to the far left" score the loaded label for Cuomo. Within-outlet comparisons therefore use only Cuomo headlines that do not mention Mamdani: *Post* 8.6% vs 2.1%, diff +6.5pp, p = 0.0004; Fox 13.5% vs 8.5%, +4.9pp, p = 0.27; *Daily News* 3.5% vs 2.9%, +0.7pp, p = 0.78; CNN 0 vs 0. Tables `nyc_framing_by_outlet.csv`, `nyc_framing_vs_cuomo.csv`; figure `nyc_framing_by_outlet.png`.
 
 **Coalitions** (3,790 EDs usable in all of 2017, 2020, 2021, 2024, 2025). By swing decile 1 … 10: de Blasio 2017 general 74.5 / 70.7 / 68.7 / 63.3 / 59.9 / 58.8 / 62.2 / 67.1 / 70.9 / 72.5%; Adams 2021 general 78.3 / 74.2 / 72.7 / 65.5 / 61.2 / 59.3 / 59.6 / 62.7 / 64.9 / 68.5%; Harris 84.4 … 54.2%; Mamdani 64.1 / 56.1 / 52.7 / 47.8 / 45.9 / 43.7 / 44.5 / 47.9 / 49.5 / 53.6%; Adams vs Garcia 2021 primary 33.7 / 45.7 / 49.2 / 53.2 / 51.4 / 53.5 / 59.0 / 60.3 / 62.0 / 51.8%; Adams vs Wiley 40.2 … 57.8%; Wiley first choices 29.3 … 16.4%; Mamdani vs Cuomo 67.5 / 59.1 / 55.1 / 53.5 / 55.2 / 52.5 / 50.2 / 52.5 / 51.6 / 57.1%. By majority (Hispanic / Asian / Black / mixed / white): de Blasio 2017 83.1 / 54.2 / 92.0 / 68.5 / 50.1; Adams 2021 75.8 / 51.6 / 90.9 / 66.9 / 57.8; Mamdani 58.4 / 46.5 / 63.6 / 57.7 / 41.3; Adams vs Garcia 62.4 / 45.7 / 84.1 / 50.0 / 29.4; Adams vs Wiley 59.9 / 56.6 / 71.3 / 50.7 / 45.6; Mamdani vs Cuomo 55.3 / 61.4 / 43.8 / 64.6 / 56.2. ED-level correlations weighted by 2025 votes: Mamdani general with de Blasio 2017 0.80, Harris 0.79, Adams 2021 0.72, Wiley first 0.81; Mamdani primary head-to-head with Wiley first 0.82, with Adams-vs-Wiley −0.84, with Adams-vs-Garcia −0.54, with Harris 0.39. General votes 2025 / 2021: Hispanic 2.10, Asian 2.00, mixed 2.09, white 1.99, Black 1.66. Primary ballots 2025 / 2021: white 1.25, mixed 1.19, Hispanic 1.13, Black 0.97, Asian 0.92; income terciles low 1.02, mid 1.14, high 1.24.
+
+---
+
+### K.3 Mamdani in office, 2026 (scope note)
+
+Hand-entered from pollster releases into `data/raw/nyc/mamdani_approval_polls.csv`, with a `verified` column marking primary-source against secondary entries; regional and demographic crosstabs in `mamdani_favorability_crosstabs_siena_aug2026.csv`. Three distinct constructs are kept apart and not blended.
+
+**Job approval** (approve / disapprove): Marist, field 26–31 Mar 2026, n = 1,454 NYC adults — 48 / 30. Emerson–PIX11, field 5–6 Apr 2026, n = 850 NYC registered voters — 43 / 27. Marist's own benchmark places Eric Adams at 61 / 24 at the equivalent point in 2022.
+
+**Job rating** (good-or-excellent / fair-or-poor — a four-point scale, not the approve–disapprove question and not directly comparable to it): Suffolk CityView, field 1–3 Sep 2026, n = 500 NYC registered voters, MoE ±4.4 — 57 / 34; better-than-expected 61 / 19.
+
+**Favourability** (favourable / unfavourable), Siena: NYC 56 / 34 (April), 58 / 26 (June), 69 / 24 (3–6 Aug); statewide 43 / 40, 45 / 34, 47 / 44. Partisan benchmark from the MIT county file: Harris 2024 took 68.5% of the vote in the five boroughs and 55.9% statewide, so the August city figure is at baseline (+0.5) and the statewide figure is nine points below it.
+
+**Siena August crosstabs** (811 NY likely voters, 691 asked the favourability item, MoE ±4.2). By region: NYC 69 / 24 (net +45), Upstate 41 / 46 (−5), **Suburbs 34 / 60 (−26)**. The suburbs being the most hostile region contradicts any distance- or exposure-based gradient, since they are nearest the city and share its media market. By party: Dem 74 / 15, Ind 43 / 49, Rep 8 / 84. By religion: Other-or-none 74 / 19, Protestant 40 / 49, Catholic 34 / 55, **Jewish 26 / 66 (−40)**. By age: 18–34 72 / 21, 35–54 57 / 37, 55+ 38 / 51. By ethnicity: Black 78 / 15, Latino 55 / 34, white 41 / 49.
+
+**Limits.** The published crosstabs are marginal, so party × region cells are unavailable and composition cannot be separated from region within this poll; the suburb result bounds the exposure hypothesis but does not decompose it. Field dates and sample sizes are missing for the April and June Siena readings, which are entered from secondary sources and flagged as such. Post-election approval is downstream of governing and is used in Part 10 only to bound the case's reach, never as evidence about the 2025 campaign.
 
 ---
 
