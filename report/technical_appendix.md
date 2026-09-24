@@ -1274,6 +1274,20 @@ Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-pr
 
 ---
 
+### K-bis.6 Momentum tests, 2026 against 2018–2024
+
+Notebook 19 section 10. Tests fixed before computing (2026-09-24): M1 win rate by tier and race type; M2 residual from the Part 11 vote-share model (money ratio, opposing IE, race type, DSA tier) fitted on 2018–24 only, contested races (challengers and open seats); M3 an interaction of the money ratio with 2026; M4 incumbent defeats to the left.
+
+**Justice Democrats cases.** Challenger wins over sitting Democrats: 2018 Ocasio-Cortez, Pressley; 2020 Bowman, Bush, Newman; 2022 and 2024 none; 2026 Kiros, McKinney, Avila Chevalier. DSA-tier challenger win rate 3 of 4 in both 2018–24 and 2026. Contested-race residual: DSA 2026 +3.5 (n = 6) against 2018–24 +3.6 (n = 9), p = 0.99; JD-only 2026 −5.3 (n = 7) against −0.6 (n = 56), p = 0.36. Money slope 2018–24 −7.55 (SE 1.05) per log unit; 2026 difference −1.84 (1.60), p = 0.25. The all-race DSA residual for 2026 (+7.9) is inflated by uncontested incumbents (Casar, Ocasio-Cortez, Omar, Lee) and is not used.
+
+**Super PAC targets** (`src/data_collection/superpac_targets_pull.py`). 24 races from the $1M+ list with an identifiable target: a candidate the four committees opposed directly, or the main rival of the candidate they backed with at most three serious candidates. Excluded: California and Washington top-two primaries (shares include Republicans), crowded open seats with no single rival (MD-5 and GA-13 2026), specials with no clear rival (VA-11). Money counted as in Part 11 — each side's receipts through the last pre-election report plus outside money disseminated by election day, the target's side including IE against the rival. Votes from Wikipedia election boxes via the MediaWiki API (cached), head-to-head against the main rival; the TX-28 2022 runoff table is raw HTML and is entered by hand (22,606 to 22,895, matching Part 11). FEC matches are checked on first and last name; three are fixed by hand (Glenn Ivey, not Amber Ivey; Raquel Terán; S. Raja Krishnamoorthi). Head-to-head share on log money ratio, incumbency difference and a 2026 indicator: money −6.14 (2.17), incumbency +3.83 (2.80), 2026 +6.73 (3.87), p = 0.08. By cycle: 2022 2 of 8 won, median ratio 1.74, residual −1.0; 2024 1 of 6, 2.57, +1.3; 2026 6 of 10, 3.23, +3.5 (2026 vs 2022–24 residual p = 0.31). Progressive targets (JD or DSA endorsement or Progressive Caucus membership): 1 of 9 won in 2022–24, 4 of 7 in 2026. Tables: `superpac_targets_scored.csv`, `superpac_targets_by_cycle.csv`.
+
+**Age** (`src/data_collection/candidate_ages_pull.py`). Wikidata dates of birth, accepted only for human entities described as U.S. politicians or officeholders; 43 of 47 people matched (missing: Chardo Richardson, Sameena Mustafa, Anthony Clark, Julie Johnson). Age at 30 June of the election year. 18 of 21 challenger cases have both ages: mean challenger age 38.1 (DSA) and 38.7 (JD-only), incumbent 64.9 and 65.8, gap 26.8 and 27.0; correlation of DSA tier with the gap −0.01. Vote share on money and DSA tier: DSA +5.02 (4.95); adding the age gap: DSA +5.30 (4.85), gap +0.11 per year (0.11). 2026 defeats: DeGette 69 to Kiros 29; Espaillat 72 to Avila Chevalier 33; Thanedar 71 to McKinney 34; Goldman 50 to Lander 57; Larson 78 to Bronin 47; Green 79 to Menefee 38 (redistricting); Johnson to Allred 43 (redistricting). Tables: `momentum_jd_residuals.csv`, `insurgent_age_gap.csv`, `defeats_2026_ages.csv`.
+
+**Limits.** Ten 2026 target races and six contested DSA cases; the 2026 cycle is one environment, and a single anti-incumbent year cannot be told apart from a trend. The targets' `left` flag and target/rival choices are coded by hand in the script. Counts of the seven 2026 defeats are from U.S. News (16 September 2026).
+
+---
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
