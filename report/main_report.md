@@ -826,6 +826,26 @@ The gradient survives controls. Weighted by primary ballots, net of log income, 
 
 This is what makes the two-stage reading of the New York result concrete. The districts that moved hardest to Trump in 2024 did not join the June electorate; the young, educated districts did, and they are the ones that chose him. Those districts then gave him his largest November share as well, while the outer-borough districts that had swung merely held at Harris's level. **He was nominated by one coalition and elected by a much larger one**, and the nominating coalition is better described by age and education than by the 2024 swing.
 
+### New members or higher turnout?
+
+Votes cannot distinguish a party that grew from a party that voted. Enrollment by election district can, and the calendar helps: New York runs a closed primary, the deadline to change party enrollment for 24 June 2025 fell on **14 February**, and the state's snapshot six days later is therefore close to a census of the Democrats eligible to nominate him.
+
+| Quintile of Mamdani's primary share | His share | Dem enrolment growth, Feb→Nov 2025 | Net Democrats added | Primary turnout of eligible Democrats |
+|---|---|---|---|---|
+| 1 (weakest) | 24.7% | +3.1% | +20,700 | 25.7% |
+| 2 | 39.9% | +2.4% | +15,041 | 25.7% |
+| 3 | 51.2% | +3.7% | +22,408 | 29.9% |
+| 4 | 63.1% | +5.2% | +33,231 | 33.3% |
+| **5 (strongest)** | **80.7%** | **+9.1%** | **+64,668** | **44.8%** |
+
+**Both things happened, and the turnout half is the larger and the better measured.** In the districts where Mamdani ran strongest, 44.8% of enrolled Democrats voted in the primary, against 25.7% where he ran weakest — a gap measured against a baseline fixed six days after the enrolment deadline, so it is a rate rather than an approximation. Those districts also added Democrats three times faster than his weakest ones, 9.1% against 3.1%, and more than a third of the city's net Democratic gain came from that top quintile alone. Citywide, Democratic enrolment rose 159,208, or 4.8%, between February and November 2025.
+
+Net of age, education, income and racial composition the enrolment relationship survives at about half its raw size: moving from the bottom to the top of the Mamdani range is worth roughly three points of extra enrolment growth (coefficient +0.057, SE 0.005). Age again carries a large independent term, so young districts added Democrats faster whoever they voted for.
+
+Two cautions keep this from being the clean "he brought people in" story it resembles. **The snapshots bracket the campaign rather than bisecting it.** A newly registered voter could join and vote in the June primary, but an enrolment *change* filed after 14 February was held until 1 July — so the February-to-November growth mixes registration that preceded the nomination with registration that followed it, and there is no intermediate snapshot to separate them. Some of that 159,208 is people who joined *because* he won, which is a different fact from people who joined in order to nominate him.
+
+**And the level matters as much as the change.** Democratic enrolment in the city was 3.78 million in November 2021 and 3.34 million by February 2025. The 2025 recovery to 3.50 million gives back about a third of what the party had lost in the interval. The campaign was a partial reversal of a decline, not net growth across the cycle.
+
 ### Mamdani against the last three mayors
 
 The same districts can be followed back through the 2017 and 2021 mayoral elections (crosswalked from the older district lines through census blocks, ~98% of votes carried). This puts the 2025 result in the context of what a Democratic mayoral nominee normally gets in each kind of neighborhood, rather than only against Harris.
