@@ -808,6 +808,24 @@ The November 2025 electorate was 78% the size of the 2024 presidential electorat
 
 The primary is where Mamdani's coalition was assembled and where its limits show. He won the head-to-head against Cuomo in Hispanic districts (55%; 69% in mid-income Hispanic districts), Asian districts (61%), mixed districts (65%), and white districts (56%, carried by the affluent college-educated ones), and **lost Black-majority districts 44–56**. Black districts came back to him in November (64%, against a Trump-endorsed Cuomo) but at the lowest turnout ratio of any group. The composition of his November vote — 35% from white-majority districts, 30% mixed, 16% Black, 15% Hispanic, 4% Asian — is close to Harris's 2024 composition (34 / 26 / 21 / 16 / 4), with the Black share down and the mixed share up.
 
+### Who the nominating electorate was
+
+The district panel carried income, education, race, poverty and tenure but no age, which left the most obvious reading of the turnout pattern untested. Adding ACS age composition — shares of the 18-and-over population, since the question is the shape of a potential electorate — settles it.
+
+| Quintile of 18–34 share of adults | 18–34 % | Median age | Primary turnout 2025/2021 | Mamdani vs Cuomo, primary | Mamdani Nov |
+|---|---|---|---|---|---|
+| 1 (oldest) | 16.8% | 48.8 | 1.09× | 47.0% | 39.1% |
+| 2 | 24.8% | 42.9 | 1.06× | 51.6% | 45.2% |
+| 3 | 29.8% | 39.6 | 1.08× | 52.3% | 51.0% |
+| 4 | 35.4% | 36.3 | 1.16× | 59.0% | 57.0% |
+| **5 (youngest)** | **47.6%** | **32.5** | **1.36×** | **68.6%** | **63.9%** |
+
+**The nominating electorate grew where young adults are, and essentially nowhere else.** Primary turnout was flat in the three oldest quintiles (1.06–1.09×) and rose 36% in the youngest. Mamdani's primary head-to-head runs from 47% in the oldest districts to 69% in the youngest.
+
+The gradient survives controls. Weighted by primary ballots, net of log income, education and racial composition, a ten-point higher young-adult share is worth **+5.5 points** on Mamdani's primary share (SE 0.30, p < 10⁻⁷⁶), **+9.2 points** on primary turnout growth (SE 0.92), and +4.5 points on his November share. Education carries a large independent coefficient alongside it, so this is not education wearing an age disguise — and the 2024 swing to Trump is *non-monotonic* in age, peaking in the middle quintiles at 9.8 points against 7.0 in the youngest and 7.5 in the oldest, so youth is not a proxy for the swing either.
+
+This is what makes the two-stage reading of the New York result concrete. The districts that moved hardest to Trump in 2024 did not join the June electorate; the young, educated districts did, and they are the ones that chose him. Those districts then gave him his largest November share as well, while the outer-borough districts that had swung merely held at Harris's level. **He was nominated by one coalition and elected by a much larger one**, and the nominating coalition is better described by age and education than by the 2024 swing.
+
 ### Mamdani against the last three mayors
 
 The same districts can be followed back through the 2017 and 2021 mayoral elections (crosswalked from the older district lines through census blocks, ~98% of votes carried). This puts the 2025 result in the context of what a Democratic mayoral nominee normally gets in each kind of neighborhood, rather than only against Harris.
