@@ -919,6 +919,18 @@ Item-level shares taking the liberal position, Biden→Harris / Biden→Trump / 
 
 AME per +1 SD, controls model: `econ_left` −0.0215, `cult_cons` +0.0757. Split: `econ_left` −0.0221, `immig_cons` +0.0450, `social_cons` +0.0237, `police_cons` −0.0005.
 
+**Correction to the cultural-versus-economic ratio.** Earlier drafts reported that cultural conservatism predicts switching at "3.5 times" the marginal effect of economic views, taking the ratio of the two finite-difference AMEs above (0.0757 / 0.0215 = 3.52). That comparison is not like-for-like. A +1 SD step on `cult_cons` moves respondents *toward* switching; a +1 SD step on `econ_left` moves them *away* from it. With a mean predicted switching probability of 4.97%, the second step runs into the floor at zero and is mechanically compressed. Re-derived from notebook 11's own model (N = 16,971, 327 switchers):
+
+| Method | Cultural | Economic | Ratio |
+|---|---|---|---|
+| As previously reported: +1 SD on each index | +0.0757 | −0.0215 | 3.52 |
+| Both stepped toward switching (+1 SD cultural, −1 SD economic-left) | +0.0757 | +0.0349 | 2.17 |
+| Both stepped away from switching | −0.0320 | −0.0215 | 1.49 |
+| Instantaneous (derivative) AME, no step | +0.0480 | −0.0272 | **1.77** |
+| Logit coefficients | +2.026 | −1.146 | 1.77 |
+
+The defensible figure is **about 1.8**, with 1.5–2.2 depending on the direction of a finite step. In the split model, immigration (coefficient +1.447) against economics (−1.249) is **1.16**; stepped toward switching, +0.0450 against +0.0371, 1.21. Abortion and marriage (+0.868) is 0.69 of the economic effect; policing is nil. Immigration was the larger force on who left, but nearly co-equal with economic views rather than three-and-a-half times it. Computed in notebook 11, section "Correction: comparing the cultural and economic effects like-for-like"; tables `switch_cultural_vs_economic_ratio.csv` and `switch_split_ratio_to_economic.csv`.
+
 **New voters → Trump** (`outputs/tables/newvoter_issue_model.csv`; N = 1,943, 854 Trump; no party control): `econ_left` −1.451 (0.205), `immig_cons` +1.282 (0.240), `social_cons` +1.138 (0.135), `police_cons` +0.309 (0.169), Hispanic −0.100 (0.315), Black −2.869 (0.438), college −0.587 (0.282).
 
 **Harris "very liberal" among Biden→Trump switchers** (N = 299; LPM, HC3): `econ_left` −0.111 (0.059), `immig_cons` +0.137 (0.054), `social_cons` +0.035 (0.046), `police_cons` +0.028 (0.055). Base rate 58.9%.

@@ -4,11 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Three-part data-driven autopsy of the 2024 Democratic presidential campaign:
+Data-driven autopsy of the 2024 Democratic presidential campaign, in eleven parts. It began as three:
 
 - **Part 1** — Structural fundamentals baseline (incumbency, economy, approval ratings as predicted baseline)
 - **Part 2** — Demobilization vs. persuasion decomposition (how much of the loss was dropoff vs. vote-switching)
 - **Part 3** — Economic populism premium across comparable campaigns
+
+Part 3 concluded that a populism premium cannot be tested with county returns, which is what drove the expansion: Parts 4–9 take the question to individual voters (perception, panel timing, the bottom quartile and federal delivery, stronghold turnout, what leavers believed, cross-pressure), and Parts 10–11 to actual economic-left campaigns (NYC 2024→2025 at the election-district level; Justice Democrats House primaries 2018–2026). The synthesis at the end of `main_report.md` was re-audited claim by claim against `outputs/tables/` on 2026-09-23; treat it, not earlier drafts, as the current statement of findings.
 
 Output: narrative in `report/main_report.md` + technical appendix in `report/technical_appendix.md`, figures/tables in `outputs/`
 
@@ -56,10 +58,10 @@ jupyter lab
 jupyter nbconvert --to notebook --execute notebooks/02_fundamentals_model.ipynb \
     --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 
-# Run all notebooks in order (notebooks 02-04; 01 is data collection, run scripts directly)
-for nb in notebooks/02_*.ipynb notebooks/03_*.ipynb notebooks/04_*.ipynb; do
+# Run all notebooks in order (02 through 19; there is no 01 -- data collection is the scripts)
+for nb in notebooks/[0-9][0-9]_*.ipynb; do
   jupyter nbconvert --to notebook --execute "$nb" \
-      --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
+      --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy --ExecutePreprocessor.timeout=1800
 done
 ```
 
@@ -69,7 +71,7 @@ done
 
 ## Architecture
 
-Notebooks run in sequence (01 → 04); each writes to `data/processed/` for the next to consume.
+Notebooks run in sequence, 02 → 19 (there is no 01; data collection is the scripts in `src/data_collection/`). The early notebooks (02–09) write to `data/processed/` for later ones; 10–19 mostly read `data/raw/` directly.
 
 ```
 src/
@@ -87,11 +89,11 @@ report/
   technical_appendix.md
 ```
 
-`src/data_collection/` modules handle auth, pagination, and local caching — notebooks call them and get back clean DataFrames. `src/analysis/` holds regression specs and decomposition helpers so the same model can be run across notebooks without copy-paste. Notebooks own the narrative and parameter choices; `src/` owns the reusable mechanics.
+`src/data_collection/` modules handle auth, pagination, and local caching. **In practice nearly all analysis lives in the notebooks**: the shared regression and decomposition helpers once planned for `src/analysis/` were never built, and `src/analysis/framing.py` (the headline-framing lexicon used by notebooks 18 and 19) is the only module there. Do not assume a model spec exists in `src/` — find it in the notebook that produced the table.
 
 ## Key Analytical Decisions to Track
 
-- **Unit of analysis**: county for all three parts (Parts 1–3)
+- **Unit of analysis**: national election (Part 1), county (Parts 2–3, 6–7), survey respondent (Parts 4–9; CES cross-sections, CES 2020–24 panel, ANES 2024), NYC election district (Part 10), House primary race and news article (Parts 10–11)
 - **Swing metric**: `dem_share_2024 - dem_share_2020` (two-party share, signed negative = rightward)
 - **Decomposition**: Kitagawa-Blinder at county level: `turnout_component + share_component = ΔDem_votes`
 - **Multi-cycle baseline (Part 3)**: Obama 2012 as the fixed reference; Clinton/Biden/Harris each compared against it by income quartile
