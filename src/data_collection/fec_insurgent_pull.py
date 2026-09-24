@@ -54,7 +54,8 @@ def get(path, **params):
             print("  FEC rate limit; sleeping 120 s", flush=True); time.sleep(120)
         else:
             time.sleep(5)
-    raise RuntimeError(f"FEC {path} {params} -> {r.status_code}")
+    shown = {k: v for k, v in params.items() if k != "api_key"}     # never put the key in a traceback
+    raise RuntimeError(f"FEC {path} {shown} -> {r.status_code}")
 
 
 def find_candidate(name, state, district, cycle):
