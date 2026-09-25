@@ -1307,5 +1307,6 @@ Mamdani's primary — outspent 2.9:1, $21.9M against him — sits inside the pat
 
 ---
 
+*Three tests on the November 2026 general election — El-Sayed against the rest of Michigan's Democratic ticket, New York's new left House nominees against Hochul, and whether Trump's occasional voters return — were written down before the election: [`preregistration_2026_general.md`](preregistration_2026_general.md)*
 *Methods, data handling, full regression tables, and known limitations: [`technical_appendix.md`](technical_appendix.md)*
 *Notebooks: [`notebooks/`](../notebooks/) · Figures: [`outputs/figures/`](../outputs/figures/) · Tables: [`outputs/tables/`](../outputs/tables/)*
