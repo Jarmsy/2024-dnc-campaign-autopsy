@@ -1314,6 +1314,14 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 
 ---
 
+### K-bis.9 Pop-up committee funding, 2026
+
+`src/data_collection/popup_donors_pull.py`, notebook 19 section 12. Spenders: FEC Schedule E by candidate for the left and establishment candidates in 15 races with a left/establishment contrast (plus IL-7 and FL-24, counted toward no side). Pop-up: `first_file_date` on or after 2025-01-01 and $100k+ in these races (23 committees). Side: net help to the left = support(left) + oppose(establishment) − support(establishment) − oppose(left); 16 anti-left, 6 pro-left, 1 none. Receipts: Schedule A, 2026 cycle, memo rows dropped, positive amounts (31,477 rows). Network: UDP, DMFI, Fairshake, Protect Progress, Defend American Jobs; donors 2022–2026 (6,677 rows); 2026 disbursements (Schedule B, 1,251 rows). Sources, first match wins: network committee (contributor committee id); via intermediary (a non-individual contributor that received $10k+ from the network in 2026, matched on normalised name); network donor (individual, name + ZIP5; organisation, name); other committee; organisation (untraced); other individual. Dollar-weighted shares of itemized receipts — anti-left: network 21.5%, untraced organisations 40.4% ($76.5M itemized); pro-left: 0.5% and 8.3% ($25.6M). Largest network transfers in 2026: Fairshake → Defend American Jobs $37.0M and → Protect Progress $33.0M (affiliates); UDP → Elect Chicago Women $4.01M, Bold America $2.80M, EDW Action Fund $2.35M, SD PAC $1.65M, Affordable Chicago Now! $1.32M, Palmetto Action $1.00M; DMFI → Rolling Sea Action Fund $0.90M, Women Vote $0.65M, United for Progress $0.20M, EDW Action Fund $0.14M, New Yorkers Fighting Back $0.10M. Tables: `popup_funding.csv`, `popup_funding_by_side.csv`.
+
+**Limits.** Receipts are committee totals, part of which funded races outside this study (Think Big's $20.5M, Fellowship PAC's $11.3M). Unitemized receipts and the funders of 501(c)(4)s and LLCs are invisible. Name matching can miss or merge donors. Sides are inferred from spending in the studied races only.
+
+---
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
