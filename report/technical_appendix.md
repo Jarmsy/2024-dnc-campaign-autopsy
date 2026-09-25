@@ -882,6 +882,12 @@ Net margin change if 2020 voters who did not vote in 2024 had voted as in 2020: 
 
 Michigan under `vvweight` rests on 41 Biden and 24 Trump stay-homes. An earlier county-level counterfactual (restore stronghold turnout at 2024 shares) gave +11k Pennsylvania and +1k Michigan; it assumed stay-homes mirror 2024 voters and is superseded, though it reaches the same map for a different reason — swing-state strongholds did not lose turnout (H.3).
 
+### H.5a Counterfactual corrected for recall
+
+Notebook `24_stayhome_counterfactual_recall.ipynb`; `stayhome_counterfactual_recall_corrected.csv`. H.5's matched cross-section, all recalled statuses kept, each respondent given fractional membership in reported-Biden and reported-Trump 2020 voters from the CES panel's P(2020 report | recalled status, 2024 outcome) on matched panelists (outcomes: Harris, Trump, third party, voted with no answer, stayed home). Key cells (P Biden / P Trump, N): recalled Biden, stayed home 0.989 / 0.005 (95); recalled Trump, stayed home 0.000 / 0.992 (81); recalled non-voter, stayed home 0.024 / 0.006 (90); recalled Biden, voted Trump 0.75 / 0.25 (25); recalled non-voter, voted Harris 0.47 / 0.00 (54). Stay-home rates change by at most 0.2 points in any state.
+
+Net margin change, recall → corrected [500 panel resamples; correction uncertainty only] — unweighted / `commonweight` / `vvweight`: Michigan +20k → +23k [13k, 36k] / +51k → +57k / +183k → +181k [171k, 194k]; North Carolina +59k → +58k / +113k → +114k / +128k → +128k; Arizona +24k → +25k / +11k → +12k / +27k → +28k; Georgia −6k → −2k / +19k → +21k / +38k → +41k; Pennsylvania −22k → −21k / −17k → −15k / −17k → −16k; Wisconsin −12k → −10k / +7k → +7k / −10k → −10k; Nevada −10k → −9k / −14k → −13k / +8k → +8k; national +0.43M → +0.52M [0.26M, 0.84M] / +0.76M → +0.85M / +2.17M → +2.25M [1.98M, 2.53M] against −2.29M. Flips: Michigan under `vvweight` only, as before; nothing else.
+
 ### H.6 Share decomposition
 
 Notebook `11_share_and_issues.ipynb` §1. Validated 2024 voters (`TS_g2024 ∈ 1–6`) with a 2024 vote (`CC24_410`) and a recalled 2020 status (`presvote20post`): N = 32,531, weighted by `vvweight_post` falling back to `vvweight`. Two-party Democratic share in this sample 49.1% (actual 49.25%). `outputs/tables/share_decomposition.csv`:
@@ -1497,6 +1503,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 33 | `21_ces_panel_timing_and_recall.ipynb` | CES panel (A.7) | tables |
 | 34 | `22_share_decomposition_recall.ipynb` | CES 2024 and CES panel | tables |
 | 35 | `23_attribution_switching_recall.ipynb` | step 8 (notebook 06), CES panel | tables |
+| 36 | `24_stayhome_counterfactual_recall.ipynb` | CES 2024, CES panel, MIT returns | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
