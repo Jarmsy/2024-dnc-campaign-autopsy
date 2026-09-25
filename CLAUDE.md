@@ -10,7 +10,7 @@ Data-driven autopsy of the 2024 Democratic presidential campaign, in eleven part
 - **Part 2** — Demobilization vs. persuasion decomposition (how much of the loss was dropoff vs. vote-switching)
 - **Part 3** — Economic populism premium across comparable campaigns
 
-Part 3 concluded that a populism premium cannot be tested with county returns, which is what drove the expansion: Parts 4–9 take the question to individual voters (perception, panel timing, the bottom quartile and federal delivery, stronghold turnout, what leavers believed, cross-pressure), and Parts 10–11 to actual economic-left campaigns (NYC 2024→2025 at the election-district level; Justice Democrats House primaries 2018–2026). The synthesis at the end of `main_report.md` was re-audited claim by claim against `outputs/tables/` on 2026-09-23 and again on 2026-09-24; treat it, not earlier drafts, as the current statement of findings.
+Part 3 concluded that a populism premium cannot be tested with county returns, which is what drove the expansion: Parts 4–9 take the question to individual voters (perception, panel timing, the bottom quartile and federal delivery, stronghold turnout, what leavers believed, cross-pressure), and Parts 10–11 to actual economic-left campaigns (NYC 2024→2025 at the election-district level; Justice Democrats House primaries 2018–2026). The synthesis at the end of `main_report.md` was re-audited claim by claim against `outputs/tables/` on 2026-09-23, 2026-09-24 and 2026-09-25 (after the panel analyses and recall corrections); treat it, not earlier drafts, as the current statement of findings.
 
 Output: narrative in `report/main_report.md` + technical appendix in `report/technical_appendix.md`, figures/tables in `outputs/`
 
