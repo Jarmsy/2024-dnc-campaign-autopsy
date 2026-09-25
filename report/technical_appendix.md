@@ -1306,6 +1306,14 @@ Notebook 19 section 10. Tests fixed before computing (2026-09-24): M1 win rate b
 
 ---
 
+### K-bis.8 Every contested Democratic incumbent primary, 2024 and 2026
+
+`src/data_collection/incumbent_primaries_pull.py`, notebook 19 section 11. Results from Wikipedia state pages via the MediaWiki API (cached): in each "District N" section, the first "Democratic primary results" box, read template by template; the incumbent is the candidate marked "(incumbent)"; kept if two or more candidates. **The candidate field must allow piped links** (`[[John B. Larson|John Larson]] (incumbent)`): an earlier pattern stopped at the inner "|" and silently dropped such incumbents (Larson among them); fixed before any analysis. Excluded: at-large states; California and Washington (all-party primaries); 2026 districts in states with new maps in force or in litigation at primary time (TX, NC, OH, CA, UT, FL, TN, LA, AL, MO, from Wikipedia's "2025–2026 United States redistricting"). District age: ACS 2024 5-year by congressional district, 18–34 share of adults 18+ (B01001). Incumbent age: Wikidata P569 via the enwiki sitelink of the incumbent's linked article; year-only dates set to 1 July. N = 39 (2024; 2 lost: Bush, Bowman) and 51 (2026; 5 lost: DeGette, Larson, Thanedar, Goldman, Espaillat); 48 of 51 with incumbent age in 2026.
+
+OLS, incumbent share (points) on 18–34 share (points), incumbent age and log number of candidates, HC1: 2024 young −0.312 (0.493), age +0.151 (0.169); 2026 young −1.061 (0.613), p = 0.083, age −0.164 (0.178). Pooled interaction (2026 − 2024): young −0.766 (0.789), p = 0.33; age −0.239 (0.225). Same 14 districts in both years, change in share: young −0.471 (1.153), incumbent age −0.601 (0.343). By youth quartile (2024 → 2026): oldest 80.4 → 73.2, second 83.0 → 75.8, third 72.4 → 71.1, youngest 76.8 → 64.7. Tables: `generations_models.csv`, `generations_incumbents.csv`. Limits: residents' age, not primary voters'; challenger ideology not coded; small N; one-party districts dominate.
+
+---
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.

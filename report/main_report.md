@@ -1224,7 +1224,21 @@ Two of the categories that emerged in coding matter most here. **Progressive mim
 
 **Age is part of it, but it does not explain the DSA edge.** The three 2026 democratic socialists who unseated incumbents were 29, 33 and 34, against incumbents of 69, 72 and 71; John Larson, 78, also lost, to a moderate 31 years younger, and Al Green, 79, to a 38-year-old. But across the 18 Justice Democrats challenges with both ages known, democratic-socialist and conventional-progressive challengers faced incumbents the same distance older — 27 years on average in both tiers — so the age gap cannot account for the difference between them, and adding it leaves the DSA coefficient unchanged (+5.0 to +5.3 points; neither estimate is precise on 18 cases).
 
-**What it adds up to.** The democratic-socialist left won more in 2026 because more of its candidates ran well-funded races against older, weaker incumbents, and because in 2026 — for the first time in this data — the money that defeated its candidates in 2022 and 2024 mostly lost. It did not win by running further ahead of its resources than it had before, and in New York, where the same voters can be compared directly, all five left candidates in the June 2026 primaries ran below Mamdani's 2025 share (Part 10). Momentum in breadth, not yet in depth — and on ten races, the weakening of the money is a signal to watch in November and 2028 rather than a finding.
+**What it adds up to.** The democratic-socialist left won more in 2026 because more of its candidates ran well-funded races against older, weaker incumbents, and because in 2026 — for the first time in this data — the money that defeated its candidates in 2022 and 2024 mostly lost. It did not win by running further ahead of its resources than it had before, and in New York, where the same voters can be compared directly, all five left candidates in the June 2026 primaries ran below Mamdani's 2025 share (Part 10). Momentum in breadth, not yet in depth — and on ten races, the weakening of the money is a signal to watch in November and 2028 rather than a finding. Across every contested Democratic incumbent primary (below), incumbents did worst in the youngest districts in 2026, a gradient about three times 2024's — suggestive, not yet significant.
+
+### Young districts and old incumbents: every contested primary
+
+Age runs through the 2026 results — the three democratic socialists who unseated incumbents were some 40 years younger than them, and John Larson, 78, lost to a moderate 31 years younger — but the Justice Democrats cases are too few to say whether young districts turned on incumbents regardless of ideology. So the test was run on every contested Democratic House incumbent primary in 2024 and 2026: 39 and 51 races, with the district's share of adults aged 18–34 from the Census and each incumbent's age. 2026 races in the ten states that redrew their maps are excluded, since the Census geography no longer matches, as are California's and Washington's all-party primaries. The tests were fixed before the pull.
+
+| Contested Democratic incumbent primaries | 2024 | 2026 |
+|---|---|---|
+| Races (incumbents who lost) | 39 (2) | 51 (5) |
+| Mean incumbent share, all districts | 78% | 72% |
+| … youngest quarter of districts | 77% | 65% |
+| … oldest quarter of districts | 80% | 73% |
+| Incumbent share per point of 18–34 share, net of incumbent age | −0.3 (p = 0.53) | **−1.1 (p = 0.08)** |
+
+**Incumbents weakened everywhere in 2026, and most where the electorate is young** — a district ten points younger cost the incumbent about ten points of primary share, against three in 2024. But the difference between the two years is not statistically distinguishable (p = 0.33), and the incumbent's own age does not predict the share once district youth is held constant (−0.2 points per year, p = 0.36; among the 14 districts contested in both years, older incumbents lost more ground, −0.6 points per year, p ≈ 0.08). The evidence points to a generational current running under the 2026 primaries alongside the ideological one, not yet to a proven break with 2024.
 
 ### Beyond the newspapers: the creator ecosystem
 
