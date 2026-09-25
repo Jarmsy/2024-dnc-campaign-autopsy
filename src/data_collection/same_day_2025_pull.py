@@ -12,7 +12,7 @@ Sources.
   `va2.elstats.civera.com/api/download_contest/<id>_table.csv` (a 307 redirect; curl needs -L). Rows are
   the state, 133 localities and their precincts; this script keeps localities. Contest ids: governor
   164996, lieutenant governor 164997, attorney general 164998, president 2024 161256, president 2020
-  144567. Ids are not derivable -- they were read off the candidate pages.
+  144567, governor 2021 147466. Ids are not derivable -- they were read off the candidate pages.
 - New Jersey: Division of Elections official results, one PDF per county per contest, with one row per
   municipality (`nj.gov/state/elections/assets/pdf/election-results/<year>/<year>-official-general-
   results-<governor|president>-<county>.pdf`). **Column order follows each county's ballot draw**, so the
@@ -30,13 +30,18 @@ import time
 import pandas as pd
 
 OUT = Path("data/raw/same_day_2025")
-VA_CONTESTS = {"gov25": 164996, "ltgov25": 164997, "ag25": 164998, "pres24": 161256, "pres20": 144567}
+VA_CONTESTS = {"gov25": 164996, "ltgov25": 164997, "ag25": 164998, "pres24": 161256, "pres20": 144567,
+               "gov21": 147466}   # 2021 governor (Youngkin v McAuliffe): the off-year baseline
 NJ_COUNTIES = ["atlantic", "bergen", "burlington", "camden", "capemay", "cumberland", "essex", "gloucester",
                "hudson", "hunterdon", "mercer", "middlesex", "monmouth", "morris", "ocean", "passaic", "salem",
                "somerset", "sussex", "union", "warren"]
 NJ_FILES = {"gov25": "2025/2025-official-general-results-governor",
             "pres24": "2024/2024-official-general-results-president",
-            "pres20": "2020/2020-official-general-results-president"}
+            "pres20": "2020/2020-official-general-results-president",
+            # 2021 governor (Murphy v Ciattarelli): the off-year baseline for the enforcement test. The 2021
+            # files use a different stem and hyphenate Cape May.
+            "gov21": "2021/2021-general-election-results-governor"}
+SLUG = {("gov21", "capemay"): "cape-may"}
 NJ_BASE = "https://www.nj.gov/state/elections/assets/pdf/election-results"
 NUM = re.compile(r"^[\d,]+$")
 
@@ -180,7 +185,7 @@ def pull_nj():
         parts = []
         for key, stem in NJ_FILES.items():
             f = OUT / "nj" / f"{Path(stem).name}-{county}.pdf"
-            _curl(f"{NJ_BASE}/{stem}-{county}.pdf", f)
+            _curl(f"{NJ_BASE}/{stem}-{SLUG.get((key, county), county)}.pdf", f)
             d = _parse_nj(f).rename(columns={"dem": f"{key}_dem", "rep": f"{key}_rep", "total": f"{key}_total"})
             d["key"] = d.municipality.map(_norm)
             if parts:                                           # align spellings to the 2025 file

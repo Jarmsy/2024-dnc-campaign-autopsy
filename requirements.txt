@@ -13,3 +13,5 @@ openpyxl
 python-dotenv
 pyogrio
 vaderSentiment
+pyarrow
+pypdf
