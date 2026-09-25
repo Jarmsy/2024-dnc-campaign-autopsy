@@ -1094,6 +1094,16 @@ Full 2020/2024 indices: immigration +0.95 / +1.35, cultural +1.07 / +1.12, anti-
 
 **Reading.** Positions — cultural, immigration, economic, and the view of big business — separated the switchers from loyal Democrats in 2016 and 2020, before they switched; cultural fully, immigration by about 60%. Distrust of politicians did not, and the strong-leader item is unstable across administrations; both read as evaluations of whoever governs. Racial resentment (secondary) shows a large pre-existing gap, but the switchers are majority non-white and the scale concerns Black Americans; it is reported, not interpreted.
 
+### I.10 The switch model before and after the switch (CES panel), and recall contamination
+
+Notebook `21_ces_panel_timing_and_recall.ipynb`. CES 2020–24 panel (A.7), weight `commonpostweight_24` (else `commonweight_24`). Biden voters by `CC20_410`, 2024 vote `CC24_410`. Items identical in both waves (panel guide): economic — Medicare for all `CC20_327a`/`RC24_327a`, drug-price negotiation `327b`/`327b`, oppose ACA repeal `CC20_327d`/`RC24_327c`; immigration — `331a,b,d,e` / `CC24_331a,b`, `RC24_331c,d`; social — abortion choice (oppose) `332a`, ban in all circumstances `332f`; policing — more police `334c`, not fewer `334d`. Cultural = mean of the eight immigration, social and policing items. Models as notebook 11 (`plus_controls`, `cultural_split`), HC1; bootstrap 95% from 1,000 resamples within outcome. The economic index is health care only (the cross-section's tax, Medicaid and student-loan items were not asked in 2020).
+
+**Coefficients per SD** (N = 1,666–1,680, 37–39 events). 2020 attitudes, 2020 party ID: economic −0.41 [−0.84, 0.10], cultural +1.32 [0.82, 2.02], ratio 3.2 [1.4, 48]; split: economic −0.42, immigration +0.76 [0.27, 1.54], social +0.65, policing +0.38; immigration/economic 1.8 [0.5, 27]. 2024 attitudes, 2020 party ID: economic −0.72 [−1.45, 0.23], cultural +1.77, ratio 2.5 [1.1, 31]; immigration +1.16, ratio 1.6. 2024 attitudes, 2024 party ID: economic −0.73, cultural +1.49, ratio 2.1 [0.9, 30]; immigration +1.18, ratio 1.7. HC1 standard errors (0.11–0.26) are far narrower than the bootstrap intervals; at this event count the ratios are not estimated.
+
+**Change 2020 → 2024** (loyal / switchers): economic-left 0.92 → 0.92 / 0.78 → 0.61 (difference in change −0.17; Medicare for all 0.79 → 0.47, keep ACA 0.71 → 0.50, drug negotiation 0.85 → 0.85); immigration 0.17 → 0.34 / 0.50 → 0.74 (+0.06); social 0.10 → 0.07 / 0.36 → 0.34 (0.00); policing 0.30 → 0.48 / 0.54 → 0.58 (−0.14). The ANES panel (I.9) found the reverse split — immigration moved, the general economic scales did not; the CES economic items are party-coded health-care proposals.
+
+**Recall.** 2020 report against 2024 recall (`presvote20post_24`): 98.1% of Biden reporters recall Biden; 0.8% of Trump reporters recall Biden. Recall-defined switchers 44, true 39, both 34: 77% of recall switchers are true switchers (ANES panel 54%), 87% of true switchers recall Biden; 9 of the 10 misclassified reported Trump in 2020. Switch rate 4.1% true, 4.7% by recall. 2024 means, true / recall-defined / misclassified: economic-left 0.61 / 0.51 / 0.47; immigration 0.74 / 0.75 / 0.80; policing 0.58 / 0.69 / 0.99; party ID 3.5 / 3.5 / 5.3. Share of switchers immigration-conservative (2024 answers ≥ 0.5): 0.88 under both definitions. Panelists had answered the 2020 vote question in 2020 and 2022, so cross-section recall is probably less accurate than this.
+
 ## J. Part 9 — Cross-pressure, perceived difference, and the meaning of "left"
 
 Notebook `16_crosspressure_and_perceived_difference.ipynb`. Tables `crosspressure_2024.csv`, `crosspressure_2016.csv`, `crosspressure_summary.csv`, `trump_share_by_dem_position_2024.csv`, `anes_perceived_candidate_gap.csv`, `anes_perceived_gap_by_group.csv`.
@@ -1409,6 +1419,8 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 
 35. **The ANES panel rests on 21 switchers, effectively 11.** Every I.9 switcher figure moves with two or three heavily weighted respondents; the unweighted series agree in sign and rough size, but a single-wave difference below about 0.5 SD is not distinguishable from zero. The panel represents the 2016 electorate, so switchers too young to vote in 2016 are absent.
 
+36. **The Part 8 cultural-to-economic ratio is a point estimate without a usable interval.** In the CES panel (I.10) the bootstrap interval for the economic coefficient includes zero at 37 switchers, before and after the switch; the cross-section's 327 switchers give a tighter figure but measure attitudes after the vote and define switchers by recall, which the panel shows inflates both the switch rate and the economic gap.
+
 ---
 
 ## M. Reproducibility
@@ -1458,6 +1470,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 30 | `19_insurgent_primaries.ipynb` | step 29 | tables |
 | 31 | manual browser download of the ANES 2016 and 2020 files (A.13), then `python src/data_collection/anes_panel_pull.py` | `data/raw/anes/*` | `data/raw/anes/anes_panel_2016_2024.csv` |
 | 32 | `20_anes_panel.ipynb` | step 31 | tables, figure |
+| 33 | `21_ces_panel_timing_and_recall.ipynb` | CES panel (A.7) | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
