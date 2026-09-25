@@ -889,6 +889,24 @@ Notebook `11_share_and_issues.ipynb` §1. Validated 2024 voters (`TS_g2024 ∈ 1
 
 Net switching: +2.48 − 0.73 = +1.74pp. New voters: +0.98pp. New voters by group (share of new voters; Trump / Harris): white/other 30+ 48.5%, 70.8 / 27.4; under 30 (other) 30.2%, 44.6 / 51.6; Hispanic 13.8%, 64.5 / 34.4; Black 7.6%, 14.7 / 85.0. Mean age 39 (all voters 53); no degree 71% (all 50%).
 
+### H.7 The share decomposition corrected for recall
+
+Notebook `22_share_decomposition_recall.ipynb`; `outputs/tables/share_decomposition_recall_corrected.csv`. The cross-section's recalled-2020-status × 2024-vote cell shares (H.6) are redistributed by P(2020 status reported in 2020 | recalled status, 2024 vote), estimated in the CES 2020–24 panel on validated 2024 voters (`TS_g2024` 1–6), weight `commonpostweight_24`; no 2020 vote reported (`CC20_410` missing, 5, 6) = non-voter. Panel cells (recalled × 2024 vote): Biden 1,415 / 25 / 14 (Harris / Trump / third); Trump 29 / 1,354 / 8; non-voter 54 / 59 / 3; other 11 / 25 / 26. Composition by 2020 report: recalled Biden→Trump 18 Biden, 7 Trump; recalled non-voter→Trump 35 non-voter, 22 Trump, 2 Biden; recalled Trump→Harris 26 Trump, 2 Biden, 1 non-voter; recalled non-voter→Harris 32 non-voter, 21 Biden, 1 Trump.
+
+| | Recall (H.6) | Corrected | 95% (bootstrap, 1,000) | Bound: validated 2020 turnout |
+|---|---|---|---|---|
+| Biden→Trump (pp of electorate) | 2.48 | 1.92 | 1.24–2.44 | 1.66 |
+| Trump→Harris | 0.73 | 0.75 | 0.61–0.87 | 0.66 |
+| Net switching | +1.74 | +1.18 | 0.49–1.71 | +1.00 |
+| New voters (net) | +0.98 | +0.64 | −0.48 to 1.66 | +2.35 |
+| 2020 other (net) | +0.10 | +0.39 | −0.09 to 1.23 | −0.32 |
+| Switch ratio | 3.4 | 2.6 | 1.7–3.6 | 2.5 |
+| Biden switch rate | 5.2% | 4.1% | 2.6–5.1% | 3.9% |
+| New voters' share of electorate | 5.6% | 4.5% | 3.4–5.6% | 12.5% |
+| Switching / new voters, share of shift | 62% / 35% | 53% / 29% | — | 33% / 77% |
+
+The validated-turnout column treats every panelist without a matched 2020 voter record as a non-voter; 9.3% of panel 2024 voters who reported a 2020 vote have no record, most of them match failures, so it overstates new voters and is a bound, not an estimate. Panelists had answered the 2020 vote item twice before 2024; fresh cross-section respondents are likely to misrecall more, so the correction is conservative.
+
 ---
 
 ## I. Part 8 — Issue attitudes of switchers and new voters
@@ -1471,6 +1489,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 31 | manual browser download of the ANES 2016 and 2020 files (A.13), then `python src/data_collection/anes_panel_pull.py` | `data/raw/anes/*` | `data/raw/anes/anes_panel_2016_2024.csv` |
 | 32 | `20_anes_panel.ipynb` | step 31 | tables, figure |
 | 33 | `21_ces_panel_timing_and_recall.ipynb` | CES panel (A.7) | tables |
+| 34 | `22_share_decomposition_recall.ipynb` | CES 2024 and CES panel | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
