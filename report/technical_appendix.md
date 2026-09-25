@@ -205,6 +205,21 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 ---
 
+### A.13 ANES 2016 and 2020 Time Series (for the 2016–2020–2024 panel)
+
+**Source:** ANES 2020 Time Series full release, 2022-02-10 (`anes_timeseries_2020_csv_20220210.zip`, 7,777,954 bytes, SHA-256 `70450eb6…1bfda`) and ANES 2016 Time Series, 2019-09-04 (`anes_timeseries_2016_dta.zip`, 16,643,125 bytes, SHA-256 `12a0a53d…23f033`), with both user guide/codebook PDFs. No registration required.
+**Script:** `src/data_collection/anes_panel_pull.py` → `data/raw/anes/anes_panel_2016_2024.csv` (2,171 panelists × 151 columns).
+
+**Download.** As A.9: the WAF returns 403 to python-requests and to curl; the files were fetched in the in-app browser, relayed as base64 and checked against the browser's SHA-256. Codebook text via `pypdf` (`codebook_2020.txt`, `codebook_2016.txt`).
+
+**Linkage.** The 2024 file's `V200001` and `V160001_orig` match all 2,171 panelists in both files; the 2020 file's own `V160001_orig` agrees for all of them. The 2016 join key is `V160001_orig` (the 2016 `V160001` is a different 1–5,090 id).
+
+**Items.** Matched across years by the survey-question mnemonic each codebook prints, then wording and codes read side by side; the mapping and recodes are the script's `ITEMS`. Identical in all three waves: trust, big interests, corruption, officials don't care, no say, CSES strong leader (CSES5 in 2016/2020, CSES6 in 2024, same wording), big-business and union thermometers, millionaire tax, spending limits, services/insurance/jobs scales, minimum wage, paid leave, wall, Dreamers (6-point), birthright, immigration levels, CSES "immigrants increase crime", abortion, gay job protection and adoption, child-rearing and racial-resentment batteries, CSES left-right, party thermometers and party ID. Identical in 2020 and 2024 only: rich-and-powerful, insiders, ANES immigration-crime, path to citizenship, transgender military service, diversity. Changed format: transgender bathrooms (6-point forced choice in 2016/2020, 7-point favor/oppose in 2024) and same-sex marriage (3 categories; in 2024 a random half got the same item, `V241382`, the other half a 7-point one) — both excluded from the change analysis.
+
+**Votes.** 2016: `V161027` for pre-election early voters, else `V162034a`; turnout `V162031x`. 2020: `V202110x`, turnout `V202109x`. 2024: `V242096x`, `V242095x`. Recall: 2020 vote in 2024 `V241106x`; 2016 vote in 2020 `V201101/V201102/V201103`, in 2024 `V241107/V241108`. **Weight** `V240106b` (2016–2024 panel, post-election; target population: citizens 18+ before the 2016 election); 2,070 panelists have it.
+
+---
+
 ## B. Part 1 — Fundamentals model
 
 ### B.1 Specification
@@ -507,6 +522,12 @@ Sample: 2024 respondents with `presvote_prior_party == "D"` and a 2024 major-par
 Average marginal effects, full model: gap −1 point → +3.9pp on P(switch); gap +1 → −2.5pp; Fox 0→1 → +11.3pp; county real pay +1 SD → 0.000. Recalled-Trump mirror (N = 16,166): 2.3% switched to Harris; gap coefficient +0.849 (0.092), AME +2.1pp.
 
 **Multilevel logit** (`BinomialBayesMixedGLM`, variational Bayes, county random intercept, unweighted): gap −0.956 (0.043), `pid7c` +0.819, Fox +1.637 (0.108), MSNBC −0.527, social −0.349, county real pay −0.104 (0.054); county random-effect SD 0.384 on the logit scale. Being unweighted, its intercept corresponds to the 3.0% unweighted base rate; slopes are comparable to the weighted single-level model, which is the check intended.
+
+### E.4a Switching corrected for recall of the 2020 vote
+
+Notebook `23_attribution_switching_recall.ipynb`; `attribution_switching_recall_corrected.csv`, `attribution_switch_model_recall_corrected.csv`. E.4's sample (all 2024 D/R voters with a recalled 2020 status) re-weighted by `weight_post` × P(reported Biden in 2020 | recalled status, 2024 vote, economy rating "much worse" vs rest), estimated in the CES panel (weighted; cells under 10 pooled across ratings). P: recalled Biden → Harris 0.995 / 0.982 (much worse / rest); recalled Biden → Trump 0.71 / 0.74; recalled non-voter → Harris 0.43 / 0.42; recalled non-voter → Trump 0.11 / 0.01; recalled Trump → Harris 0.06 / 0.07; recalled other → Harris 0.03; all other cells ≈ 0. Positive-weight N = 30,339 (recalled non-Biden voters with some probability of a reported Biden vote enter).
+
+Switch rate, recall / corrected [bootstrap 95%, 500 panel resamples]: much worse 31.6 / 28.0 [16.1, 39.1]; somewhat worse 11.1 / 8.3 [4.7, 10.7]; same 4.6 / 3.4 [1.9, 4.5]; somewhat better 1.7 / 1.2 [0.7, 1.6]; much better 1.5 / 1.1 [0.6, 1.4]; all 6.4 / 5.3 [3.5, 7.0]. Full model: gap −0.827 (0.079) / −0.850 (0.077); AME gap −1 +3.9 / +3.4pp, gap +1 −2.5 / −2.2pp; Fox +1.868 / +1.864. Mirror (Trump → Harris) 2.3% / 2.3%.
 
 ### E.5 Variance decomposition
 
@@ -861,6 +882,12 @@ Net margin change if 2020 voters who did not vote in 2024 had voted as in 2020: 
 
 Michigan under `vvweight` rests on 41 Biden and 24 Trump stay-homes. An earlier county-level counterfactual (restore stronghold turnout at 2024 shares) gave +11k Pennsylvania and +1k Michigan; it assumed stay-homes mirror 2024 voters and is superseded, though it reaches the same map for a different reason — swing-state strongholds did not lose turnout (H.3).
 
+### H.5a Counterfactual corrected for recall
+
+Notebook `24_stayhome_counterfactual_recall.ipynb`; `stayhome_counterfactual_recall_corrected.csv`. H.5's matched cross-section, all recalled statuses kept, each respondent given fractional membership in reported-Biden and reported-Trump 2020 voters from the CES panel's P(2020 report | recalled status, 2024 outcome) on matched panelists (outcomes: Harris, Trump, third party, voted with no answer, stayed home). Key cells (P Biden / P Trump, N): recalled Biden, stayed home 0.989 / 0.005 (95); recalled Trump, stayed home 0.000 / 0.992 (81); recalled non-voter, stayed home 0.024 / 0.006 (90); recalled Biden, voted Trump 0.75 / 0.25 (25); recalled non-voter, voted Harris 0.47 / 0.00 (54). Stay-home rates change by at most 0.2 points in any state.
+
+Net margin change, recall → corrected [500 panel resamples; correction uncertainty only] — unweighted / `commonweight` / `vvweight`: Michigan +20k → +23k [13k, 36k] / +51k → +57k / +183k → +181k [171k, 194k]; North Carolina +59k → +58k / +113k → +114k / +128k → +128k; Arizona +24k → +25k / +11k → +12k / +27k → +28k; Georgia −6k → −2k / +19k → +21k / +38k → +41k; Pennsylvania −22k → −21k / −17k → −15k / −17k → −16k; Wisconsin −12k → −10k / +7k → +7k / −10k → −10k; Nevada −10k → −9k / −14k → −13k / +8k → +8k; national +0.43M → +0.52M [0.26M, 0.84M] / +0.76M → +0.85M / +2.17M → +2.25M [1.98M, 2.53M] against −2.29M. Flips: Michigan under `vvweight` only, as before; nothing else.
+
 ### H.6 Share decomposition
 
 Notebook `11_share_and_issues.ipynb` §1. Validated 2024 voters (`TS_g2024 ∈ 1–6`) with a 2024 vote (`CC24_410`) and a recalled 2020 status (`presvote20post`): N = 32,531, weighted by `vvweight_post` falling back to `vvweight`. Two-party Democratic share in this sample 49.1% (actual 49.25%). `outputs/tables/share_decomposition.csv`:
@@ -873,6 +900,24 @@ Notebook `11_share_and_issues.ipynb` §1. Validated 2024 voters (`TS_g2024 ∈ 1
 | Non-voter | 1,943 | 5.6% | 40.0% | 57.7% | 2.2% | +0.98 |
 
 Net switching: +2.48 − 0.73 = +1.74pp. New voters: +0.98pp. New voters by group (share of new voters; Trump / Harris): white/other 30+ 48.5%, 70.8 / 27.4; under 30 (other) 30.2%, 44.6 / 51.6; Hispanic 13.8%, 64.5 / 34.4; Black 7.6%, 14.7 / 85.0. Mean age 39 (all voters 53); no degree 71% (all 50%).
+
+### H.7 The share decomposition corrected for recall
+
+Notebook `22_share_decomposition_recall.ipynb`; `outputs/tables/share_decomposition_recall_corrected.csv`. The cross-section's recalled-2020-status × 2024-vote cell shares (H.6) are redistributed by P(2020 status reported in 2020 | recalled status, 2024 vote), estimated in the CES 2020–24 panel on validated 2024 voters (`TS_g2024` 1–6), weight `commonpostweight_24`; no 2020 vote reported (`CC20_410` missing, 5, 6) = non-voter. Panel cells (recalled × 2024 vote): Biden 1,415 / 25 / 14 (Harris / Trump / third); Trump 29 / 1,354 / 8; non-voter 54 / 59 / 3; other 11 / 25 / 26. Composition by 2020 report: recalled Biden→Trump 18 Biden, 7 Trump; recalled non-voter→Trump 35 non-voter, 22 Trump, 2 Biden; recalled Trump→Harris 26 Trump, 2 Biden, 1 non-voter; recalled non-voter→Harris 32 non-voter, 21 Biden, 1 Trump.
+
+| | Recall (H.6) | Corrected | 95% (bootstrap, 1,000) | Bound: validated 2020 turnout |
+|---|---|---|---|---|
+| Biden→Trump (pp of electorate) | 2.48 | 1.92 | 1.24–2.44 | 1.66 |
+| Trump→Harris | 0.73 | 0.75 | 0.61–0.87 | 0.66 |
+| Net switching | +1.74 | +1.18 | 0.49–1.71 | +1.00 |
+| New voters (net) | +0.98 | +0.64 | −0.48 to 1.66 | +2.35 |
+| 2020 other (net) | +0.10 | +0.39 | −0.09 to 1.23 | −0.32 |
+| Switch ratio | 3.4 | 2.6 | 1.7–3.6 | 2.5 |
+| Biden switch rate | 5.2% | 4.1% | 2.6–5.1% | 3.9% |
+| New voters' share of electorate | 5.6% | 4.5% | 3.4–5.6% | 12.5% |
+| Switching / new voters, share of shift | 62% / 35% | 53% / 29% | — | 33% / 77% |
+
+The validated-turnout column treats every panelist without a matched 2020 voter record as a non-voter; 9.3% of panel 2024 voters who reported a 2020 vote have no record, most of them match failures, so it overstates new voters and is a bound, not an estimate. Panelists had answered the 2020 vote item twice before 2024; fresh cross-section respondents are likely to misrecall more, so the correction is conservative.
 
 ---
 
@@ -1045,6 +1090,49 @@ Notebook `15_corporate_capture.ipynb`. Sample, weight, and groups as I.7, plus B
 **Reading.** Anti-corporate sentiment is negatively associated with leaving the Democratic coalition and is zero net of positions; the switcher signature is strong-hand and distrust plus cultural conservatism. The switchers saw the Democrats as too far left (pre-election thermometer 36, placement 2.3 points left of self) and transferred rather than lost faith (70% Republicans on own MIP). The "no difference" profile belongs to the stay-home group. The ANES has no party-specific capture item ("the Democrats serve corporate donors"); the test is of general anti-corporate sentiment, which is necessary but not sufficient for the hypothesis.
 
 ---
+
+### I.9 Before the switch: the ANES 2016–2020–2024 panel
+
+Notebook `20_anes_panel.ipynb`. Data A.13; weight `V240106b`. Biden 2020 voters by their 2020 report (N = 941 with a 2024 outcome): Biden→Harris 856, Biden→Trump 21, Biden→stay home 64; Trump→Trump 675 for reference. Switcher weights range 0.14–5.0; Kish effective n = 10.7, and three respondents carry 44% of the weight (unweighted: 10 white, 4 Black, 6 Hispanic, 1 Asian). The analysis plan (constructs, groups, measures, secondary constructs) is written at the top of the notebook and was fixed before results. Tables `anes_panel_*.csv`; figure `anes_panel_gaps_by_wave.png`.
+
+**Indices** (mean of 0–1 items, 1 = named direction; three-wave items only): anti-politician (big interests, corrupt, trust, officials don't care, no say); strong leader (one item); anti-corporate (1 − big-business thermometer/100, millionaire tax favor, spending limits favor); economic-left (services, government insurance, guaranteed jobs, raise minimum wage, paid leave); immigration-conservative (wall, Dreamers sent back, end birthright, decrease immigration, immigrants increase crime); cultural-conservative (abortion, marriage, oppose gay job protection, oppose gay adoption, transgender bathroom). Secondary: authoritarianism (four child-rearing items; "both" = 0.5), racial resentment (four items). "Full" 2020/2024 versions add the two-wave items.
+
+**Gaps, switchers − loyal, pooled SD (SD over all weighted panelists in the wave): weighted [bootstrap 95%] / unweighted.**
+
+| | 2016 | 2020 | 2024 |
+|---|---|---|---|
+| Anti-politician | −0.23 [−0.72, 0.30] / 0.02 | −0.01 [−0.62, 0.46] / 0.01 | +0.54 [0.21, 0.93] / 0.51 |
+| Strong leader | +0.86 [0.40, 1.20] / 0.76 | +0.26 [−0.37, 0.88] / 0.19 | +0.46 [0.01, 0.91] / 0.74 |
+| Anti-corporate | −0.41 [−0.76, −0.14] / −0.58 | −0.64 [−1.05, −0.19] / −0.55 | −0.65 [−1.06, −0.17] / −0.52 |
+| Economic-left | −0.47 [−0.90, −0.04] / −0.36 | −0.70 [−1.09, −0.29] / −0.69 | −0.64 [−1.17, −0.13] / −0.82 |
+| Immigration | +0.76 [0.39, 1.20] / 0.93 | +0.83 [0.53, 1.12] / 0.83 | +1.34 [0.92, 1.71] / 1.21 |
+| Cultural | +0.76 [0.43, 1.11] / 0.81 | +1.05 [0.43, 1.64] / 0.82 | +0.98 [0.49, 1.58] / 1.00 |
+| Authoritarianism (sec.) | +0.45 [0.03, 0.79] | +0.57 [0.13, 1.04] | +0.39 [−0.09, 0.94] |
+| Racial resentment (sec.) | +1.01 [0.64, 1.39] | +0.90 [0.45, 1.37] | +1.25 [0.78, 1.76] |
+
+Full 2020/2024 indices: immigration +0.95 / +1.35, cultural +1.07 / +1.12, anti-corporate −0.56 / −0.66. Stay-home − loyal (2016 / 2020 / 2024): anti-politician +0.21 / +0.21 / +0.47; cultural +0.34 / +0.55 / +0.43; immigration +0.30 / +0.24 / +0.50. Group means 2020 (loyal / switch / Trump→Trump): cultural 0.13 / 0.42 / 0.49; immigration 0.20 / 0.42 / 0.62; economic-left 0.76 / 0.58 / 0.39; anti-corporate 0.74 / 0.57 / 0.49.
+
+**Change 2020→2024, identical-format items** (switch − loyal, in SD of the 2020 index [bootstrap 95%]): anti-politician +0.57 [−0.09, 1.28]; immigration +0.43 [0.20, 0.67]; racial resentment +0.26 [−0.07, 0.72]; strong leader +0.22 [−0.18, 0.72]; cultural (abortion, gay job protection and adoption, transgender military, diversity) +0.20 [−0.30, 0.80]; economic +0.07 [−0.69, 0.69]; anti-corporate −0.11 [−0.50, 0.34]; authoritarianism −0.18 [−0.49, 0.18].
+
+**Switching on earlier attitudes** (Biden→Trump vs Biden→Harris, N = 877, 21 events; weighted logit, standardized; bootstrap 95% from 500–1,000 resamples within outcome). 2020 indices, one at a time: anti-politician −0.01 [−0.64, 0.62], strong leader +0.24 [−0.61, 0.75], anti-corporate −0.52 [−0.85, −0.19], economic-left −0.81 [−1.31, −0.41], immigration +0.85 [0.55, 1.41], cultural +0.81 [0.42, 1.20], authoritarianism +0.55 [0.12, 0.98], racial resentment +0.98 [0.53, 1.47]. 2016 indices: −0.21, +0.90, −0.37, −0.54, +0.85, +0.66, +0.46, +1.16 (all but anti-politician exclude zero). Joint on 2020: economic −0.41 [−0.97, 0.05], immigration +0.61 [0.11, 1.13], cultural +0.63 [0.16, 1.03]; the ratio of the cultural or immigration coefficient to the economic one has a bootstrap interval spanning zero and is not reported. HC1 p-values (all < 0.01 for the joint terms) understate the uncertainty at 21 events. Terciles of the 2020 index, switch rate (switchers): immigration 0% (0) / 1.7% (4) / 9.5% (17); cultural 0% (0) / 2.9% (7) / 8.2% (14); economic-left, least left first, 8.8% (15) / 1.5% (5) / 1.6% (1); anti-corporate, least first, 8.4% (13) / 1.7% (4) / 0.8% (4); anti-politician 4.2 / 2.8 / 4.8%. Reservoir (index ≥ 0.5): 2020 immigration index 7.2% of the coalition, switching at 19.5% vs 2.8%, 35% of switchers (full index 9.1%, 21.8% vs 2.2%, 50%); 2024 index 17.2%, 16.9% vs 1.3%, 73%. The pre/post contrast matches the CES (I.6: 56% vs 81%); the coalition shares do not, because the ANES items put fewer Biden voters above 0.5.
+
+**Party affect** (loyal / switch / stay home / Trump→Trump). Democratic Party thermometer 2016 68.6 / 66.3 / 69.7 / 27.0; 2020 70.5 / 68.6 / 70.3 / 14.3; 2024 73.4 / 36.3 / 61.8 / 13.4. Republican Party 2016 25.2 / 41.6 / 31.2 / 61.3; 2020 17.1 / 39.1 / 27.6 / 75.8; 2024 16.0 / 49.0 / 26.8 / 75.7. Party ID (1–7) 2016 2.3 / 2.9 / 2.4 / 5.5; 2020 2.0 / 3.1 / 2.1 / 6.1; 2024 1.8 / 3.8 / 2.6 / 6.3. CSES left-right placements are not interpretable for the switchers: in 2016 and 2020 they placed the Republican Party at or left of the Democratic Party (5.2 vs 5.7; 5.0 vs 5.1), and in 2024 they placed the Democrats 0.5 points left of themselves against 2.3 in the full sample (I.8). No pre-switch claim is made from the scale.
+
+**2016 vote, recorded in 2016.** Switchers: Clinton 58%, Trump 32% [13, 61], did not vote 9%, other 1% (unweighted Trump 10 of 21). Loyal: 84 / 4 / 7 / 6%. Trump-2016 Biden voters: 4.7% of the coalition, switch rate 27.4% (10 of 46); Clinton-2016 3.0% (6 of 694); 2016 non-voters 5.2% (3 of 56). CES cross-section by recall (I.5): 4.5%, 32.2%, 27% of switchers. Switchers' 2016 vote recalled in 2024 against the 2016 record: of 10 Trump voters, 6 recalled Trump, 3 not voting, 1 Clinton; of 6 Clinton voters, 1 recalled Trump.
+
+**Recall of 2020 vote.** Agreement 89.7% (N = 2,021). Of 26 recall-defined Biden→Trump switchers, 14 reported Biden in 2020, 8 Trump, 3 no vote, 1 missing; of 21 true switchers, 14 recalled Biden, 4 no vote, 3 Trump. 2024 gaps, true vs recall-defined: anti-politician 0.54 / 0.57, strong leader 0.46 / 0.52, anti-corporate −0.65 / −0.62, economic −0.64 / −0.66, immigration 1.34 / 1.19, cultural 0.98 / 0.91. The 12 misclassified resemble switchers, not Trump→Trump voters (Democratic thermometer 47 vs 13).
+
+**Reading.** Positions — cultural, immigration, economic, and the view of big business — separated the switchers from loyal Democrats in 2016 and 2020, before they switched; cultural fully, immigration by about 60%. Distrust of politicians did not, and the strong-leader item is unstable across administrations; both read as evaluations of whoever governs. Racial resentment (secondary) shows a large pre-existing gap, but the switchers are majority non-white and the scale concerns Black Americans; it is reported, not interpreted.
+
+### I.10 The switch model before and after the switch (CES panel), and recall contamination
+
+Notebook `21_ces_panel_timing_and_recall.ipynb`. CES 2020–24 panel (A.7), weight `commonpostweight_24` (else `commonweight_24`). Biden voters by `CC20_410`, 2024 vote `CC24_410`. Items identical in both waves (panel guide): economic — Medicare for all `CC20_327a`/`RC24_327a`, drug-price negotiation `327b`/`327b`, oppose ACA repeal `CC20_327d`/`RC24_327c`; immigration — `331a,b,d,e` / `CC24_331a,b`, `RC24_331c,d`; social — abortion choice (oppose) `332a`, ban in all circumstances `332f`; policing — more police `334c`, not fewer `334d`. Cultural = mean of the eight immigration, social and policing items. Models as notebook 11 (`plus_controls`, `cultural_split`), HC1; bootstrap 95% from 1,000 resamples within outcome. The economic index is health care only (the cross-section's tax, Medicaid and student-loan items were not asked in 2020).
+
+**Coefficients per SD** (N = 1,666–1,680, 37–39 events). 2020 attitudes, 2020 party ID: economic −0.41 [−0.84, 0.10], cultural +1.32 [0.82, 2.02], ratio 3.2 [1.4, 48]; split: economic −0.42, immigration +0.76 [0.27, 1.54], social +0.65, policing +0.38; immigration/economic 1.8 [0.5, 27]. 2024 attitudes, 2020 party ID: economic −0.72 [−1.45, 0.23], cultural +1.77, ratio 2.5 [1.1, 31]; immigration +1.16, ratio 1.6. 2024 attitudes, 2024 party ID: economic −0.73, cultural +1.49, ratio 2.1 [0.9, 30]; immigration +1.18, ratio 1.7. HC1 standard errors (0.11–0.26) are far narrower than the bootstrap intervals; at this event count the ratios are not estimated.
+
+**Change 2020 → 2024** (loyal / switchers): economic-left 0.92 → 0.92 / 0.78 → 0.61 (difference in change −0.17; Medicare for all 0.79 → 0.47, keep ACA 0.71 → 0.50, drug negotiation 0.85 → 0.85); immigration 0.17 → 0.34 / 0.50 → 0.74 (+0.06); social 0.10 → 0.07 / 0.36 → 0.34 (0.00); policing 0.30 → 0.48 / 0.54 → 0.58 (−0.14). The ANES panel (I.9) found the reverse split — immigration moved, the general economic scales did not; the CES economic items are party-coded health-care proposals.
+
+**Recall.** 2020 report against 2024 recall (`presvote20post_24`): 98.1% of Biden reporters recall Biden; 0.8% of Trump reporters recall Biden. Recall-defined switchers 44, true 39, both 34: 77% of recall switchers are true switchers (ANES panel 54%), 87% of true switchers recall Biden; 9 of the 10 misclassified reported Trump in 2020. Switch rate 4.1% true, 4.7% by recall. 2024 means, true / recall-defined / misclassified: economic-left 0.61 / 0.51 / 0.47; immigration 0.74 / 0.75 / 0.80; policing 0.58 / 0.69 / 0.99; party ID 3.5 / 3.5 / 5.3. Share of switchers immigration-conservative (2024 answers ≥ 0.5): 0.88 under both definitions. Panelists had answered the 2020 vote question in 2020 and 2022, so cross-section recall is probably less accurate than this.
 
 ## J. Part 9 — Cross-pressure, perceived difference, and the meaning of "left"
 
@@ -1359,6 +1447,10 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 33. **Cross-cycle mayoral shares are not like-for-like.** 2017 and 2021 were two-way races against Republicans who drew 27–28%; 2025 was a three-way race in which the Trump-endorsed independent drew 41% and the Republican 7%. The decline in the Democratic nominee's share in the outer-borough districts between 2021 and 2025 is partly the different opponent; the Mamdani-vs-Cuomo two-way share is the closer comparison and shows the same direction. IE totals count only CFB-reported spending. GDELT tone is a lexicon score on article text, not audience exposure or intent — it does not separate an attack from a report of one — and the index is missing the *Post* for 2021 and all sources for June 15–July 1, 2025. The cross-cycle tone comparison is on Fox, CNN, the *Daily News*, and all sources only. **The coverage data are known to be incomplete and the incompleteness is now quantified rather than assumed**: named outlets resolve a median 7.7% of indexed volume, and GDELT's nytimes.com recall falls from 82% in 2021 to 5.8% in 2025 (A.11). Recall can only be measured where a census exists, which among these outlets is the *Times* alone; for the *Post*, the *Daily News*, Fox, CNN and the rest the GDELT counts are unauditable and are reported as such. No audience or circulation weighting is applied anywhere — article counts are not readership, and A1 placement is a proxy for editorial prominence, not for how many people saw a story. **Sentiment scoring measures valence, not framing**, and on this corpus it demonstrably fails at the question of interest: the A1 piece leading with Mamdani's religion scores −0.59 on the isolated words *war* and *criticism*, not on the editorial choice the headline represents. The tone nulls refute one narrow claim — that aggregate sentiment ran more negative than a comparable nominee's — and nothing more. Frame salience is reported alongside them because it is measurable on this text where valence is not; it establishes what coverage raised, not how it treated what it raised, and neither measure evaluates individual articles.
 34. **The insurgent-primary universe is Justice Democrats' endorsement list,** which changed character across cycles (broad 2018 slate, targeted later slates), so the cycle trend in win rate is partly selection. Opponents are identified mechanically; open-seat "opponents" are one of several. Pre-primary receipts are the last filing before the primary (self-funding counts as receipts — Thanedar 2026). IE is restricted to expenditures before the primary; the top-committee tallies are cycle totals. 2026 FEC data is partial. The DSA tier is a hand-coded proxy for ideological distance from the party (14 cases); its coefficient is also a candidate-quality and fundraising effect. Twenty-one challenger cases and three incumbent losses are the whole basis of the incumbent-vs-money finding.
 
+35. **The ANES panel rests on 21 switchers, effectively 11.** Every I.9 switcher figure moves with two or three heavily weighted respondents; the unweighted series agree in sign and rough size, but a single-wave difference below about 0.5 SD is not distinguishable from zero. The panel represents the 2016 electorate, so switchers too young to vote in 2016 are absent.
+
+36. **The Part 8 cultural-to-economic ratio is a point estimate without a usable interval.** In the CES panel (I.10) the bootstrap interval for the economic coefficient includes zero at 37 switchers, before and after the switch; the cross-section's 327 switchers give a tighter figure but measure attitudes after the vote and define switchers by recall, which the panel shows inflates both the switch rate and the economic gap.
+
 ---
 
 ## M. Reproducibility
@@ -1406,6 +1498,12 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 28 | `18_nyc_money_media_history.ipynb` | steps 25, 27, 27b | tables, figures |
 | 29 | `python src/data_collection/fec_insurgent_pull.py` (needs `FEC_API_KEY`; JD wikitext fetched by hand from `?action=raw`) | FEC API | `data/raw/insurgent/jd_cases_fec.csv` |
 | 30 | `19_insurgent_primaries.ipynb` | step 29 | tables |
+| 31 | manual browser download of the ANES 2016 and 2020 files (A.13), then `python src/data_collection/anes_panel_pull.py` | `data/raw/anes/*` | `data/raw/anes/anes_panel_2016_2024.csv` |
+| 32 | `20_anes_panel.ipynb` | step 31 | tables, figure |
+| 33 | `21_ces_panel_timing_and_recall.ipynb` | CES panel (A.7) | tables |
+| 34 | `22_share_decomposition_recall.ipynb` | CES 2024 and CES panel | tables |
+| 35 | `23_attribution_switching_recall.ipynb` | step 8 (notebook 06), CES panel | tables |
+| 36 | `24_stayhome_counterfactual_recall.ipynb` | CES 2024, CES panel, MIT returns | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -1431,9 +1529,9 @@ Part 4 established that perception is disconnected from local reality and travel
 
 The reduced-form association between living in a news desert and switching does not survive Medill's desert definition and should not be pursued.
 
-6. **Salience — done (I.7).** The ANES 2024 shows the switchers prioritized prices over immigration two to one and had adopted the Republican claim on prices. What would extend it: the 2016–20–24 ANES panel subsample (2,171 respondents, ids `V200001`/`V160001_orig`) merged to the 2020 and 2016 Time Series files, which would put the anti-elite and cultural items — which the CES does not carry — ahead of the switch the way F.3 does for economic perception.
+6. **Salience — done (I.7); timing — done (I.9).** The ANES 2024 shows the switchers prioritized prices over immigration two to one and had adopted the Republican claim on prices. What would extend it: the 2016–20–24 ANES panel subsample (2,171 respondents, ids `V200001`/`V160001_orig`) merged to the 2020 and 2016 Time Series files, which would put the anti-elite and cultural items — which the CES does not carry — ahead of the switch the way F.3 does for economic perception. Done in I.9: cultural and immigration positions precede the switch; anti-politician distrust does not.
 
-7. **The corporate-capture hypothesis — tested in I.8; the strong form fails.** Remaining: Working hypothesis: Democrats came to be seen as beholden to corporate elites; that perception, not policy positions, cost them the trust of economically-left, anti-elite voters and left a vacuum Trump filled. I.7 is consistent with it — 95% of switchers say government is run by a few big interests, switchers are +0.87 SD anti-elite, and 73% had transferred the prices issue to Republicans — but it is not yet a test. Done in I.8: item decomposition, `V242166` no-difference, party thermometers and placement. Still open: (d) the 2016–20–24 panel subsample merged to the 2020 and 2016 files, to put the anti-elite items *before* the switch. Outside the ANES: FEC corporate/PAC receipts by candidate and cycle as the "actual" side of the perception gap, and the Pew/Gallup "which party cares about people like me" series for the trend since 2016.
+7. **The corporate-capture hypothesis — tested in I.8; the strong form fails.** Remaining: Working hypothesis: Democrats came to be seen as beholden to corporate elites; that perception, not policy positions, cost them the trust of economically-left, anti-elite voters and left a vacuum Trump filled. I.7 is consistent with it — 95% of switchers say government is run by a few big interests, switchers are +0.87 SD anti-elite, and 73% had transferred the prices issue to Republicans — but it is not yet a test. Done in I.8: item decomposition, `V242166` no-difference, party thermometers and placement. (d) done in I.9: the switchers were less anti-corporate than loyal Democrats in 2016 and 2020 as well, and no more distrustful of politicians until 2024. Outside the ANES: FEC corporate/PAC receipts by candidate and cycle as the "actual" side of the perception gap, and the Pew/Gallup "which party cares about people like me" series for the trend since 2016.
 
 8. **Insurgent primaries — studies A and B.** Part 10 answered the precinct question for New York. Still open: (A) a case dataset of Democratic primaries with a DSA / Justice Democrats-type challenger, 2018–2026, with FEC receipts, small-dollar share, and independent expenditures for and against (AIPAC/UDP, crypto PACs), to test whether insurgents win against a funding deficit and whether outside spending against predicts loss; (B) GDELT coverage volume and tone by source domain (foxnews.com, cnn.com, msnbc.com, nytimes.com) for each insurgent and opponent in the primary window, with establishment-vs-establishment primaries as the control, to test "smeared by all sides." Both need the 2026 primary results, which postdate the analyst's knowledge and must be pulled from the web.
 
