@@ -74,7 +74,7 @@ jupyter lab
 jupyter nbconvert --to notebook --execute notebooks/02_fundamentals_model.ipynb \
     --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 
-# Run all notebooks in order (02 through 22; there is no 01 -- data collection is the scripts)
+# Run all notebooks in order (02 through 23; there is no 01 -- data collection is the scripts)
 for nb in notebooks/[0-9][0-9]_*.ipynb; do
   jupyter nbconvert --to notebook --execute "$nb" \
       --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy --ExecutePreprocessor.timeout=1800
@@ -87,7 +87,7 @@ done
 
 ## Architecture
 
-Notebooks run in sequence, 02 → 22 (there is no 01; data collection is the scripts in `src/data_collection/`). The early notebooks (02–09) write to `data/processed/` for later ones; 10–22 mostly read `data/raw/` directly.
+Notebooks run in sequence, 02 → 23 (there is no 01; data collection is the scripts in `src/data_collection/`). The early notebooks (02–09) write to `data/processed/` for later ones; 10–23 mostly read `data/raw/` directly.
 
 ```
 src/

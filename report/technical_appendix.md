@@ -523,6 +523,12 @@ Average marginal effects, full model: gap −1 point → +3.9pp on P(switch); ga
 
 **Multilevel logit** (`BinomialBayesMixedGLM`, variational Bayes, county random intercept, unweighted): gap −0.956 (0.043), `pid7c` +0.819, Fox +1.637 (0.108), MSNBC −0.527, social −0.349, county real pay −0.104 (0.054); county random-effect SD 0.384 on the logit scale. Being unweighted, its intercept corresponds to the 3.0% unweighted base rate; slopes are comparable to the weighted single-level model, which is the check intended.
 
+### E.4a Switching corrected for recall of the 2020 vote
+
+Notebook `23_attribution_switching_recall.ipynb`; `attribution_switching_recall_corrected.csv`, `attribution_switch_model_recall_corrected.csv`. E.4's sample (all 2024 D/R voters with a recalled 2020 status) re-weighted by `weight_post` × P(reported Biden in 2020 | recalled status, 2024 vote, economy rating "much worse" vs rest), estimated in the CES panel (weighted; cells under 10 pooled across ratings). P: recalled Biden → Harris 0.995 / 0.982 (much worse / rest); recalled Biden → Trump 0.71 / 0.74; recalled non-voter → Harris 0.43 / 0.42; recalled non-voter → Trump 0.11 / 0.01; recalled Trump → Harris 0.06 / 0.07; recalled other → Harris 0.03; all other cells ≈ 0. Positive-weight N = 30,339 (recalled non-Biden voters with some probability of a reported Biden vote enter).
+
+Switch rate, recall / corrected [bootstrap 95%, 500 panel resamples]: much worse 31.6 / 28.0 [16.1, 39.1]; somewhat worse 11.1 / 8.3 [4.7, 10.7]; same 4.6 / 3.4 [1.9, 4.5]; somewhat better 1.7 / 1.2 [0.7, 1.6]; much better 1.5 / 1.1 [0.6, 1.4]; all 6.4 / 5.3 [3.5, 7.0]. Full model: gap −0.827 (0.079) / −0.850 (0.077); AME gap −1 +3.9 / +3.4pp, gap +1 −2.5 / −2.2pp; Fox +1.868 / +1.864. Mirror (Trump → Harris) 2.3% / 2.3%.
+
 ### E.5 Variance decomposition
 
 `statsmodels.MixedLM`, REML, county random intercept, unweighted (weighting variables enter as covariates; fixed effects match the weighted notebook 06 estimates within ±0.05).
@@ -1490,6 +1496,7 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 32 | `20_anes_panel.ipynb` | step 31 | tables, figure |
 | 33 | `21_ces_panel_timing_and_recall.ipynb` | CES panel (A.7) | tables |
 | 34 | `22_share_decomposition_recall.ipynb` | CES 2024 and CES panel | tables |
+| 35 | `23_attribution_switching_recall.ipynb` | step 8 (notebook 06), CES panel | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
