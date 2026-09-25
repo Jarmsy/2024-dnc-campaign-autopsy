@@ -1298,6 +1298,14 @@ Notebook 19 section 10. Tests fixed before computing (2026-09-24): M1 win rate b
 
 ---
 
+### K-bis.7 YouTube reach, 2025–26
+
+`src/data_collection/youtube_creator_pull.py`, notebook 17 section 4f. YouTube Data API v3 (`YOUTUBE_API_KEY`), per candidate-race two searches (order=relevance and order=viewCount, 50 each) over the 90 days to election day, then `videos.list` and `channels.list`; a video is kept if its title or description names the candidate in full; views as of 24 September 2026. 1,527 candidate-video rows, 549 channels. Channel classes: the pre-set regex rule failed validation (channel descriptions containing "news" put HasanAbi, Zeteo, The Majority Report and The Young Turks in news; Saturday Night Live and Colbert scored as creators) and was replaced before any comparison by hand-coding the 104 channels carrying 95% of views under written definitions (news; legacy entertainment; creator — online-first individuals, shows and independent outlets; political — campaigns, parties, PACs, politicians, advocacy media), with a paid-promotion rule (channel under 5,000 subscribers with a video over 100,000 views: political) and the regex applying only to the remainder. Views by class, all candidates: creator 112.8M, news 80.9M, entertainment 38.6M, political 26.6M.
+
+**H1** (left creator share above the establishment opponent's): true in 8 of 12 races; left creator views higher in 9 of 12 (sign test p ≈ 0.07). **H2** (NYC June 2026; within-race WLS slope of the left head-to-head share on the 18–34 share, stable-line EDs, against the log creator-views ratio): Park +0.67 points per 10 (SE 2.17), ratio 2.48; Valdez +3.07 (1.28), 7.35; Lander +0.56 (0.80), 0.89; Avila Chevalier +1.40 (0.71), 2.66; Blake +1.23 (0.57), ~0; Spearman +0.70 on five races. Tables: `youtube_reach_by_candidate.csv`, `youtube_h1_paired.csv`, `youtube_h2_nyc.csv`.
+
+---
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
