@@ -36,6 +36,7 @@ Output: narrative in `report/main_report.md` + technical appendix in `report/tec
 | Medill Local News Initiative | County local-news outlet counts by type (2025), desert/watchlist flags, RUCC, 2024→2025 newspaper change | Undocumented backend API behind the State of Local News explorer; `news_deserts_pull.py`. Server omits its TLS intermediate — script builds a CA bundle rather than disabling verification |
 | ANES 2024 Time Series | 5,521 respondents; open-ended most-important-problem (coded), issue importance and party-ownership batteries, anti-elite/populism and culture-war items the CES lacks; pre-election self/Harris/Trump placements on 7-pt economic and abortion scales; 2016–20–24 panel ids | **Site WAF blocks python-requests (403); download the zip in a browser** into `data/raw/anes/`, then `anes_pull.py` extracts and harmonizes. Post weight `V240107b` for anything using post-election items |
 | ANES 2016 & 2020 Time Series (2016–2020–2024 panel) | The 2,171 ANES 2024 panelists' 2016 and 2020 interviews: contemporaneous 2016/2020 votes and the same attitude items in all three waves | Same WAF as 2024 (403 to requests **and curl**); fetched in the in-app browser, relayed base64, SHA-256-checked. `anes_panel_pull.py` joins on `V200001` (2020) and `V160001_orig` (2016 — **not** the 2016 `V160001`). Match items across years by the codebook's survey-question mnemonic. Weight `V240106b`. **Only 21 Biden→Trump switchers (Kish n ≈ 11): report bootstrap intervals and unweighted figures** |
+| Michigan results by municipality (Test A) | President 2020/2024, U.S. Senate 2020/2024, governor/AG/SoS 2022, by city and township | `michigan_pull.py` → `mi_municipal_2020_2024.csv` and `..._with_2022.csv`. 2024 and 2022 from OpenElections precinct files (`openelections-data-mi`); **2020 from the MIT Election Lab file (`2020-mi-precinct-general.csv`, Dataverse doi:10.7910/DVN/NT66Z3) — guestbook, download by hand; OpenElections 2020 is incomplete (statewide file omits nine counties, per-county files misfile precincts).** MEDSL precincts report either one TOTAL row or ELECTION DAY + ABSENTEE rows, never both — sum all modes. Candidates identified by surname (party labels vary; some rows swap candidate/party). Municipalities matched in three passes (exact; bare name + type; bare name); county-wide early-voting boards are unplaceable (≤0.2%). All years reconcile to certified totals within 0.1% |
 | NYC BOE / DCP / Census | Election-district returns for 2020 & 2024 presidential and 2025 mayoral primary (from the ranked-choice cast vote record) and general; ED shapefiles; 2020 census blocks; block-based ED demographics | `nyc_pull.py`. **BOE ED CSVs prefix every row with the header — parse by position.** RCV contests are not published by ED; rebuilt from the CVR zip (slow; cached to `prim25_cvr_by_ed.csv`). 2020 votes crosswalked to current EDs via blocks. Needs `CENSUS_API_KEY`; `pyogrio` engine for shapefiles (fiona 1.10 breaks geopandas 0.13) |
 | NYC CFB | Independent expenditures by spender × candidate × support/oppose (2013–2025), candidate committee summaries | No bulk IE file; `nyc_cfb_pull.py` scrapes the ASP.NET summary and spender pages. Office code for Mayor is 1 except 11 in the 2021 financial-analysis CSV |
 | FEC API | Candidate search, house-senate reports (pre-primary YTD receipts), Schedule E IE by candidate | `fec_insurgent_pull.py`; set `FEC_API_KEY` (free). **DEMO_KEY is 40 calls/hour.** Cached JSON in `data/raw/insurgent/fec/`; `OPEN_SEAT` override for retired incumbents the FEC still lists |
@@ -74,7 +75,7 @@ jupyter lab
 jupyter nbconvert --to notebook --execute notebooks/02_fundamentals_model.ipynb \
     --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy
 
-# Run all notebooks in order (02 through 24; there is no 01 -- data collection is the scripts)
+# Run all notebooks in order (02 through 27; there is no 01 -- data collection is the scripts)
 for nb in notebooks/[0-9][0-9]_*.ipynb; do
   jupyter nbconvert --to notebook --execute "$nb" \
       --inplace --ExecutePreprocessor.kernel_name=dnc-autopsy --ExecutePreprocessor.timeout=1800
@@ -87,7 +88,7 @@ done
 
 ## Architecture
 
-Notebooks run in sequence, 02 → 24 (there is no 01; data collection is the scripts in `src/data_collection/`). The early notebooks (02–09) write to `data/processed/` for later ones; 10–24 mostly read `data/raw/` directly.
+Notebooks run in sequence, 02 → 27 (there is no 01; data collection is the scripts in `src/data_collection/`). The early notebooks (02–09) write to `data/processed/` for later ones; 10–27 mostly read `data/raw/` directly.
 
 ```
 src/
