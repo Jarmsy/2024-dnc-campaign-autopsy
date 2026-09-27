@@ -1,0 +1,61 @@
+{
+ "states": [
+  {
+   "state": "Michigan",
+   "margin_2024": -80103.0,
+   "net_if_stayhomes_voted": 23055.0,
+   "lo": 12900.0,
+   "hi": 36029.0
+  },
+  {
+   "state": "North Carolina",
+   "margin_2024": -183048.0,
+   "net_if_stayhomes_voted": 58251.0,
+   "lo": 51275.0,
+   "hi": 65720.0
+  },
+  {
+   "state": "Arizona",
+   "margin_2024": -187382.0,
+   "net_if_stayhomes_voted": 25281.0,
+   "lo": 21049.0,
+   "hi": 30642.0
+  },
+  {
+   "state": "Georgia",
+   "margin_2024": -115100.0,
+   "net_if_stayhomes_voted": -1560.0,
+   "lo": -11523.0,
+   "hi": 11963.0
+  },
+  {
+   "state": "Pennsylvania",
+   "margin_2024": -120266.0,
+   "net_if_stayhomes_voted": -20879.0,
+   "lo": -26881.0,
+   "hi": -13324.0
+  },
+  {
+   "state": "Wisconsin",
+   "margin_2024": -29397.0,
+   "net_if_stayhomes_voted": -10033.0,
+   "lo": -12796.0,
+   "hi": -6480.0
+  },
+  {
+   "state": "Nevada",
+   "margin_2024": -46008.0,
+   "net_if_stayhomes_voted": -9431.0,
+   "lo": -10848.0,
+   "hi": -7764.0
+  },
+  {
+   "state": "National",
+   "margin_2024": -2289953.0,
+   "net_if_stayhomes_voted": 517992.0,
+   "lo": 258319.0,
+   "hi": 843415.0
+  }
+ ],
+ "note": "Net change in the Democratic margin if every 2020 voter who stayed home in 2024 had voted as in 2020 (unweighted CES stay-home rates, corrected for recalled vote). A state flips only if the net exceeds the (negative) 2024 margin."
+}

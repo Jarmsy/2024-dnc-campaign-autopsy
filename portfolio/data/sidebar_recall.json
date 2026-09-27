@@ -1,0 +1,28 @@
+{
+ "panel": {
+  "recalled_switchers": 44,
+  "true_switchers_among_them": 34,
+  "reported_trump_in_2020": 9,
+  "true_switchers": 39,
+  "trump_voters_misremembering_biden_pct": 0.8
+ },
+ "corrections": {
+  "biden_switch_rate": {
+   "before": 5.2,
+   "after": 4.1
+  },
+  "switchers_per_reverse_switcher": {
+   "before": 3.4,
+   "after": 2.6
+  },
+  "switching_share_of_shift_pct": {
+   "before": 62.0,
+   "after": 53.0
+  },
+  "much_worse_switch_rate_pct": {
+   "before": 31.6,
+   "after": 28.0
+  }
+ },
+ "note": "CES 2020-24 panel: 2024 recall of the 2020 vote checked against what the same people reported in November 2020."
+}
