@@ -74,7 +74,7 @@ One entry per `{{CHART:<id>}}` slot in `content.md`. Data: `data/<id>.json` (eac
 ### 07_nyc_same_ballot: "Every Democrat gained where voters had swung"
 - **Data:** `deciles[]`: swing_to_trump_2024 (x) and mamdani_vs_harris, levine_vs_harris, williams_vs_harris (y, points).
 - **Form:** a line chart over the 10 deciles, x = the 2020→24 swing to Trump (points). Mamdani in the highlight violet; Levine and Williams in the grey reference tone, direct-labelled. Zero line.
-- **Caption:** "New York City election districts grouped by how far they swung to Trump in 2024. Each line is a 2025 Democrat's share minus Harris's. All three Democrats gained most where the swing was largest; the comptroller and public advocate gained more than Mamdani."
+- **Caption:** "New York City election districts grouped by how far they swung to Trump in 2024. Each line is a 2025 Democrat's share minus Harris's. All three Democrats gained most where the swing was largest; the comptroller and public advocate gained more than Mamdani. Mamdani's line sits lower throughout because he faced former Governor Andrew Cuomo, a Democrat running as an independent who won 41% citywide; the comptroller and public advocate faced no comparable challenger. The comparison that matters is how steeply each line rises."
 
 ### 08_testA_benchmark: "The pre-registered test"
 - **Data:** `rows[]`: comparison, sample, kind, slope, lo, hi. The El-Sayed row has null values until results exist.

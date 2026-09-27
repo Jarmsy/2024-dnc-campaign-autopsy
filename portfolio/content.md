@@ -97,7 +97,7 @@ The reason is arithmetic. Fewer than 1% of Trump voters misremember voting Biden
 
 {{CHART:07_nyc_same_ballot}}
 
-**The finding.** New York City's 2025 mayoral race was the clearest real-world test of an explicitly economic-left campaign. In the neighborhoods that had swung hardest to Trump, Zohran Mamdani ran ahead of Harris's 2024 share. But the two other Democrats on the same ballot, for comptroller and public advocate, gained **even more** in those same neighborhoods. The swing voters came back to Democrats, not specifically to the economic-left candidate.
+**The finding.** New York City's 2025 mayoral race was the clearest real-world test of an explicitly economic-left campaign. In the neighborhoods that had swung hardest to Trump, Zohran Mamdani ran ahead of Harris's 2024 share. But the two other Democrats on the same ballot, for comptroller and public advocate, gained **even more** in those same neighborhoods. The swing voters came back to Democrats, not specifically to the economic-left candidate. (Mamdani's share runs lower overall because he also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide; what matters is how much each candidate gained where voters had swung.)
 
 **How I know.** I compared candidates on the *same ballot* in the same election districts, which holds constant everything about the place and the year and leaves only the candidate. The same pattern held in New Jersey and Virginia the same day.
 
