@@ -111,6 +111,16 @@ ITEMS = {
     "rr_generations":   ("racial_resent", "V162212", "V202301", "V242301", lin(1, 5)),
     "rr_deserve":       ("racial_resent", "V162213", "V202302", "V242302", lin(1, 5)),
     "rr_tryhard":       ("racial_resent", "V162214", "V202303", "V242303", lin(1, 5, reverse=True)),
+    # Candidate traits (pre-election; 1 extremely well .. 5 not well at all -> 1 = describes well). Same
+    # wording all three waves; the Republican candidate is Trump each time, the Democrat Clinton/Biden/Harris.
+    "trump_cares":      ("trait", "V161165", "V201213", "V241206", lin(1, 5, reverse=True)),   # 'really cares about people like you'
+    "trump_honest":     ("trait", "V161167", "V201215", "V241208", lin(1, 5, reverse=True)),
+    "trump_leader":     ("trait", "V161164", "V201212", "V241205", lin(1, 5, reverse=True)),
+    "trump_knows":      ("trait", "V161166", "V201214", "V241207", lin(1, 5, reverse=True)),
+    "dem_cares":        ("trait", "V161160", "V201209", "V241201", lin(1, 5, reverse=True)),
+    "dem_honest":       ("trait", "V161162", "V201211", "V241203", lin(1, 5, reverse=True)),
+    "dem_leader":       ("trait", "V161159", "V201208", "V241200", lin(1, 5, reverse=True)),
+    "dem_knows":        ("trait", "V161161", "V201210", "V241202", lin(1, 5, reverse=True)),
     # Single items reported alongside
     "insiders":         ("single", None, "V202304", "V242304", lin(1, 5)),   # "system only works for insiders with money and power"
     "anti_unions":      ("single", "V162098", "V202162", "V242140", therm_inv),
@@ -127,6 +137,9 @@ RAW = {
     "therm_dem":    ("V161095", "V201156", "V241166", 100),
     "therm_rep":    ("V161096", "V201157", "V241167", 100),
     "pid7":         ("V161158x", "V201231x", "V241227x", 7),
+    # candidate thermometers, pre-election (Clinton/Biden/Harris; Trump)
+    "therm_dem_cand":   ("V161086", "V201151", "V241156", 100),
+    "therm_trump":      ("V161087", "V201152", "V241157", 100),
 }
 
 
