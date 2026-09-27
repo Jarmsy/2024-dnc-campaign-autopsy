@@ -255,7 +255,7 @@ inc_vote_share ~ gdp_q2_growth + approval_rating_june + consecutive_terms + open
 | 2020 | R | 52.27 | −28.0 | 42 | 1 | | **−10.9** |
 | **2024** | **D** | **49.25** | **+3.6** | **38** | **1** | **✓** | **+1.4** (out-of-sample) |
 
-Three-way races (1968, 1992, 1996, 2000) use `Dem / (Dem + Rep)`. GDP values are from FRED GDPC1; approval is Gallup June.
+Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes drop out; this matters most in 1968 (Wallace), 1980 (Anderson), 1992 and 1996 (Perot) and 2000 (Nader). Shares entered by hand in notebook 02 from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas. GDP values are from FRED GDPC1; approval is Gallup June.
 
 ### B.3 Coefficients (1948–2020)
 
