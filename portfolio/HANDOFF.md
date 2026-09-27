@@ -3,6 +3,9 @@
 **For:** the Claude Code session that builds the user's Astro website.
 **From:** the analysis session in `C:\Users\starh\OneDrive\Desktop\Projects\2024 DNC Campaign autopsy`.
 
+
+> **Status (27 Sept 2026):** the live page text lives in the website repo (`/made/2024-election-autopsy/`) and has been rewritten in John's voice. `content.md` here is the original draft and is **not** the source of truth for the page. The numbers are unchanged; `data/*.json` remains the only source of figures. Send any change to a number or caveat to the website session to fit into its current wording.
+
 ## What this is
 
 An interactive project page for the user's portfolio, summarizing a data-driven autopsy of the 2024 US presidential election. Most visitors will be **hiring managers and recruiters** (roles in data or business analytics, political strategy, and policy research) arriving from job applications. They should get, in about five minutes:

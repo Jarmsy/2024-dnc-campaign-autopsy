@@ -6,6 +6,8 @@ tags: [data analysis, survey research, panel data, elections, Python]
 repo: https://github.com/Jarmsy/2024-dnc-campaign-autopsy
 ---
 
+> **Status (27 Sept 2026):** the live page text lives in the website repo (`/made/2024-election-autopsy/`) and has been rewritten in John's voice. `content.md` here is the original draft and is **not** the source of truth for the page. The numbers are unchanged; `data/*.json` remains the only source of figures. Send any change to a number or caveat to the website session to fit into its current wording.
+
 <!-- Chart slots are marked {{CHART:<id>}}; each id matches a spec in CHARTS.md and a file in data/.
      Every number in this text comes from data/*.json (see CHECKS.txt). Do not edit numbers by hand. -->
 
