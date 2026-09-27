@@ -112,7 +112,12 @@ for m in ["approves Biden", "voted Democratic for House, 2022 (of voters)", "sup
 tc = pd.read_csv(T / "anes_panel_trump_cares_share.csv")
 for x in tc.itertuples():
     series.append({"measure": "says Trump 'really cares about people like you' (ANES)", "wave": int(x.wave), "loyal": r(x.loyal, 3),
-                   "switchers": r(x.switch, 3), "N_switchers": int(x.switch_N), "switchers_count": int(x.switch_count)})
+                   "switchers": r(x.switch, 3), "N_switchers": int(x.switch_N), "switchers_count": int(x.switch_count),
+                   "switchers_unweighted": r(x.switch_count / x.switch_N, 3),
+                   "plot_field": "switchers_unweighted",
+                   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), "
+                                     "so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and "
+                                     "show the weighted share in the tooltip."})
 write("06_order_of_events", {
     "series": series,
     "note": "Same people followed over time. CES 2020-22-24 panel: 39 Biden 2020 voters who voted Trump in 2024 ('switchers') vs ~1,640 "
@@ -131,10 +136,10 @@ write("sidebar_recall", {
     "panel": {"recalled_switchers": int(rc.recall_switchers), "true_switchers_among_them": int(rc.in_both),
               "reported_trump_in_2020": int(rc.recall_switchers_reported_Trump_2020), "true_switchers": int(rc.true_switchers),
               "trump_voters_misremembering_biden_pct": r(100 * rc.trump_recall_biden, 1)},
-    "corrections": {"biden_switch_rate": {"before": r(100 * sd.loc["biden_switch_rate", "recall (published)"], 1), "after": r(100 * sd.loc["biden_switch_rate", "corrected: 2020 report"], 1)},
-                    "switchers_per_reverse_switcher": {"before": r(sd.loc["ratio_BT_TH", "recall (published)"], 1), "after": r(sd.loc["ratio_BT_TH", "corrected: 2020 report"], 1)},
-                    "switching_share_of_shift_pct": {"before": r(100 * sd.loc["switch_share_of_shift", "recall (published)"], 0), "after": r(100 * sd.loc["switch_share_of_shift", "corrected: 2020 report"], 0)},
-                    "much_worse_switch_rate_pct": {"before": 31.6, "after": r(100 * pd.read_csv(T / "attribution_switching_recall_corrected.csv", index_col=0).loc["much worse", "corrected"], 1)}},
+    "corrections": {"biden_switch_rate": {"label": "Share of Biden 2020 voters who voted Trump in 2024 (validated voters, one-time 2024 survey)", "before": r(100 * sd.loc["biden_switch_rate", "recall (published)"], 1), "after": r(100 * sd.loc["biden_switch_rate", "corrected: 2020 report"], 1)},
+                    "switchers_per_reverse_switcher": {"label": "Biden-to-Trump switchers for every Trump-to-Harris switcher", "before": r(sd.loc["ratio_BT_TH", "recall (published)"], 1), "after": r(sd.loc["ratio_BT_TH", "corrected: 2020 report"], 1)},
+                    "switching_share_of_shift_pct": {"label": "Share of Trump's 2024 edge that came from voters switching sides (the rest came mainly from new voters and 2020 third-party voters)", "before": r(100 * sd.loc["switch_share_of_shift", "recall (published)"], 0), "after": r(100 * sd.loc["switch_share_of_shift", "corrected: 2020 report"], 0)},
+                    "much_worse_switch_rate_pct": {"label": "Switch rate among Biden voters who, in 2024, rated the economy 'much worse' (one-time 2024 survey, weighted); a different measure from chart 04, which uses the 2022 rating in the panel", "before": 31.6, "after": r(100 * pd.read_csv(T / "attribution_switching_recall_corrected.csv", index_col=0).loc["much worse", "corrected"], 1)}},
     "note": "CES 2020-24 panel: 2024 recall of the 2020 vote checked against what the same people reported in November 2020.",
 })
 checks["recall: 44 recalled, 34 true, 9 were Trump voters"] = f"{int(rc.recall_switchers)}, {int(rc.in_both)}, {int(rc.recall_switchers_reported_Trump_2020)}"

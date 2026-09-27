@@ -62,11 +62,12 @@ One entry per `{{CHART:<id>}}` slot in `content.md`. Data: `data/<id>.json` (eac
   - "says Trump 'really cares about people like you' (ANES)" (2016, 2020, 2024)
   - "economy got worse" (2020, 2022, 2024)
 - **Form:** small multiples, one panel per measure. x = year; two lines, switchers (orange, with a light interval band) and loyal Democrats (blue). A shared vertical guide at 2022 labelled "before the campaign". Recommended order: approves Biden → Medicare for all → immigration → Trump cares. Put "economy got worse" and "voted Democratic for House" in a collapsible "more" row.
-- **Tooltip must show N:** "Switchers, 2022: 31% (n = 38)"; for the ANES item: "2 of 21".
+- **Tooltip must show N:** "Switchers, 2022: 31% (n = 38)".
+- **ANES "Trump cares" panel:** plot `switchers_unweighted` (the count share: 7/21, 2/21, 10/20), not the weighted `switchers`. The 21 switchers' weights are extreme (three people carry 44% of the weight), and the page text cites counts. Tooltip: "2 of 21 (10%) · weighted 17%". Make no claim about 2016→2020; the 2020→2024 jump is the finding, and it holds either way (weighted 17%→55%, counts 10%→50%).
 - **Caption:** "The same people followed over time. By 2022, future switchers had turned on the Biden government but still backed Medicare for All; their policy views and their picture of Trump changed only between 2022 and 2024. Switcher samples are small (39 and 21); bands show uncertainty."
 
 ### sidebar_recall: "The bug in my own numbers"
-- **Data:** `panel` (44 recalled switchers, 34 real, 9 who had reported Trump) and `corrections` (before/after for the switch rate 5.2→4.1, the ratio 3.4→2.6, the switching share of the shift 62→53%, and the "much worse" switch rate 31.6→28.0).
+- **Data:** `panel` (44 recalled switchers, 34 real, 9 who had reported Trump) and `corrections` (before/after pairs, each with a `label` to show verbatim). The "much worse" switch rate here is a **2024 rating in the one-time survey**, a different measure from chart 04 (the 2022 rating in the panel). Its label says so; keep it.
 - **Form:** (a) a unit chart of 44 squares: 34 in the switcher color, 9 in the Republican color labelled "had voted Trump in 2020", 1 grey "no 2020 report". (b) Beside it, a before/after arrow list of the four corrections.
 - **Caption:** "Of 44 people who remembered switching from Biden to Trump, 9 had told the same survey in 2020 that they voted Trump. Correcting for this shrank my estimates but left the patterns intact."
 

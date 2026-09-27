@@ -126,7 +126,10 @@
    "loyal": 0.05,
    "switchers": 0.168,
    "N_switchers": 21,
-   "switchers_count": 7
+   "switchers_count": 7,
+   "switchers_unweighted": 0.333,
+   "plot_field": "switchers_unweighted",
+   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and show the weighted share in the tooltip."
   },
   {
    "measure": "says Trump 'really cares about people like you' (ANES)",
@@ -134,7 +137,10 @@
    "loyal": 0.014,
    "switchers": 0.167,
    "N_switchers": 21,
-   "switchers_count": 2
+   "switchers_count": 2,
+   "switchers_unweighted": 0.095,
+   "plot_field": "switchers_unweighted",
+   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and show the weighted share in the tooltip."
   },
   {
    "measure": "says Trump 'really cares about people like you' (ANES)",
@@ -142,7 +148,10 @@
    "loyal": 0.01,
    "switchers": 0.545,
    "N_switchers": 20,
-   "switchers_count": 10
+   "switchers_count": 10,
+   "switchers_unweighted": 0.5,
+   "plot_field": "switchers_unweighted",
+   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and show the weighted share in the tooltip."
   }
  ],
  "note": "Same people followed over time. CES 2020-22-24 panel: 39 Biden 2020 voters who voted Trump in 2024 ('switchers') vs ~1,640 who voted Harris ('loyal'). ANES 2016-20-24 panel for the Trump trait item: 21 switchers (weighted share; counts on hover). Small samples: intervals are wide; show N."
