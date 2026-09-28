@@ -11,3 +11,4 @@ recall: 44 recalled, 34 true, 9 were Trump voters: 44, 34, 9
 switch ratio before/after: 3.4 / 2.6 (report: 3.4 / 2.6)
 NYC top decile: swing / Mamdani, Levine, Williams vs Harris: 28.2 / +3.8, +23.5, +24.1
 2022 benchmark slope range: -0.06 to 0.04 (report: -0.06 to +0.04)
+2018 benchmark range; familiarity; Brown; Baldwin: -0.085 to 0.000; +0.008; +0.173; +0.184 (report: -0.085 to 0.000; +0.008; +0.173; +0.184)

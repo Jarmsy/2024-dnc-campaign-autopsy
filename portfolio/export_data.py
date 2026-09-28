@@ -163,15 +163,36 @@ rows = [{"comparison": pair, "sample": sub, "kind": "2022 benchmark: two down-ba
         for (pair, sub), x in bm.iterrows()]
 rows += [{"comparison": "Slotkin (Senate) - Harris (President), 2024", "sample": sub, "kind": "2024 dry run: pipeline check only", "slope": r(x.slope, 3),
           "lo": r(x.lo, 3), "hi": r(x.hi, 3)} for sub, x in dr.iterrows()]
+# Validation (addendum 2, notebook 28): 2018 Michigan pairs and familiarity check, and the two positive controls, each on the
+# presidential swing before that election (2012->16), original specification, all units
+val = pd.read_csv(T / "testA_validation_addendum2.csv")
+val = val[(val.role == "primary") & (val["sample"] == "all")]
+VKIND = {"V1a": "2018 benchmark: two down-ballot Democrats", "V1b": "2018 familiarity check: incumbent vs newcomer",
+         "V2a": "known populist appeal (positive control)", "V2b": "known populist appeal (positive control)"}
+for _, x in val.iterrows():
+    code = x.check.split()[0]
+    if code in VKIND:
+        label = x.check.split(" ", 1)[1].replace("MI 2018 ", "").replace("OH 2018 ", "").replace("WI 2018 ", "")
+        yr_state = {"V1a": "Michigan 2018", "V1b": "Michigan 2018", "V2a": "Ohio 2018, counties", "V2b": "Wisconsin 2018, counties"}[code]
+        rows.append({"comparison": f"{label}, {yr_state}", "sample": "all", "kind": VKIND[code], "slope": r(x.slope, 3), "lo": r(x.lo, 3), "hi": r(x.hi, 3)})
 rows += [{"comparison": "El-Sayed (Senate) - Benson (Governor), 2026", "sample": "all", "kind": "the pre-registered test: result after certification (late Nov 2026)",
           "slope": None, "lo": None, "hi": None}]
 write("08_testA_benchmark", {
     "rows": rows,
     "note": "Slope of the gap between two Democrats' shares on the 2020->24 swing to Trump, across Michigan municipalities. Ordinary "
-            "down-ballot pairs sit near zero (about -0.06 to +0.04); a 2026 slope clearly beyond about +/-0.1 would exceed ordinary "
-            "candidate differences. Plan: report/preregistration_2026_general.md; benchmark: addendum 1.",
+            "down-ballot pairs sit near zero (about -0.09 to +0.04 across Michigan 2018 and 2022); a 2026 slope clearly beyond about "
+            "+/-0.1 would exceed ordinary candidate differences. The 2018 and positive-control rows use the swing before that election "
+            "(2012->16). Plan: report/preregistration_2026_general.md; benchmark: addenda 1-2; validation results: "
+            "report/preregistration_2026_general_validation_results.md.",
+    "specific_version": {"label": "Corrected test (also accounts for each place's earlier swings and Republican vote share)",
+                         "brown_ohio_2018": {"slope": 0.144, "lo": 0.100, "hi": 0.188}, "baldwin_wisconsin_2018": {"slope": 0.118, "lo": 0.048, "hi": 0.187},
+                         "source": "outputs/tables/testA_specification_choice_addendum3.csv (S1)"},
 })
 checks["2022 benchmark slope range"] = f"{bm.slope.min():.2f} to {bm.slope.max():.2f} (report: -0.06 to +0.04)"
+v1a = val[val.check.str.startswith("V1a")]
+checks["2018 benchmark range; familiarity; Brown; Baldwin"] = (f"{v1a.slope.min():.3f} to {v1a.slope.max():.3f}; "
+    f"{val[val.check.str.startswith('V1b')].slope.iloc[0]:+.3f}; {val[val.check.str.startswith('V2a')].slope.iloc[0]:+.3f}; {val[val.check.str.startswith('V2b')].slope.iloc[0]:+.3f} "
+    "(report: -0.085 to 0.000; +0.008; +0.173; +0.184)")
 
 (OUT / "CHECKS.txt").write_text("\n".join(f"{k}: {v}" for k, v in checks.items()), encoding="utf-8")
 print("\n".join(f"{k}: {v}" for k, v in checks.items()))
