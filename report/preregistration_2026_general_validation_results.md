@@ -65,3 +65,32 @@ That coefficient is judged against the band of about −0.09 to +0.04. The S1 ve
   - Familiarity doesn't manufacture a slope.
 - **A tension the rule accepted in advance.** The Michigan version (S3) includes the place characteristics that removed the positive controls' signal in the county data (S2). With about 1,500 towns rather than 70–90 counties, Michigan has far more power, but S3's ability to detect a real populist appeal could not be tested. A null S3 result in 2026 will therefore be read alongside the S1 result, and reported as weak evidence of no effect if S1 shows one.
 - **Small basis.** The choice rests on two positive controls and three ordinary pairs.
+
+## Addendum 4: views on Israel and the swing
+
+*Recorded 28 September 2026, before the election. Notebook `30_israel_views_and_swing.ipynb`; tables `outputs/tables/israel_views_by_county_swing.csv` and `israel_views_by_path.csv`.*
+
+**Place level, the pre-registered reading.** Support for providing arms to Israel (CES 2024, 26% overall), per 10 points of county 2020→24 swing to Trump:
+
+| Model | Change (points) | 95% interval |
+|---|---|---|
+| All respondents | −7.3 | −10.9 to −3.8 |
+| Adding party identification (model 2) | −1.9 | −4.8 to +1.1 |
+| Michigan only, with party (1,907 respondents in 81 counties) | −17.6 | −40.8 to +5.5 |
+
+"Do not get involved" (22% overall) in model 2: +2.4 (−1.1 to +6.0); in Michigan +25.8 (+3.5 to +48.1).
+
+**Reading, by Addendum 4's rule: no association.** In model 2 the change is under 3 points, with an interval inside ±5. Places that swung to Trump show less support for arming Israel overall, but only because their party mix differs. Among people of the same party, views on arming Israel don't vary with the swing. So El-Sayed's Gaza position is unlikely to drive a Test A slope through the swing towns nationally.
+
+**Michigan is noted, not decisive.** Within Michigan, people in swing counties were more likely to say the U.S. should not get involved, with an interval clear of zero. The sample is small and the model isn't the pre-registered one, so it is reported as a caution: a positive El-Sayed slope in Michigan could partly reflect a stay-out view, rather than economics, among swing-town voters.
+
+**Individual level.**
+
+| Path (2020 → 2024) | Arms to Israel (CES) | Don't get involved (CES) | Sides with Israelis (ANES) |
+|---|---|---|---|
+| Loyal Democrats | 15.5% | 10.8% | 15.1% |
+| Biden → Trump (recalled) | 20.9% | 27.7% | 25.2% |
+| New → Trump | 26.2% | 36.4% | 39.7% |
+| Loyal Republicans | 50.6% | 21.8% | 60.4% |
+
+The Biden → Trump switchers sat close to loyal Democrats on arming Israel and far from loyal Republicans. What set them apart was wanting the U.S. to stay out: 28% against 11% of loyal Democrats. They were not more pro-Israel. If El-Sayed's position registers as opposition to U.S. involvement, it is closer to the switchers' view than Benson's might be. That is the non-economic reading of any positive slope that the report must state.
