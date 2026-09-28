@@ -18,10 +18,12 @@ checked against the certified statewide results in main().
 """
 from pathlib import Path
 import re
+import numpy as np
 import pandas as pd
 
 RAW = Path("data/raw/michigan")
-FILES = {2020: "20201103__mi__general__precinct.csv", 2022: "20221108__mi__general__precinct.csv", 2024: "20241105__mi__general__precinct.csv"}
+FILES = {2008: "20081104__mi__general__precinct.csv", 2012: "20121106__mi__general__precinct.csv", 2016: "20161108__mi__general__precinct.csv",
+         2018: "20181106__mi__general__precinct.csv", 2020: "20201103__mi__general__precinct.csv", 2022: "20221108__mi__general__precinct.csv", 2024: "20241105__mi__general__precinct.csv"}
 CERTIFIED = {  # statewide certified totals (MI Board of State Canvassers)
     (2020, "U.S. Senate"): {"D": 2734568, "R": 2642233},
     (2020, "President"): {"D": 2804040, "R": 2649852},
@@ -32,6 +34,17 @@ CERTIFIED = {  # statewide certified totals (MI Board of State Canvassers)
     (2022, "Secretary of State"): {"D": 2467859, "R": 1852510},
 }
 OFFICES_2022 = ("Governor", "Attorney General", "Secretary of State")
+# Validation years (addendum 2): presidential swings 2008-2016 and the 2018 statewide races
+CERTIFIED.update({
+    (2008, "President"): {"D": 2872579, "R": 2048639},
+    (2012, "President"): {"D": 2564569, "R": 2115256},
+    (2016, "President"): {"D": 2268839, "R": 2279543},
+    (2018, "U.S. Senate"): {"D": 2214478, "R": 1938818},
+    (2018, "Governor"): {"D": 2266193, "R": 1859534},
+    (2018, "Attorney General"): {"D": 2031117, "R": 1916117},
+    (2018, "Secretary of State"): {"D": 2213243, "R": 1840118},
+})
+OFFICES_2018 = ("U.S. Senate", "Governor", "Attorney General", "Secretary of State")
 
 
 # Candidates are identified by surname in either the candidate or party column: labels vary by
@@ -39,7 +52,11 @@ OFFICES_2022 = ("Governor", "Attorney General", "Secretary of State")
 NAMES = {("President", 2020): {"D": "biden", "R": "trump"}, ("U.S. Senate", 2020): {"D": "peters", "R": "james"},
          ("President", 2024): {"D": "harris", "R": "trump"}, ("U.S. Senate", 2024): {"D": "slotkin", "R": "rogers"},
          ("Governor", 2022): {"D": "whitmer", "R": "dixon"}, ("Attorney General", 2022): {"D": "nessel", "R": "deperno"},
-         ("Secretary of State", 2022): {"D": "benson", "R": "karamo"}}
+         ("Secretary of State", 2022): {"D": "benson", "R": "karamo"},
+         ("President", 2008): {"D": "obama", "R": "mccain"}, ("President", 2012): {"D": "obama", "R": "romney"},
+         ("President", 2016): {"D": "clinton", "R": "trump"}, ("U.S. Senate", 2018): {"D": "stabenow", "R": "james"},
+         ("Governor", 2018): {"D": "whitmer", "R": "schuette"}, ("Attorney General", 2018): {"D": "nessel", "R": "leonard"},
+         ("Secretary of State", 2018): {"D": "benson", "R": "lang"}}
 SHORT = {"President": "pres", "U.S. Senate": "sen", "Governor": "gov", "Attorney General": "ag", "Secretary of State": "sos"}
 
 
@@ -99,7 +116,7 @@ def load(year, offices=("President", "U.S. Senate")):
 
 def main():
     for (year, office), cert in CERTIFIED.items():
-        m = load(year, OFFICES_2022 if year == 2022 else ("President", "U.S. Senate"))
+        m = load(year, (office,))
         pre = SHORT[office]
         for p in ("D", "R"):
             got = m[f"{pre}_{p}_{year}"].sum()
@@ -110,9 +127,14 @@ def main():
     print("--- adding 2022")
     j22 = match(j, load(2022, OFFICES_2022), key_cols=("pres_D_2024", "pres_R_2024"), key_cols_b=("gov_D_2022", "gov_R_2022"))
     j22.to_csv(RAW / "mi_municipal_2020_2024_with_2022.csv", index=False)
+    print("--- validation file (addendum 2): 2018 statewide races + presidential 2008/2012/2016")
+    v = load(2018, OFFICES_2018)
+    for yr in (2016, 2012, 2008):
+        v = match(v, load(yr, ("President",)), key_cols=("gov_D_2018", "gov_R_2018"), key_cols_b=(f"pres_D_{yr}", f"pres_R_{yr}"))
+    v.to_csv(RAW / "mi_municipal_validation_2008_2018.csv", index=False)
 
 
-UNPLACEABLE = r"early voting|statistical adjust|^\{|\bev\d*\b|multi-precinct|collection|cumulative"
+UNPLACEABLE = r"^9999|early voting|statistical adjust|^\{|\bev\d*\b|multi-precinct|collection|cumulative"
 
 
 def _bare(m, keep_kind):
@@ -146,7 +168,9 @@ def match(a, b, key_cols=None, key_cols_b=None):
         m = ua.merge(ub.drop(columns=[c for c in ("muni", "bare", "bare0") if c != key]), on=["county", key], how="inner")
         parts.append(m.drop(columns=[c for c in ("bare", "bare0") if c in m.columns]))
         keyset = set(zip(m.county, m[key]))
-        ra = ra[[k not in keyset for k in zip(ra.county, ra[key])]]; rb = rb[[k not in keyset for k in zip(rb.county, rb[key])]]
+        # boolean arrays, not lists: an empty list would be read as a column selection and drop every column
+        ra = ra.loc[np.array([k not in keyset for k in zip(ra.county, ra[key])], dtype=bool)]
+        rb = rb.loc[np.array([k not in keyset for k in zip(rb.county, rb[key])], dtype=bool)]
         print(f"  pass {key}: {len(m)} matched")
     out = pd.concat(parts, ignore_index=True)
     print(f"matched {len(out)} municipalities; unmatched A {len(ra)}, B {len(rb)}")
