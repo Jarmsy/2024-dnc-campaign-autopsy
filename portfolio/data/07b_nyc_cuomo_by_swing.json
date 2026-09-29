@@ -1,0 +1,85 @@
+{
+ "deciles": [
+  {
+   "decile": 1,
+   "swing_to_trump_2024": -0.2,
+   "cuomo_nov_share": 32.3,
+   "sliwa_nov_share": 3.4,
+   "mamdani_nov_share": 63.8,
+   "cuomo_primary_h2h_share": 32.8
+  },
+  {
+   "decile": 2,
+   "swing_to_trump_2024": 2.4,
+   "cuomo_nov_share": 38.2,
+   "sliwa_nov_share": 4.9,
+   "mamdani_nov_share": 56.4,
+   "cuomo_primary_h2h_share": 40.6
+  },
+  {
+   "decile": 3,
+   "swing_to_trump_2024": 3.5,
+   "cuomo_nov_share": 41.4,
+   "sliwa_nov_share": 5.7,
+   "mamdani_nov_share": 52.3,
+   "cuomo_primary_h2h_share": 45.1
+  },
+  {
+   "decile": 4,
+   "swing_to_trump_2024": 4.8,
+   "cuomo_nov_share": 43.8,
+   "sliwa_nov_share": 7.6,
+   "mamdani_nov_share": 48.0,
+   "cuomo_primary_h2h_share": 46.4
+  },
+  {
+   "decile": 5,
+   "swing_to_trump_2024": 6.2,
+   "cuomo_nov_share": 45.0,
+   "sliwa_nov_share": 8.8,
+   "mamdani_nov_share": 45.6,
+   "cuomo_primary_h2h_share": 45.2
+  },
+  {
+   "decile": 6,
+   "swing_to_trump_2024": 7.8,
+   "cuomo_nov_share": 45.8,
+   "sliwa_nov_share": 9.1,
+   "mamdani_nov_share": 44.4,
+   "cuomo_primary_h2h_share": 47.7
+  },
+  {
+   "decile": 7,
+   "swing_to_trump_2024": 9.9,
+   "cuomo_nov_share": 45.7,
+   "sliwa_nov_share": 9.6,
+   "mamdani_nov_share": 44.0,
+   "cuomo_primary_h2h_share": 49.8
+  },
+  {
+   "decile": 8,
+   "swing_to_trump_2024": 12.2,
+   "cuomo_nov_share": 42.6,
+   "sliwa_nov_share": 8.6,
+   "mamdani_nov_share": 48.0,
+   "cuomo_primary_h2h_share": 47.5
+  },
+  {
+   "decile": 9,
+   "swing_to_trump_2024": 15.5,
+   "cuomo_nov_share": 41.5,
+   "sliwa_nov_share": 7.8,
+   "mamdani_nov_share": 50.0,
+   "cuomo_primary_h2h_share": 48.2
+  },
+  {
+   "decile": 10,
+   "swing_to_trump_2024": 28.2,
+   "cuomo_nov_share": 39.0,
+   "sliwa_nov_share": 6.9,
+   "mamdani_nov_share": 53.5,
+   "cuomo_primary_h2h_share": 42.7
+  }
+ ],
+ "note": "Same election districts and swing deciles as chart 07. November shares are of all mayoral votes, weighted by 2025 votes; the primary figure is Cuomo's share of the final Mamdani-Cuomo ranked-choice round among ballots ranking either. Cuomo's vote peaks in the middle of the gradient in both contests. Neighborhood totals cannot show which voters he took."
+}

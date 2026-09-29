@@ -154,6 +154,15 @@ write("07_nyc_same_ballot", {
     "note": "NYC election districts grouped into tenths by their 2020->2024 swing to Trump. Each line: 2025 Democratic share minus Harris's "
             "2024 share (points). All three Democrats gained most where the swing was largest.",
 })
+# Companion panel: how much Cuomo drew, same districts and deciles (notebook 17)
+write("07b_nyc_cuomo_by_swing", {
+    "deciles": [{"decile": int(x.dec), "swing_to_trump_2024": r(x.swing, 1), "cuomo_nov_share": r(x.cuomo, 1), "sliwa_nov_share": r(x.sliwa, 1),
+                 "mamdani_nov_share": r(x.mamdani, 1), "cuomo_primary_h2h_share": r(x.cuomo_primary_h2h, 1)} for x in ny.itertuples()],
+    "note": "Same election districts and swing deciles as chart 07. November shares are of all mayoral votes, weighted by 2025 votes; the "
+            "primary figure is Cuomo's share of the final Mamdani-Cuomo ranked-choice round among ballots ranking either. Cuomo's vote "
+            "peaks in the middle of the gradient in both contests. Neighborhood totals cannot show which voters he took.",
+})
+checks["NYC Cuomo Nov share, deciles 1 / 7 / 10"] = f"{ny.iloc[0].cuomo:.1f} / {ny.iloc[6].cuomo:.1f} / {ny.iloc[-1].cuomo:.1f}"
 checks["NYC top decile: swing / Mamdani, Levine, Williams vs Harris"] = f"{ny.iloc[-1].swing:.1f} / {ny.iloc[-1].mam_vs_H:+.1f}, {ny.iloc[-1].lev_vs_H:+.1f}, {ny.iloc[-1].wil_vs_H:+.1f}"
 
 # 8. Pre-registered Test A: benchmark slopes
