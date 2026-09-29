@@ -19,8 +19,8 @@
   },
   "switching_share_of_shift_pct": {
    "label": "Share of Trump's 2024 edge that came from voters switching sides (the rest came mainly from new voters and 2020 third-party voters)",
-   "before": 62.0,
-   "after": 53.0
+   "before": 76.0,
+   "after": 70.0
   },
   "much_worse_switch_rate_pct": {
    "label": "Switch rate among Biden voters who, in 2024, rated the economy 'much worse' (one-time 2024 survey, weighted); a different measure from chart 04, which uses the 2022 rating in the panel",
