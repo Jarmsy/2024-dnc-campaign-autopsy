@@ -222,6 +222,19 @@ The question numbers shifted in 2024 and the 2016 candidate order is reversed re
 
 ---
 
+### A.14 Validation data for the pre-registered Michigan test (Addenda 2–4)
+
+- **Michigan 2008, 2012, 2016 and 2018:** OpenElections precinct files (`openelections-data-mi`). Every presidential and statewide contest equals the certified statewide total exactly. Rolled up to 1,523 municipalities matched across all four years (≥ 99.8% of each year's vote) by `michigan_pull.py`. That script also fixes a pandas quirk in the matcher: an empty Python list used as a row filter selects zero columns, so the filters are now boolean arrays. Earlier outputs are unchanged.
+- **Ohio 2018, Wisconsin 2018 and Pennsylvania 2022:** OpenElections precinct, ward and county files, rolled up to counties.
+  - Wisconsin and Pennsylvania equal certified totals exactly.
+  - Ohio's Senate Democrat equals the certified total exactly, and the Republican and the governor race are within 0.2%.
+  - Candidates are matched by name within each race, since name formats vary by county.
+- **Presidential county swings 2008–2020:** the MIT county file (A.1).
+- **Nielsen TV markets by Michigan county:** `alex-patton/US-TVDMA-BY-COUNTY`, `mi_reg.csv`. This is a volunteer compilation; checked for all 83 counties, 11 markets and known assignments.
+- **ACS 2016–2020 five-year place characteristics:** `acs_place_controls_pull.py`. Log population, bachelor's-degree share, log median household income and White non-Hispanic share, for Michigan county subdivisions (1,498 of 1,523 municipalities matched, 98.0% of the vote) and for Ohio, Wisconsin and Pennsylvania counties. Bay City, Garden City and Traverse City are among the unmatched (county-name abbreviations differ between sources); they are to be fixed before the 2026 run.
+
+---
+
 ## B. Part 1 — Fundamentals model
 
 ### B.1 Specification
@@ -1207,6 +1220,39 @@ Notebook `21_ces_panel_timing_and_recall.ipynb`. CES 2020–24 panel (A.7), weig
 
 **Recall.** 2020 report against 2024 recall (`presvote20post_24`): 98.1% of Biden reporters recall Biden; 0.8% of Trump reporters recall Biden. Recall-defined switchers 44, true 39, both 34: 77% of recall switchers are true switchers (ANES panel 54%), 87% of true switchers recall Biden; 9 of the 10 misclassified reported Trump in 2020. Switch rate 4.1% true, 4.7% by recall. 2024 means, true / recall-defined / misclassified: economic-left 0.61 / 0.51 / 0.47; immigration 0.74 / 0.75 / 0.80; policing 0.58 / 0.69 / 0.99; party ID 3.5 / 3.5 / 5.3. Share of switchers immigration-conservative (2024 answers ≥ 0.5): 0.88 under both definitions. Panelists had answered the 2020 vote question in 2020 and 2022, so cross-section recall is probably less accurate than this.
 
+### I.11 How the switchers saw the candidates, 2016–2024 (ANES panel)
+
+Notebook `25_candidate_traits.ipynb`. Data A.13 (candidate traits `V161159–V161168`, `V201208–V201215`, `V241200–V241209`; same wording every wave, 1 extremely well … 5 not well at all, rescaled 0–1 with 1 = describes well; candidate thermometers `V161086/7`, `V201151/2`, `V241156/7`). Groups and weight as I.9. Tables `anes_panel_candidate_traits.csv`, `anes_panel_trump_cares_share.csv`.
+
+**Trump "really cares about people like you", share at least moderately well** (loyal / switchers / stay home / Trump→Trump): 2016 5 / 17 / 7 / 72%; 2020 1 / 17 / 4 / 91%; 2024 1 / 55 / 7 / 92%. Switchers unweighted: 7 of 21, 2 of 21, 10 of 20. With switcher weights this uneven (three respondents carry 44%), the counts are the better guide to the 2016→2020 change; the 2020→2024 rise holds either way.
+
+**Mean trait scores for Trump, switchers (0–1), 2016 / 2020 / 2024:** cares 0.16 / 0.16 / 0.47; honest 0.19 / 0.14 / 0.37; strong leader 0.33 / 0.18 / 0.57; knowledgeable 0.27 / 0.18 / 0.49 (loyal Democrats 0.01–0.14 throughout). Switcher − loyal gap, 2020 → 2024, with bootstrap 95%: cares +0.14 (0.00, 0.33) → +0.46 (0.28, 0.65); honest +0.13 → +0.36; leader +0.14 → +0.50; knowledgeable +0.14 → +0.43. **Democratic candidate "cares"**, switchers: Clinton 0.52, Biden 0.59, Harris 0.37 (loyal 0.60, 0.74, 0.75). **Thermometers**, switchers: Trump 25.6 / 35.8 / 55.9 (loyal 9.6 / 4.4 / 3.1); Democratic candidate 58.9 / 68.5 / 28.1 (loyal 67.0 / 77.9 / 80.8).
+
+**Reading.** Before 2024 the future switchers rated Trump poorly on every trait, a little above loyal Democrats. Between 2020 and 2024 all four traits rose together and their rating of the Democratic candidate fell. A wholesale change in how they saw both candidates accompanied the switch; a long-held image of Trump as a champion did not precede it.
+
+### I.12 The order of events, 2020–2022–2024 (CES panel)
+
+Notebook `26_switch_timing_2022.ipynb`. CES panel (A.7), Biden voters by `CC20_410`, 2024 vote `CC24_410` (loyal 1,642–1,645, switchers 37–39 per item), weight `commonpostweight_24`, bootstrap 95% for switcher shares. Items: presidential approval `CCyy_320a` (approve = 1–2 of 4), party ID `pid7_yy` ≤ 3, economy worse `CCyy_302` 4–5, Medicare for all and keep ACA as I.10, the four-item immigration index, and the 2022 House vote (`CC22_412` mapped to party through `HouseCand{k}Party_post_22`). Tables `ces_panel_switch_timing.csv`, `ces_panel_common_cause_2022.csv`.
+
+| Switchers (loyal Democrats) | 2020 | 2022 | 2024 |
+|---|---|---|---|
+| Approve of the president | Trump 5% (1%) | Biden 31% [9, 61] (89%) | Biden 24% [3, 52] (89%) |
+| Voted Democratic for House, of voters | — | 58% [26, 92] (96%); 19 of 28 | — |
+| Democrat incl. leaners | 85% (87%) | 75% (90%) | 56% (91%) |
+| Economy worse | 89% (95%) | 80% (54%) | 88% (19%) |
+| Medicare for all | 79% (89%) | 87% (92%) | 47% (88%) |
+| Oppose ACA repeal | 71% (93%) | 58% (91%) | 50% (91%) |
+| Immigration conservatism (0–1) | 0.50 (0.17) | 0.55 (0.24) | 0.74 (0.34) |
+
+**The 2022 common cause (N.1).** 2024 switch rate among Biden 2020 voters by 2022 economy rating, split by 2022 House vote (unweighted; weighted in the table file):
+- **Voted Democratic for House in 2022:** better 0 of 383; same 4 of 279 (1.4%); somewhat worse 7 of 503 (1.4%); much worse **7 of 181 (3.9%)**.
+- **No 2022 House vote recorded:** 0 of 53; 1 of 50; 4 of 89; 6 of 45 (13.3%).
+- **Voted Republican for House:** 1 of 8; 2 of 19; 6 of 14 (42.9%) in the worse categories.
+
+Of the 38 switchers with a 2022 economy rating, 18 voted Democratic for the House in 2022, 9 Republican and 11 have no recorded House vote.
+
+**Reading.** The break with the incumbent (approval, House vote) was largely in place by 2022, while support for Democratic health-care policy was not only intact but higher than in 2020. Policy positions and immigration views moved between 2022 and 2024. Among voters who still voted Democratic in 2022, a "much worse" economy rating predicted switching (3.9% against 0%), so the rating was not only riding on an earlier departure. That is on seven events, and the 2022 House vote is itself partly an outcome of the same drift.
+
 ## J. Part 9 — Cross-pressure, perceived difference, and the meaning of "left"
 
 Notebook `16_crosspressure_and_perceived_difference.ipynb`. Tables `crosspressure_2024.csv`, `crosspressure_2016.csv`, `crosspressure_summary.csv`, `trump_share_by_dem_position_2024.csv`, `anes_perceived_candidate_gap.csv`, `anes_perceived_gap_by_group.csv`.
@@ -1507,6 +1553,27 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 
 ---
 
+## K-ter. The pre-registered November 2026 tests: dry run and validation
+
+Plan: `report/preregistration_2026_general.md`, Addenda 1–4 and `report/preregistration_2026_general_validation_results.md`. Each addendum was committed before the data it names was downloaded or the models it names were estimated (commits 24–28 September 2026), and all were merged to master before the election. Notebooks 27–30. Data A.14.
+
+**Addendum 1** (notebook 27). Test A's specification on the 2024 ballot, Slotkin − Harris on the 2020→24 swing: +0.237 (0.198, 0.276); excluding Dearborn, Dearborn Heights and Hamtramck +0.299 (0.226, 0.372). This is a president/Senate ticket-splitting effect, since Harris's 2024 share enters both the gap and the swing, and it is a pipeline check only. The 2022 benchmark, mainstream down-ballot pairs: Nessel − Whitmer −0.023 (−0.043, −0.003), Benson − Whitmer +0.034 (−0.011, 0.079), Nessel − Benson −0.057 (−0.113, −0.001).
+
+**Addendum 2** (notebook 28). All at the rule-2 swing (2012→16 for 2018, 2016→20 for 2022):
+- **Michigan 2018 newcomers:** Nessel − Whitmer −0.085 (−0.113, −0.057), Benson − Whitmer 0.000, Nessel − Benson −0.085. The ordinary band becomes about −0.09 to +0.04.
+- **Familiarity:** Stabenow − Whitmer +0.008 (−0.005, 0.021).
+- **Positive controls:** Brown − Cordray +0.173 (0.122, 0.224); Baldwin − Evers +0.184 (0.056, 0.312); Fetterman − Shapiro +0.437 (0.188, 0.686), but +0.039 on 2012→16.
+- **Placebo, the 2008→12 swing:** −0.300 (Nessel − Whitmer), −0.146, −0.155, +0.028 (Stabenow), +0.477 (Brown), +0.521 (Baldwin), −0.214 (Fetterman). Comparable or larger per SD. By rule 4 the original slope is sensitive but not specific.
+
+**Addendum 3** (notebook 29). Four specifications, chosen mechanically:
+- **S1** (adds the earlier swings and the Republican level) keeps Brown +0.144 (0.100, 0.188) and Baldwin +0.118 (0.048, 0.187). Both exceed their placebo per SD (0.86 vs 0.33; 0.64 vs 0.38), and the ordinary Michigan pairs stay within ±0.1. **S1 passes and is chosen.**
+- **S2** (adds ACS place characteristics) loses both positive controls at county level.
+- **S3** (S2 plus county fixed effects, Michigan only) passes the ordinary-pairs criterion and is, by the rule, the Michigan version reported beside S1.
+
+**Addendum 4** (notebook 30). Support for providing arms to Israel (CES 2024) per 10 points of county swing: −7.3 (−10.9, −3.8) overall, and −1.9 (−4.8, +1.1) with party ID, which reads as **no association**. In Michigan alone, "do not get involved" rises +25.8 (+3.5, +48.1) with the swing; this is low power and not the pre-registered model. Biden → Trump switchers: arms to Israel 20.9% (loyal Democrats 15.5%, loyal Republicans 50.6%); do not get involved 27.7% (10.8%, 21.8%); ANES sides with the Israelis 25.2% (15.1%, 60.4%).
+
+**What November's report will contain.** Test A's primary result (S0) as originally specified. Then S1 and the Michigan S3 version, judged against the −0.09 to +0.04 band with Brown's +0.14 as the scale for a meaningful effect. Then the Dearborn exclusion and the media-market check (V4). El-Sayed is described throughout as economic-left and critical of Israel's war in Gaza, and the alternative readings named in advance are stated alongside any result.
+
 ## L. Limitations
 
 1. **Ecological inference.** All Part 2–3 findings are about counties. A positive county-level coefficient on `white_nocollege` does not establish that white non-college *individuals* behaved differently; it establishes that counties with more of them did.
@@ -1553,6 +1620,9 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 38. **Standard errors on neighbouring units.** County models (Parts 3 and 6) were fit without state fixed effects or state-clustered errors until 28 September 2026 (D.3a, G.3 i-a); the education, composition, stronghold-turnout and IIJA results hold within states, while county income, job growth and ARPA do not. NYC election-district models use HC1 errors except where K.2e reports Assembly-District clustering, which multiplies them by 1.0–3.0.
 
 39. **County turnout is counted in votes.** The turnout component and the stronghold figures use votes cast, not turnout rates. The eligible population grew in every county bin between 2020 and 2024 (H.1a), so the raw figures understate, rather than overstate, the stronghold turnout loss.
+
+37. **The order-of-events findings rest on 39 and 21 switchers.** The CES panel's switcher shares carry intervals of about ±25 points (I.12), and the ANES trait counts are single digits. The sequence is consistent across items and the two panels, but no single percentage should be read closely. The 2022 common-cause cross-tab rests on seven switchers.
+38. **The Michigan test is sensitive but was not specific in its original form** (K-ter). The chosen secondary specification fixes this in the county validation cases, but it was chosen on two positive controls and three ordinary pairs, and its Michigan version's power to detect a real effect could not be tested.
 
 ---
 
@@ -1608,6 +1678,11 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 34 | `22_share_decomposition_recall.ipynb` | CES 2024 and CES panel | tables |
 | 35 | `23_attribution_switching_recall.ipynb` | step 8 (notebook 06), CES panel | tables |
 | 36 | `24_stayhome_counterfactual_recall.ipynb` | CES 2024, CES panel, MIT returns | tables |
+| 37 | `25_candidate_traits.ipynb`; `26_switch_timing_2022.ipynb` | steps 31, CES panel (A.7) | tables |
+| 38 | OpenElections Michigan 2022 precinct file (by hand) and MIT 2020 Michigan precinct file (guestbook, by hand), then `python src/data_collection/michigan_pull.py` | `data/raw/michigan/` | municipal files |
+| 39 | `27_michigan_testA_dryrun.ipynb` | step 38 | tables, figure |
+| 40 | validation files (A.14), `python src/data_collection/acs_place_controls_pull.py` (needs `CENSUS_API_KEY`) | OpenElections, Census API | `data/raw/validation/` |
+| 41 | `28_testA_validation.ipynb`; `29_testA_specification_choice.ipynb`; `30_israel_views_and_swing.ipynb` | steps 38, 40 | tables |
 
 Execute notebooks non-interactively with the project kernel:
 
@@ -1625,7 +1700,7 @@ Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
-1. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab. A first step is done (F.3): holding 2022 party ID fixed leaves the 2022 rating's coefficient at −1.27 against −1.38.
+1. **The 2022 common cause — done (I.12).** Among Biden voters who still voted Democratic for the House in 2022, a "much worse" 2022 rating predicted switching (7 of 181, 3.9%, against 0 of 383 who saw improvement). The original note follows. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab. A first step is done (F.3): holding 2022 party ID fixed leaves the 2022 rating's coefficient at −1.27 against −1.38.
 2. **A local price measure.** The prices item is the least partisan perception in the survey and predicts switching net of the economy rating in both the cross-section (E.8) and the panel (F.3), but there is nothing to set it against. BEA regional price parities or ACS 1-year rent would allow a prices gap — perceived minus measured.
 3. **More panel.** The 2020–2022 panel (`doi:10.7910/DVN/XV7ABM`) is a different, larger recontact of 2020 respondents; whether any of its members also appear in the 2020–2024 file is undetermined. If so, pooling adds 2022 observations but not 2024 outcomes.
 4. **The delivery mechanism.** Delivery moved the county vote (G.3) without moving perception, and the component test (G.3 v) shows it is a share effect, not turnout — Republican vote growth was lower where infrastructure money went. Two things would narrow it further: (a) a local-conditions perception — the CES has no "your area's economy" item, but the household-income item (`CC24_302` in the common content) is the closest available and could be tested against delivery the way the national item was; (b) the composition of the Republican vote growth — whether it is new voters or switchers, which the CES cross-section cannot separate but a county-level comparison of validated new registrants (L2 or TargetSmart aggregates) against delivery could.
