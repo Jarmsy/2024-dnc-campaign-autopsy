@@ -2,6 +2,7 @@ Harris predicted / actual: 47.9 / 49.25 (report: 47.9 / 49.25)
 error band (LOOCV RMSE): 3.75 (report: 3.75); refit without 2020 = 2.66 taken from appendix B
 strongholds lost (65%+ D counties): -2.90M (report: 2.9M)
 perception by party 2024 (D, R): +0.32, -1.37
+economy rating R2: party / +prices / +own income (gain over party): 0.338 / +0.102 / +0.090
 2022 'much worse' switch rate / improved: 7.9% ; 438 saw improvement, 0 switched (report: 7.9%, 0 of 438)
 switchers: expand Medicaid / oppose wall: 77% / 23% (report: 77% / 23%)
 switchers approve Biden 2022: 31% (report: 31%)

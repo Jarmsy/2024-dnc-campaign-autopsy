@@ -26,5 +26,43 @@
   "county_economic_record": 0.006,
   "party_identification": 0.34
  },
- "note": "Mean answer to 'over the past year the nation's economy has...' (+2 much better ... -2 much worse), CES, weighted. Variance shares from report Part 4 (attribution_stage1)."
+ "variance_blocks": [
+  {
+   "block": "party",
+   "r2_alone": 0.338,
+   "gain_over_party": null,
+   "shapley_share": 0.191
+  },
+  {
+   "block": "prices",
+   "r2_alone": 0.246,
+   "gain_over_party": 0.102,
+   "shapley_share": 0.135
+  },
+  {
+   "block": "own household income",
+   "r2_alone": 0.19,
+   "gain_over_party": 0.09,
+   "shapley_share": 0.104
+  },
+  {
+   "block": "media diet",
+   "r2_alone": 0.185,
+   "gain_over_party": 0.05,
+   "shapley_share": 0.081
+  },
+  {
+   "block": "demographics",
+   "r2_alone": 0.04,
+   "gain_over_party": 0.029,
+   "shapley_share": 0.022
+  },
+  {
+   "block": "county record and composition",
+   "r2_alone": 0.049,
+   "gain_over_party": 0.007,
+   "shapley_share": 0.016
+  }
+ ],
+ "note": "Mean answer to 'over the past year the nation's economy has...' (+2 much better ... -2 much worse), CES, weighted. Variance shares from report Part 4 (attribution_stage1; attribution_variance_blocks: party + prices + own household income explain 51%, all six blocks 55%). The county record is the county's CPI-adjusted average private pay and private job growth 2020-24 (BLS QCEW) and its 2016-20 unemployment rate (ACS), not the respondent's own pay."
 }
