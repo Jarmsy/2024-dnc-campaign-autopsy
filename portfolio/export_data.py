@@ -104,8 +104,11 @@ rows = it[it["item"].isin(LABEL)]
 write("05_issue_positions", {
     "items": [{"axis": x["axis"], "item": LABEL[x["item"]], "loyal_democrats": r(x["B->H"], 3), "switchers": r(x["B->T"], 3),
                "loyal_republicans": r(x["T->T"], 3)} for _, x in rows.iterrows()],
-    "note": "Share taking the Democratic-aligned position, CES 2024 (weighted). Groups by recalled 2020 vote x 2024 vote; recall adds some "
-            "consistent Trump voters to 'switchers', which pushes their immigration numbers up and economic numbers down slightly.",
+    "note": "Share taking the Democratic-aligned position, CES 2024 (weighted). Groups by recalled 2020 vote x 2024 vote (334 switchers). "
+            "In the CES panel about a quarter of recall-defined switchers were not 2020 Biden voters (9 of the 10 had reported Trump); "
+            "including them makes switchers look less Democratic on economics (panel economic index 0.51 vs 0.61 for true switchers) and "
+            "barely changes immigration (0.75 vs 0.74). Sampling margin on each switcher share: about +/-7-8 points at 95% "
+            "(effective n about 145 after weighting; linearized and bootstrap intervals agree).",
 })
 checks["switchers: expand Medicaid / oppose wall"] = f"{it.set_index('item').loc['expand_medicaid','B->T']:.0%} / {it.set_index('item').loc['no_wall','B->T']:.0%} (report: 77% / 23%)"
 
