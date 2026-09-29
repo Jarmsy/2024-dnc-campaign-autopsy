@@ -1,0 +1,14 @@
+Harris predicted / actual: 47.9 / 49.25 (report: 47.9 / 49.25)
+error band (LOOCV RMSE): 3.75 (report: 3.75); refit without 2020 = 2.66 taken from appendix B
+strongholds lost (65%+ D counties): -2.90M (report: 2.9M)
+perception by party 2024 (D, R): +0.32, -1.37
+2022 'much worse' switch rate / improved: 7.9% ; 438 saw improvement, 0 switched (report: 7.9%, 0 of 438)
+switchers: expand Medicaid / oppose wall: 77% / 23% (report: 77% / 23%)
+switchers approve Biden 2022: 31% (report: 31%)
+switchers Medicare for all 2020/22/24: 79%/87%/47% (report: 79/87/47%)
+Trump cares, switchers 2020 / 2024 (counts): 2 of 21 / 10 of 20 (report: 2 of 21 / 10 of 20)
+recall: 44 recalled, 34 true, 9 were Trump voters: 44, 34, 9
+switch ratio before/after: 3.4 / 2.6 (report: 3.4 / 2.6)
+NYC top decile: swing / Mamdani, Levine, Williams vs Harris: 28.2 / +3.8, +23.5, +24.1
+2022 benchmark slope range: -0.06 to 0.04 (report: -0.06 to +0.04)
+2018 benchmark range; familiarity; Brown; Baldwin: -0.085 to 0.000; +0.008; +0.173; +0.184 (report: -0.085 to 0.000; +0.008; +0.173; +0.184)

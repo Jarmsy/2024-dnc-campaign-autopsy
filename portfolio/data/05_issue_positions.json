@@ -1,0 +1,82 @@
+{
+ "items": [
+  {
+   "axis": "economic",
+   "item": "Expand Medicaid",
+   "loyal_democrats": 0.953,
+   "switchers": 0.771,
+   "loyal_republicans": 0.551
+  },
+  {
+   "axis": "economic",
+   "item": "Keep the Affordable Care Act",
+   "loyal_democrats": 0.945,
+   "switchers": 0.62,
+   "loyal_republicans": 0.245
+  },
+  {
+   "axis": "economic",
+   "item": "Forgive student loans",
+   "loyal_democrats": 0.837,
+   "switchers": 0.467,
+   "loyal_republicans": 0.131
+  },
+  {
+   "axis": "economic",
+   "item": "Raise corporate tax to 28%",
+   "loyal_democrats": 0.908,
+   "switchers": 0.596,
+   "loyal_republicans": 0.234
+  },
+  {
+   "axis": "economic",
+   "item": "Raise taxes on $400k+",
+   "loyal_democrats": 0.911,
+   "switchers": 0.569,
+   "loyal_republicans": 0.339
+  },
+  {
+   "axis": "economic",
+   "item": "Low-income housing incentives",
+   "loyal_democrats": 0.913,
+   "switchers": 0.728,
+   "loyal_republicans": 0.483
+  },
+  {
+   "axis": "immigration",
+   "item": "Oppose the border wall",
+   "loyal_democrats": 0.864,
+   "switchers": 0.225,
+   "loyal_republicans": 0.03
+  },
+  {
+   "axis": "immigration",
+   "item": "Allow asylum at the border",
+   "loyal_democrats": 0.643,
+   "switchers": 0.178,
+   "loyal_republicans": 0.061
+  },
+  {
+   "axis": "immigration",
+   "item": "Legal status for long-employed immigrants",
+   "loyal_democrats": 0.863,
+   "switchers": 0.435,
+   "loyal_republicans": 0.253
+  },
+  {
+   "axis": "social",
+   "item": "Abortion as a matter of choice",
+   "loyal_democrats": 0.926,
+   "switchers": 0.459,
+   "loyal_republicans": 0.208
+  },
+  {
+   "axis": "social",
+   "item": "Federal recognition of same-sex marriage",
+   "loyal_democrats": 0.925,
+   "switchers": 0.595,
+   "loyal_republicans": 0.378
+  }
+ ],
+ "note": "Share taking the Democratic-aligned position, CES 2024 (weighted). Groups by recalled 2020 vote x 2024 vote; recall adds some consistent Trump voters to 'switchers', which pushes their immigration numbers up and economic numbers down slightly."
+}

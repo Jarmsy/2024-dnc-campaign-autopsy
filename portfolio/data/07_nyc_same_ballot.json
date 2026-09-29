@@ -1,0 +1,80 @@
+{
+ "deciles": [
+  {
+   "decile": 1,
+   "swing_to_trump_2024": -0.2,
+   "mamdani_vs_harris": -20.0,
+   "levine_vs_harris": 1.3,
+   "williams_vs_harris": -1.6
+  },
+  {
+   "decile": 2,
+   "swing_to_trump_2024": 2.4,
+   "mamdani_vs_harris": -22.9,
+   "levine_vs_harris": 1.4,
+   "williams_vs_harris": -1.9
+  },
+  {
+   "decile": 3,
+   "swing_to_trump_2024": 3.5,
+   "mamdani_vs_harris": -24.1,
+   "levine_vs_harris": 1.9,
+   "williams_vs_harris": -1.3
+  },
+  {
+   "decile": 4,
+   "swing_to_trump_2024": 4.8,
+   "mamdani_vs_harris": -21.8,
+   "levine_vs_harris": 3.2,
+   "williams_vs_harris": 0.1
+  },
+  {
+   "decile": 5,
+   "swing_to_trump_2024": 6.2,
+   "mamdani_vs_harris": -18.9,
+   "levine_vs_harris": 5.5,
+   "williams_vs_harris": 2.1
+  },
+  {
+   "decile": 6,
+   "swing_to_trump_2024": 7.8,
+   "mamdani_vs_harris": -18.5,
+   "levine_vs_harris": 6.9,
+   "williams_vs_harris": 3.0
+  },
+  {
+   "decile": 7,
+   "swing_to_trump_2024": 9.9,
+   "mamdani_vs_harris": -16.3,
+   "levine_vs_harris": 9.5,
+   "williams_vs_harris": 6.2
+  },
+  {
+   "decile": 8,
+   "swing_to_trump_2024": 12.2,
+   "mamdani_vs_harris": -12.2,
+   "levine_vs_harris": 11.7,
+   "williams_vs_harris": 9.7
+  },
+  {
+   "decile": 9,
+   "swing_to_trump_2024": 15.5,
+   "mamdani_vs_harris": -9.6,
+   "levine_vs_harris": 14.3,
+   "williams_vs_harris": 12.8
+  },
+  {
+   "decile": 10,
+   "swing_to_trump_2024": 28.2,
+   "mamdani_vs_harris": 3.8,
+   "levine_vs_harris": 23.5,
+   "williams_vs_harris": 24.1
+  }
+ ],
+ "labels": {
+  "mamdani": "Mamdani (mayor)",
+  "levine": "Levine (comptroller)",
+  "williams": "Williams (public advocate)"
+ },
+ "note": "NYC election districts grouped into tenths by their 2020->2024 swing to Trump. Each line: 2025 Democratic share minus Harris's 2024 share (points). All three Democrats gained most where the swing was largest."
+}

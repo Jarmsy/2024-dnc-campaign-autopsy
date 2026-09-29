@@ -1,0 +1,30 @@
+{
+ "years": [
+  {
+   "year": 2016,
+   "incumbent": "D",
+   "Democrats": 0.43,
+   "Independents": -0.44,
+   "Republicans": -0.65
+  },
+  {
+   "year": 2020,
+   "incumbent": "R",
+   "Democrats": -1.41,
+   "Independents": -0.83,
+   "Republicans": 0.11
+  },
+  {
+   "year": 2024,
+   "incumbent": "D",
+   "Democrats": 0.32,
+   "Independents": -0.98,
+   "Republicans": -1.37
+  }
+ ],
+ "variance_explained": {
+  "county_economic_record": 0.006,
+  "party_identification": 0.34
+ },
+ "note": "Mean answer to 'over the past year the nation's economy has...' (+2 much better ... -2 much worse), CES, weighted. Variance shares from report Part 4 (attribution_stage1)."
+}

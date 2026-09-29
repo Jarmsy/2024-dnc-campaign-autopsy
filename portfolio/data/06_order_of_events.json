@@ -1,0 +1,158 @@
+{
+ "series": [
+  {
+   "measure": "approves Biden",
+   "wave": 2022,
+   "loyal": 0.893,
+   "switchers": 0.309,
+   "switchers_lo": 0.09,
+   "switchers_hi": 0.614,
+   "N_switchers": 38,
+   "N_loyal": 1632
+  },
+  {
+   "measure": "approves Biden",
+   "wave": 2024,
+   "loyal": 0.892,
+   "switchers": 0.242,
+   "switchers_lo": 0.032,
+   "switchers_hi": 0.521,
+   "N_switchers": 39,
+   "N_loyal": 1634
+  },
+  {
+   "measure": "voted Democratic for House, 2022 (of voters)",
+   "wave": 2022,
+   "loyal": 0.959,
+   "switchers": 0.582,
+   "switchers_lo": 0.26,
+   "switchers_hi": 0.922,
+   "N_switchers": 28,
+   "N_loyal": 1404
+  },
+  {
+   "measure": "supports Medicare for all",
+   "wave": 2020,
+   "loyal": 0.891,
+   "switchers": 0.789,
+   "switchers_lo": 0.51,
+   "switchers_hi": 0.977,
+   "N_switchers": 39,
+   "N_loyal": 1639
+  },
+  {
+   "measure": "supports Medicare for all",
+   "wave": 2022,
+   "loyal": 0.917,
+   "switchers": 0.87,
+   "switchers_lo": 0.693,
+   "switchers_hi": 0.967,
+   "N_switchers": 39,
+   "N_loyal": 1645
+  },
+  {
+   "measure": "supports Medicare for all",
+   "wave": 2024,
+   "loyal": 0.878,
+   "switchers": 0.472,
+   "switchers_lo": 0.221,
+   "switchers_hi": 0.793,
+   "N_switchers": 39,
+   "N_loyal": 1645
+  },
+  {
+   "measure": "immigration conservatism (0-1)",
+   "wave": 2020,
+   "loyal": 0.168,
+   "switchers": 0.5,
+   "switchers_lo": 0.351,
+   "switchers_hi": 0.663,
+   "N_switchers": 39,
+   "N_loyal": 1644
+  },
+  {
+   "measure": "immigration conservatism (0-1)",
+   "wave": 2022,
+   "loyal": 0.241,
+   "switchers": 0.551,
+   "switchers_lo": 0.379,
+   "switchers_hi": 0.749,
+   "N_switchers": 39,
+   "N_loyal": 1645
+  },
+  {
+   "measure": "immigration conservatism (0-1)",
+   "wave": 2024,
+   "loyal": 0.344,
+   "switchers": 0.741,
+   "switchers_lo": 0.618,
+   "switchers_hi": 0.856,
+   "N_switchers": 39,
+   "N_loyal": 1645
+  },
+  {
+   "measure": "economy got worse",
+   "wave": 2020,
+   "loyal": 0.945,
+   "switchers": 0.893,
+   "switchers_lo": 0.674,
+   "switchers_hi": 0.998,
+   "N_switchers": 38,
+   "N_loyal": 1633
+  },
+  {
+   "measure": "economy got worse",
+   "wave": 2022,
+   "loyal": 0.545,
+   "switchers": 0.796,
+   "switchers_lo": 0.51,
+   "switchers_hi": 0.987,
+   "N_switchers": 38,
+   "N_loyal": 1588
+  },
+  {
+   "measure": "economy got worse",
+   "wave": 2024,
+   "loyal": 0.191,
+   "switchers": 0.881,
+   "switchers_lo": 0.701,
+   "switchers_hi": 0.971,
+   "N_switchers": 38,
+   "N_loyal": 1614
+  },
+  {
+   "measure": "says Trump 'really cares about people like you' (ANES)",
+   "wave": 2016,
+   "loyal": 0.05,
+   "switchers": 0.168,
+   "N_switchers": 21,
+   "switchers_count": 7,
+   "switchers_unweighted": 0.333,
+   "plot_field": "switchers_unweighted",
+   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and show the weighted share in the tooltip."
+  },
+  {
+   "measure": "says Trump 'really cares about people like you' (ANES)",
+   "wave": 2020,
+   "loyal": 0.014,
+   "switchers": 0.167,
+   "N_switchers": 21,
+   "switchers_count": 2,
+   "switchers_unweighted": 0.095,
+   "plot_field": "switchers_unweighted",
+   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and show the weighted share in the tooltip."
+  },
+  {
+   "measure": "says Trump 'really cares about people like you' (ANES)",
+   "wave": 2024,
+   "loyal": 0.01,
+   "switchers": 0.545,
+   "N_switchers": 20,
+   "switchers_count": 10,
+   "switchers_unweighted": 0.5,
+   "plot_field": "switchers_unweighted",
+   "why_unweighted": "21 switchers whose survey weights are extreme (three people carry 44% of the weight, effective n about 11), so the weighted share mostly tracks those three; the page text cites counts. Plot the count share and show the weighted share in the tooltip."
+  }
+ ],
+ "note": "Same people followed over time. CES 2020-22-24 panel: 39 Biden 2020 voters who voted Trump in 2024 ('switchers') vs ~1,640 who voted Harris ('loyal'). ANES 2016-20-24 panel for the Trump trait item: 21 switchers (weighted share; counts on hover). Small samples: intervals are wide; show N."
+}

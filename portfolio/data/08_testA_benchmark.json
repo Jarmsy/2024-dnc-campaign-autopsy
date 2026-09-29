@@ -1,0 +1,139 @@
+{
+ "rows": [
+  {
+   "comparison": "Nessel (AG) - Whitmer (Gov)",
+   "sample": "all",
+   "kind": "2022 benchmark: two down-ballot Democrats",
+   "slope": -0.023,
+   "lo": -0.043,
+   "hi": -0.003
+  },
+  {
+   "comparison": "Nessel (AG) - Whitmer (Gov)",
+   "sample": "excl. Dearborn/Dearborn Hts/Hamtramck",
+   "kind": "2022 benchmark: two down-ballot Democrats",
+   "slope": -0.002,
+   "lo": -0.046,
+   "hi": 0.042
+  },
+  {
+   "comparison": "Benson (SoS) - Whitmer (Gov)",
+   "sample": "all",
+   "kind": "2022 benchmark: two down-ballot Democrats",
+   "slope": 0.034,
+   "lo": -0.011,
+   "hi": 0.079
+  },
+  {
+   "comparison": "Benson (SoS) - Whitmer (Gov)",
+   "sample": "excl. Dearborn/Dearborn Hts/Hamtramck",
+   "kind": "2022 benchmark: two down-ballot Democrats",
+   "slope": 0.035,
+   "lo": -0.074,
+   "hi": 0.145
+  },
+  {
+   "comparison": "Nessel (AG) - Benson (SoS)",
+   "sample": "all",
+   "kind": "2022 benchmark: two down-ballot Democrats",
+   "slope": -0.057,
+   "lo": -0.113,
+   "hi": -0.001
+  },
+  {
+   "comparison": "Nessel (AG) - Benson (SoS)",
+   "sample": "excl. Dearborn/Dearborn Hts/Hamtramck",
+   "kind": "2022 benchmark: two down-ballot Democrats",
+   "slope": -0.037,
+   "lo": -0.174,
+   "hi": 0.1
+  },
+  {
+   "comparison": "Slotkin (Senate) - Harris (President), 2024",
+   "sample": "all municipalities",
+   "kind": "2024 dry run: pipeline check only",
+   "slope": 0.237,
+   "lo": 0.198,
+   "hi": 0.276
+  },
+  {
+   "comparison": "Slotkin (Senate) - Harris (President), 2024",
+   "sample": "excluding Dearborn, Dearborn Hts, Hamtramck",
+   "kind": "2024 dry run: pipeline check only",
+   "slope": 0.299,
+   "lo": 0.226,
+   "hi": 0.372
+  },
+  {
+   "comparison": "Nessel (AG) - Whitmer (Gov), Michigan 2018",
+   "sample": "all",
+   "kind": "2018 benchmark: two down-ballot Democrats",
+   "slope": -0.085,
+   "lo": -0.113,
+   "hi": -0.057
+  },
+  {
+   "comparison": "Benson (SoS) - Whitmer (Gov), Michigan 2018",
+   "sample": "all",
+   "kind": "2018 benchmark: two down-ballot Democrats",
+   "slope": 0.0,
+   "lo": -0.013,
+   "hi": 0.014
+  },
+  {
+   "comparison": "Nessel (AG) - Benson (SoS), Michigan 2018",
+   "sample": "all",
+   "kind": "2018 benchmark: two down-ballot Democrats",
+   "slope": -0.085,
+   "lo": -0.109,
+   "hi": -0.062
+  },
+  {
+   "comparison": "Stabenow (Sen, incumbent) - Whitmer (Gov), Michigan 2018",
+   "sample": "all",
+   "kind": "2018 familiarity check: incumbent vs newcomer",
+   "slope": 0.008,
+   "lo": -0.005,
+   "hi": 0.021
+  },
+  {
+   "comparison": "Brown (Sen) - Cordray (Gov), Ohio 2018, counties",
+   "sample": "all",
+   "kind": "known populist appeal (positive control)",
+   "slope": 0.173,
+   "lo": 0.122,
+   "hi": 0.224
+  },
+  {
+   "comparison": "Baldwin (Sen) - Evers (Gov), Wisconsin 2018, counties",
+   "sample": "all",
+   "kind": "known populist appeal (positive control)",
+   "slope": 0.184,
+   "lo": 0.056,
+   "hi": 0.312
+  },
+  {
+   "comparison": "El-Sayed (Senate) - Benson (Governor), 2026",
+   "sample": "all",
+   "kind": "the pre-registered test: result after certification (late Nov 2026)",
+   "slope": null,
+   "lo": null,
+   "hi": null
+  }
+ ],
+ "note": "Slope of the gap between two Democrats' shares on the 2020->24 swing to Trump, across Michigan municipalities. Ordinary down-ballot pairs sit near zero (about -0.09 to +0.04 across Michigan 2018 and 2022); a 2026 slope clearly beyond about +/-0.1 would exceed ordinary candidate differences. The 2018 and positive-control rows use the swing before that election (2012->16). Plan: report/preregistration_2026_general.md; benchmark: addenda 1-2; validation results: report/preregistration_2026_general_validation_results.md.",
+ "specific_version": {
+  "label": "Corrected test (also accounts for each place's earlier swings and Republican vote share)",
+  "brown_ohio_2018": {
+   "slope": 0.144,
+   "lo": 0.1,
+   "hi": 0.188
+  },
+  "baldwin_wisconsin_2018": {
+   "slope": 0.118,
+   "lo": 0.048,
+   "hi": 0.187
+  },
+  "source": "outputs/tables/testA_specification_choice_addendum3.csv (S1)"
+ }
+}

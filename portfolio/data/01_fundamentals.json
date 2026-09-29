@@ -1,0 +1,126 @@
+{
+ "elections": [
+  {
+   "year": 1948,
+   "incumbent_party": "D",
+   "actual": 52.37,
+   "predicted": 48.32
+  },
+  {
+   "year": 1952,
+   "incumbent_party": "D",
+   "actual": 44.6,
+   "predicted": 43.36
+  },
+  {
+   "year": 1956,
+   "incumbent_party": "R",
+   "actual": 42.25,
+   "predicted": 39.43
+  },
+  {
+   "year": 1960,
+   "incumbent_party": "R",
+   "actual": 50.08,
+   "predicted": 46.44
+  },
+  {
+   "year": 1964,
+   "incumbent_party": "D",
+   "actual": 61.34,
+   "predicted": 59.82
+  },
+  {
+   "year": 1968,
+   "incumbent_party": "D",
+   "actual": 49.6,
+   "predicted": 49.01
+  },
+  {
+   "year": 1972,
+   "incumbent_party": "R",
+   "actual": 38.22,
+   "predicted": 42.75
+  },
+  {
+   "year": 1976,
+   "incumbent_party": "R",
+   "actual": 51.05,
+   "predicted": 47.87
+  },
+  {
+   "year": 1980,
+   "incumbent_party": "D",
+   "actual": 44.7,
+   "predicted": 47.57
+  },
+  {
+   "year": 1984,
+   "incumbent_party": "R",
+   "actual": 40.83,
+   "predicted": 45.16
+  },
+  {
+   "year": 1988,
+   "incumbent_party": "R",
+   "actual": 46.09,
+   "predicted": 49.24
+  },
+  {
+   "year": 1992,
+   "incumbent_party": "R",
+   "actual": 53.45,
+   "predicted": 49.65
+  },
+  {
+   "year": 1996,
+   "incumbent_party": "D",
+   "actual": 54.74,
+   "predicted": 55.79
+  },
+  {
+   "year": 2000,
+   "incumbent_party": "D",
+   "actual": 50.27,
+   "predicted": 53.96
+  },
+  {
+   "year": 2004,
+   "incumbent_party": "R",
+   "actual": 48.74,
+   "predicted": 46.66
+  },
+  {
+   "year": 2008,
+   "incumbent_party": "R",
+   "actual": 53.69,
+   "predicted": 55.56
+  },
+  {
+   "year": 2012,
+   "incumbent_party": "D",
+   "actual": 51.96,
+   "predicted": 52.63
+  },
+  {
+   "year": 2016,
+   "incumbent_party": "D",
+   "actual": 51.11,
+   "predicted": 50.36
+  },
+  {
+   "year": 2020,
+   "incumbent_party": "R",
+   "actual": 52.27,
+   "predicted": 63.21
+  }
+ ],
+ "harris_2024": {
+  "predicted": 47.9,
+  "actual": 49.25,
+  "error_band_pp": 3.75,
+  "error_band_refit_without_2020_pp": 2.66,
+  "error_band_refit_source": "technical appendix B, robustness table, 'Drop 2020' row (model refit without 2020)"
+ },
+ "note": "Two-party Democratic share. 1948-2020 are leave-one-out predictions; 2024 is out of sample (model fit on 1948-2020). Error band = root-mean-square leave-one-out error; the 2020 pandemic quarter alone inflates it."
+}

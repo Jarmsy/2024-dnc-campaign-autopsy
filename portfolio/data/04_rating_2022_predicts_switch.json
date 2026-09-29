@@ -1,0 +1,40 @@
+{
+ "ratings": [
+  {
+   "rating_2022": "much worse",
+   "N": 240,
+   "switched": 19,
+   "rate_unweighted": 0.0792,
+   "rate_weighted": 0.1594
+  },
+  {
+   "rating_2022": "somewhat worse",
+   "N": 611,
+   "switched": 13,
+   "rate_unweighted": 0.0213,
+   "rate_weighted": 0.015
+  },
+  {
+   "rating_2022": "about the same",
+   "N": 337,
+   "switched": 6,
+   "rate_unweighted": 0.0178,
+   "rate_weighted": 0.0386
+  },
+  {
+   "rating_2022": "somewhat better",
+   "N": 362,
+   "switched": 0,
+   "rate_unweighted": 0.0,
+   "rate_weighted": 0.0
+  },
+  {
+   "rating_2022": "much better",
+   "N": 76,
+   "switched": 0,
+   "rate_unweighted": 0.0,
+   "rate_weighted": 0.0
+  }
+ ],
+ "note": "Biden 2020 voters in the CES 2020-22-24 panel: share who voted Trump in 2024, by how they rated the economy in 2022. Show unweighted (the report's headline); weighted reverses between the two middle categories (13 and 6 switchers)."
+}
