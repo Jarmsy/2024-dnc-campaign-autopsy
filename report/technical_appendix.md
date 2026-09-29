@@ -631,6 +631,19 @@ Effect of "somewhat" → "a lot", among those who said "somewhat": +1.4pp with t
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
+**What else explains the economy rating** (notebook 06 §8b, added 28 September 2026; `outputs/tables/attribution_variance_blocks.csv`). WLS of `perceived_econ` on six blocks, `commonweight`, N = 56,453 (respondents with prices, own-income and county composition): party `pid7c`; prices `perceived_prices`; own household income `perceived_income`; media diet (Fox, MSNBC, CNN, local TV, newspaper, radio, social, no news); demographics (college, age, white); county record and composition (real pay, private employment, unemployment, log median income, college share, white non-college share, 2020 Democratic share).
+
+| Block | R² alone | Gain over party | Shapley share of full R² |
+|---|---|---|---|
+| Party | 0.338 | — | 0.191 |
+| Prices | 0.246 | 0.102 | 0.135 |
+| Own household income | 0.190 | 0.090 | 0.104 |
+| Media diet | 0.185 | 0.050 | 0.081 |
+| Demographics | 0.040 | 0.029 | 0.022 |
+| County record and composition | 0.049 | 0.007 | 0.016 |
+
+Full model R² 0.548; party + prices + own income 0.507. In that three-variable model (county-clustered): `pid7c` −0.247 (0.004), `perceived_prices` −0.494 (0.015), `perceived_income` +0.379 (0.009). R² of each self-report on `pid7c`: prices 0.113, own income 0.063. Shapley shares average each block's R² gain over all 720 orders of entry and sum to the full R². Descriptive, not causal: the self-reports carry some partisanship and possible rationalization.
+
 ### E.9 Local news environment
 
 Notebook 07 §1b, §2, §5b. CES 2024 respondents by county news environment: 547 in 112 news deserts, 8,003 in 1,253 single-outlet counties, 48,085 in 1,288 counties with 2+ outlets; 8,188 in nonmetro counties. Among recalled Biden voters: 164 in deserts, 2,073 in single-outlet counties.

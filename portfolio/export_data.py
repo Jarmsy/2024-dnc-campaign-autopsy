@@ -67,15 +67,22 @@ checks["strongholds lost (65%+ D counties)"] = f"{b.iloc[-1].delta_dem_M:.2f}M (
 
 # 3. Economic perception follows party
 p = pd.read_csv(T / "attribution_partisan_flip.csv")
+vbl = pd.read_csv(T / "attribution_variance_blocks.csv", index_col=0)
 write("03_perception_by_party", {
     "years": [{"year": int(x.year), "incumbent": {2016: "D", 2020: "R", 2024: "D"}[int(x.year)], "Democrats": r(x.Dem), "Independents": r(x.Ind),
                "Republicans": r(x.Rep)} for x in p.itertuples()],
     "variance_explained": {"county_economic_record": 0.006, "party_identification": 0.34},
+    "variance_blocks": vbl.astype(object).where(vbl.notna(), None).reset_index().rename(columns={"R2 alone": "r2_alone", "R2 gain over party": "gain_over_party",
+                                                         "Shapley share of full R2": "shapley_share"}).to_dict("records"),
     "note": "Mean answer to 'over the past year the nation's economy has...' (+2 much better ... -2 much worse), CES, weighted. "
-            "Variance shares from report Part 4 (attribution_stage1).",
+            "Variance shares from report Part 4 (attribution_stage1; attribution_variance_blocks: party + prices + own household "
+            "income explain 51%, all six blocks 55%). The county record is the county's CPI-adjusted average private pay and private "
+            "job growth 2020-24 (BLS QCEW) and its 2016-20 unemployment rate (ACS), not the respondent's own pay.",
 })
 s1 = pd.read_csv(T / "attribution_stage1.csv", index_col=0)
 checks["perception by party 2024 (D, R)"] = f"{p.iloc[-1].Dem:+.2f}, {p.iloc[-1].Rep:+.2f}"
+checks["economy rating R2: party / +prices / +own income (gain over party)"] = \
+    f"{vbl.loc['party', 'R2 alone']:.3f} / +{vbl.loc['prices', 'R2 gain over party']:.3f} / +{vbl.loc['own household income', 'R2 gain over party']:.3f}"
 
 # 4. The 2022 rating predicts the 2024 switch (panel)
 t = pd.read_csv(T / "panel_timing_by_rating.csv")

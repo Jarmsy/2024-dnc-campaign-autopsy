@@ -33,7 +33,7 @@ A note on terms: a **switcher** voted Biden in 2020 and Trump in 2024; a **perce
 
 **Part 3 — Poorer places have been drifting away from Democrats since 2012; Harris inherited the trend.** County income, education and racial makeup explain about 42% of the differences in how much counties swung. The gap between how Democrats do in rich and poor counties, compared with 2012, grew from 6.4 points in 2016 to 9.4 in 2020 and 10.1 in 2024 (two-party shares) — so most of it was already in place before her campaign. Local manufacturing and wage growth during Biden's term explain essentially nothing.
 
-**Part 4 — People's view of the economy came from their party, not their local economy.** How well a respondent's own county actually did explains 0.6% of the differences in how people rated the economy; their party explains 34%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among Biden voters, 28% of those who said the economy had gotten "much worse" voted Trump, against 1.1% of those who said "much better" (31.6% and 1.5% before correcting for misremembered 2020 votes). This link could run either way — a bad rating could cause a switch, or a switch could cause a bad rating — which Part 5 addresses. Nearly everyone agreed prices had risen (80% of Democrats, 95% of Republicans), but Republicans were twice as likely to say "a lot," and saying "a lot" predicted switching even among people who rated the overall economy the same. What news people consumed mattered; what local news was available did not.
+**Part 4 — People's view of the economy came from their party, not their local economy.** How well a respondent's county actually did — its average inflation-adjusted pay and job growth from 2020 to 2024, from government payroll records, and its unemployment rate — explains 0.6% of the differences in how people rated the economy; their party explains 34%. People's own reports of how much prices rose and whether their household income went up or down add almost as much again: party and those two together explain 51%. Independents rated the 2024 economy worse than the 2020 pandemic economy. Among Biden voters, 28% of those who said the economy had gotten "much worse" voted Trump, against 1.1% of those who said "much better" (31.6% and 1.5% before correcting for misremembered 2020 votes). This link could run either way — a bad rating could cause a switch, or a switch could cause a bad rating — which Part 5 addresses. Nearly everyone agreed prices had risen (80% of Democrats, 95% of Republicans), but Republicans were twice as likely to say "a lot," and saying "a lot" predicted switching even among people who rated the overall economy the same. What news people consumed mattered; what local news was available did not.
 
 **Part 5 — The bad economic rating came before the vote.** A panel asked the same Biden voters about the economy in 2022. Of those who said "much worse," 7.9% voted Trump two years later (unweighted; 16% weighted); of the 438 who saw improvement, none did. A rating given two years early cannot be an after-the-fact excuse for the vote, and the link holds when the party loyalty these voters had already lost by 2022 is taken into account. The same 2022 rating also predicted not voting at all, according to official voter records. Changes in each person's local economy still explained nothing.
 
@@ -203,6 +203,14 @@ The hypothesis that working-class economic messaging earns votes in low-income c
 
 The Cooperative Election Study (CES) surveys about 60,000 Americans each election year and records their county. The 2024 wave asks, before the election, whether "over the past year the nation's economy has" gotten much better through much worse, and, after the election, whom the respondent voted for and whom they recall voting for in 2020. Linking respondents to the county records from Parts 2–3 gives 56,635 people in 2,653 counties with both a measured local economic change and a stated perception of it.
 
+**What "the county record" is.** Three measures of the county each respondent lives in — not of the respondent:
+
+- *Real pay growth, 2020–24:* the change in average private-sector pay per worker, adjusted for inflation with the national consumer price index. It comes from the Bureau of Labor Statistics' Quarterly Census of Employment and Wages, a near-complete count of jobs and wages built from employers' unemployment-insurance filings.
+- *Job growth, 2020–24:* the change in the number of private-sector jobs, from the same source.
+- *Unemployment rate:* from the Census Bureau's American Community Survey, averaged over 2016–20, so it describes the county around the start of the term.
+
+It measures the local economy a person lived in, not their own paycheck or bills, and it cannot see local price differences, because the inflation adjustment is national. Where the text adds "composition," it also includes the county's median household income, college share, share of white adults without a degree, and 2020 Democratic vote share.
+
 ### Local reality does not register
 
 Regressing perceived economic change (−2 to +2) on the respondent's county's real pay growth, job growth, and unemployment over the Biden term:
@@ -290,6 +298,21 @@ The 2024 CES also asks whether "the prices of everyday goods and services" incre
 On direction there is near-consensus: four in five Democrats and nineteen in twenty Republicans said prices went up. On degree there is not: Republicans were twice as likely as Democrats to say "a lot." Measured against each item's own spread, the Democrat–Republican gap is 0.74 standard deviations on prices, 1.26 on the economy rating, and 0.54 on the respondent's own household income. Prices sit between the abstract national question and the personal one — less filtered than "the economy," more filtered than "your income."
 
 Price perception feeds the economy rating by the same amount for everyone: within each party, saying prices rose one step more lowers the economy rating by 0.53–0.58, and the party × prices interaction is zero (0.000, SE 0.007). Partisanship sets the level from which each respondent starts; reported price experience moves every group off that level by the same amount. Adding prices to party identification raises the explained variance in the economy rating from 34% to 44%.
+
+**What else explains the rating.** Party is the largest single factor, but not most of the story. Two self-reports add almost as much again — how much people said prices rose, and whether they said their own household income went up or down — while the county record adds almost nothing:
+
+| Predictor | Explains on its own | Added on top of party | Share of the full model |
+|---|---|---|---|
+| Party identification | 34% | — | 19 points |
+| How much prices rose | 25% | +10 points | 13.5 points |
+| Own household income, better or worse | 19% | +9 points | 10 points |
+| Media diet (Fox, MSNBC, CNN, local TV, social media …) | 19% | +5 points | 8 points |
+| Demographics (college, age, race) | 4% | +3 points | 2 points |
+| County record and composition | 5% | +0.7 points | 1.6 points |
+
+*R² of the economy rating (−2 to +2) on each block, 56,453 respondents, weighted. "Share of the full model" splits the full model's R² of 55% by each block's average contribution over every order of entry (a Shapley decomposition), so overlaps are shared rather than credited to whichever block enters first. Table: `attribution_variance_blocks.csv`.*
+
+Party, prices and own income together explain 51%. Media diet looks large alone but mostly overlaps party. Within the same party and the same price report, a person who said their household income fell one step rated the economy 0.38 points worse. The two self-reports are less partisan than the economy rating — party explains 11% of the prices answer and 6% of the own-income answer, against 34% of the rating — but not free of it. They are closer to experience; they are not measured experience, and someone already souring on the government may report their own situation more darkly.
 
 Prices also predict switching on their own. Among recalled Biden voters, **12.8% of those who said prices "increased a lot" voted for Trump, against 3.6% of those who said "increased somewhat."** Moving from "somewhat" to "a lot" raises the probability of switching by 1.4 points with the economy rating held fixed and by 3.9 points without that control — roughly a third of the prices effect is direct, the rest runs through the general economy rating. (An earlier version gave 1.9 and 5.1; that calculation also moved the people who had already said "a lot" one step past the end of the scale.)
 
@@ -1432,7 +1455,8 @@ A few terms come up repeatedly:
 
 - Counties where real wages grew faster, or where manufacturing was more important, did not swing any differently.
 - How well a person's own county actually did explains **0.6%** of the differences in how people rated the economy. Their party explains 34%. And for people surveyed twice, four years apart, their county's economic record explains nothing about how their rating changed.
-- Beyond party, the one thing the survey can see that helps explain the rating is **which news sources people use**.
+- Beyond party, what people said about **their own prices and household income** explains almost as much again: party and those two together explain 51%. These are self-reports, less partisan than the economy rating but not free of it. News sources add a little more; the county record, almost nothing.
+- *The county record* means the county's average inflation-adjusted pay and job growth from 2020 to 2024, from employers' payroll filings, plus its unemployment rate. It describes the place a person lives, not their own paycheck, and it cannot see local prices.
 
 **The rating came before the vote.** A panel asked the same Biden voters about the economy in 2022, two years before the election. Of those who said it had gotten "much worse," 7.9% went on to vote Trump; of the 438 who said it had improved, none did. Because the rating was given two years early, it cannot be an after-the-fact justification of a Trump vote.
 
