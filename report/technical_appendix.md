@@ -60,6 +60,8 @@ FRED has no presidential-approval series. June Gallup approval is hand-coded in 
 
 The 2020 five-year file pools 2016–2020 responses. It predates the inflation of 2021–23 and the post-pandemic labor market. It is used because it is the last vintage that is unambiguously "pre-treatment" for the 2020 → 2024 comparison.
 
+**Citizen voting-age population** (added 28 September 2026; `src/data_collection/acs_cvap_pull.py` → `data/raw/acs_cvap/county_cvap.csv`): `B29001_001E` for every county from ACS 1-year 2019, 2021 and 2024 (counties of 65,000+; the 2020 baseline is the mean of 2019 and 2021, since there is no standard 2020 1-year release) and ACS 5-year 2016–20 and 2020–24 (all counties). Used only for the turnout-rate check in H.1a. Connecticut's 2022+ releases use planning regions and do not match its counties.
+
 ### A.4 BLS Quarterly Census of Employment and Wages
 
 **Script:** `src/data_collection/bls_qcew_pull.py`; no key. Downloads `{year}_annual_singlefile.zip` for 2012, 2016, 2020, 2024 (~77 MB each, cached in `data/raw/bls_qcew/`), streams the ~3.5M-row files, and keeps county × private-ownership rows at aggregation levels 71 (all industries) and 74 (NAICS sector).
@@ -255,7 +257,7 @@ inc_vote_share ~ gdp_q2_growth + approval_rating_june + consecutive_terms + open
 | 2020 | R | 52.27 | −28.0 | 42 | 1 | | **−10.9** |
 | **2024** | **D** | **49.25** | **+3.6** | **38** | **1** | **✓** | **+1.4** (out-of-sample) |
 
-Three-way races (1968, 1992, 1996, 2000) use `Dem / (Dem + Rep)`. GDP values are from FRED GDPC1; approval is Gallup June.
+Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes drop out; this matters most in 1968 (Wallace), 1980 (Anderson), 1992 and 1996 (Perot) and 2000 (Nader). Shares entered by hand in notebook 02 from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas. GDP values are from FRED GDPC1; approval is Gallup June.
 
 ### B.3 Coefficients (1948–2020)
 
@@ -433,21 +435,43 @@ The base model's residuals have skew −1.6 and kurtosis 32 (Jarque-Bera 112,974
 | R² | 0.510 | 0.445 |
 | Weighted mean of outcome | −1.58 | −2.35 |
 
+### D.3a Within states (added 28 September 2026)
+
+Notebook 05 §6b; `outputs/tables/covariates_swing_state_fe.csv`. M2 refit with state fixed effects, standard errors clustered by state. R² 0.437 → 0.719. Standardized effects (pp per SD):
+
+| Predictor | M2 as published (HC3) | With state FE (clustered) |
+|---|---|---|
+| log_income | −0.75 (0.30) | −0.13 (0.45) |
+| college_share | +2.43 (0.34) | +2.10 (0.49) |
+| white_nocollege | +2.63 (0.47) | +3.87 (0.64) |
+| unemp_rate | −0.36 (0.22) | −0.07 (0.15) |
+| dem_share_2020 | −0.43 (0.33) | +0.59 (0.48) |
+| mfg_share_2016 | +0.21 (0.11) | −0.14 (0.10) |
+| mfg_share_chg_2016_2024 | −0.02 (0.07) | −0.00 (0.04) |
+| private_emp_pct_chg_2020_2024 | −0.50 (0.19) | −0.18 (0.11) |
+| real_pay_pct_chg_2020_2024 | +0.26 (0.23) | −0.15 (0.15) |
+
+Education and white non-college composition hold within states; county income and private job growth do not, so the main report's income and job-growth readings describe differences between states. The stronghold turnout gradient (component model, `dem_share_2020` on the turnout component) is unchanged within states: −1.70 → −1.64 per SD.
+
+**Place types** (`outputs/tables/swing_by_place_type.csv`; cited in synthesis section 3): the 22 Mexican-border counties swung −13.6 (mean; median −12.8; vote-weighted −9.5) against −3.4 for all other counties (median −3.1; vote-weighted −4.8). Counties in metros of 1 million+ (RUCC 1, N = 441): mean −3.5, median −2.9, vote-weighted −5.8; nonmetro (RUCC 4–9, N = 1,927): mean −3.4, median −3.2, vote-weighted −3.4.
+
 ### D.4 Sign conventions
 
 `swing_2024` is positive toward Democrats, so a positive coefficient means a smaller rightward shift. The main report's white non-college finding — positive coefficient, i.e. whiter non-college counties swung *less* right — follows directly and reverses a common 2016-era assumption. Marginal effects at the mean from the base model: +$10K median income → −0.57pp; +10pp college share → +2.05pp; +10pp white non-college → +1.64pp; +1pp unemployment → −0.30pp.
 
 ### D.5 Multi-cycle income gradient
 
-Counties are assigned to quartiles of ACS 2020 median household income (N = 3,110; quartile cutpoints ≈ $45.6K, $52.7K, $61.3K). For each cycle, `swing_YYYY = (dem_share_YYYY − dem_share_2012) × 100` using raw Democratic share, and the quartile mean is weighted by that cycle's total votes.
+Counties are assigned to quartiles of ACS 2020 median household income (N = 3,110; quartile cutpoints ≈ $45.6K, $52.7K, $61.3K). For each cycle, `swing_YYYY = (dem_share_YYYY − dem_share_2012) × 100` using the two-party Democratic share D / (D + R), and the quartile mean is weighted by that cycle's total votes.
 
-| vs. Obama 2012 | Q1 | Q2 | Q3 | Q4 | Q4 − Q1 |
+| vs. Obama 2012, two-party | Q1 | Q2 | Q3 | Q4 | Q4 − Q1 |
 |---|---|---|---|---|---|
-| Clinton 2016 | −5.8 | −6.1 | −4.5 | −0.8 | +5.0 |
-| Biden 2020 | −6.3 | −4.3 | −1.8 | +3.1 | +9.4 |
-| Harris 2024 | −9.2 | −6.4 | −4.1 | +0.7 | +9.9 |
+| Clinton 2016 | −5.1 | −4.9 | −3.0 | +1.3 | +6.4 |
+| Biden 2020 | −6.4 | −4.4 | −1.9 | +3.1 | +9.4 |
+| Harris 2024 | −9.5 | −6.5 | −4.3 | +0.7 | +10.1 |
 
-No inferential test is applied to the gradient differences; the 2020 → 2024 change (+0.5pp) should be treated as no change. Table: `outputs/tables/county_multiyear_swing.csv`.
+No inferential test is applied to the gradient differences; the 2020 → 2024 change (+0.7pp) should be treated as no change. Tables: `outputs/tables/county_multiyear_swing.csv` (two-party `dem_share_*`; all-votes shares kept as `dem_share_total_*`), `income_gradient_by_cycle.csv` (both versions).
+
+*Corrected 28 September 2026.* Until then this table used the share of all votes (Clinton −5.8 / −6.1 / −4.5 / −0.8, gradient +5.0; Biden +9.4; Harris +9.9). Third-party voting in 2016 rose with county income (3.5% of the vote in Q1 counties, 4.6%, 5.4%, 6.1% in Q4), so the all-votes version understated the 2016 gradient. Part 1 and appendix B already used two-party shares. The same change runs through notebook 09's poorest-quartile table (G.1).
 
 ---
 
@@ -590,7 +614,7 @@ The prices scale is compressed (88% in two of five categories), so the R² ratio
 | `gap` | −0.696 (0.097) | — |
 | `perceived_prices` | +0.450 (0.161) | +0.980 (0.143) |
 
-AME of one step more inflation reported: +1.9pp with the gap held fixed, +5.1pp without. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in J.9 applies to this result with only modestly less force than to the economy rating.
+Effect of "somewhat" → "a lot", among those who said "somewhat": +1.4pp with the gap held fixed, +3.9pp without. AME kept on the scale (a respondent at "a lot" cannot go further): +0.8pp / +2.1pp; derivative form +1.7pp / +3.9pp. AME of the gap one step worse, prices held fixed: +3.1pp (was +3.9pp before prices entered). *Corrected 28 September 2026:* the figures first given, +1.9pp and +5.1pp, shifted every respondent a step without clipping, which moved the 34% at "a lot" to a value that does not exist. Switch rate by prices response (weighted): increased a lot 12.8% (N = 6,292); increased somewhat 3.6% (10,023); same 2.2% (2,957); decreased somewhat 1.0% (1,257); decreased a lot 2.1% (54, too few to read). The "a lot" versus "somewhat" margin that carries the switching effect is also the margin on which the parties differ most, so the reverse-causation caveat in J.9 applies to this result with only modestly less force than to the economy rating.
 
 **County component.** Each item on county economic record + composition (cluster SEs): R² 0.048 (economy), 0.021 (prices), 0.012 (household income); real-pay coefficients 0.005, 0.002, −0.004 with SEs of 0.008–0.011.
 
@@ -692,7 +716,9 @@ By 2020 rating (given under Trump): much worse 1.5% (18/1,175), somewhat worse 3
 | college | | | −1.416 (0.608) | −1.445 (0.556) | −1.379 (0.573) |
 | age (z) | | | −1.036 (0.228) | −0.988 (0.225) | −0.904 (0.229) |
 
-Unweighted `perc_2022` coefficients for the first three specifications: −1.16 (0.22), −1.13 (0.23), −1.10 (0.22). AME of one step worse in 2022: +0.083 (bivariate), +0.083 (+ party), +0.080 (+ demographics), +0.082 (net of 2020 rating); AME of one step worse in 2020: −0.012; AME of a one-step fall 2020→2022: +0.040.
+Unweighted `perc_2022` coefficients for the first three specifications: −1.16 (0.22), −1.13 (0.23), −1.10 (0.22). AME of one step worse in 2022, kept on the answer scale (derivative form in brackets): +0.043 [+0.050] bivariate, +0.044 [+0.050] + party, +0.044 [+0.050] + demographics, +0.045 [+0.051] net of 2020 rating; one step worse in 2020: −0.006 [−0.014]; a one-step fall 2020→2022: +0.040 [+0.029]. *Corrected 28 September 2026:* the AMEs first reported (+0.080 to +0.083) shifted every respondent one step without clipping, which moved the 17.7% of the weighted sample already at "much worse" to a nonexistent −3 (mean predicted switching 13% there, 36% at −3).
+
+**Party ID already drifting by 2022** (`outputs/tables/panel_timing_pid2022_check.csv`; N = 1,592, 35 events): switchers' mean party ID 2.94 in 2020, 3.40 in 2022 (loyal 1.89, 1.82). `perc_2022`, + college and age, weighted / unweighted: with 2020 party ID −1.38 (0.60) / −1.06 (0.22); with 2022 party ID −1.27 (0.61) / −0.95 (0.22); with both −1.24 (0.61) / −0.91 (0.22). AME on the scale 0.043 / 0.038 / 0.033.
 
 **Prices 2022** (cross-tab only): rose a lot 3.2% switched (32/986), rose somewhat 0.3% (2/647), same 8.8% (3/34), fell somewhat 22.2% (2/9), fell a lot 0/1. A weighted logit of this item returns a negative coefficient driven by the 5 switchers in the 44-person tail (weighted switch rate in the "fell somewhat" cell: 85%); not reported as an estimate.
 
@@ -712,18 +738,18 @@ Notebook `09_bottom_quartile_and_delivery.ipynb`.
 
 ### G.1 Bottom quartile by composition
 
-Q1 = poorest quartile of the 3,110-county panel by ACS 2020 median household income (778 counties, 5.5% of 2024 votes; Q2 12.7%, Q3 21.2%, Q4 60.6%). Within Q1, terciles of nonwhite share (1 − `white_nh_share`). Turnout-weighted change in Democratic share versus Obama 2012 (`outputs/tables/q1_by_composition.csv`, `all_by_composition.csv`):
+Q1 = poorest quartile of the 3,110-county panel by ACS 2020 median household income (778 counties, 5.5% of 2024 votes; Q2 12.7%, Q3 21.2%, Q4 60.6%). Within Q1, terciles of nonwhite share (1 − `white_nh_share`). Turnout-weighted change in two-party Democratic share versus Obama 2012 (`outputs/tables/q1_by_composition.csv`, `all_by_composition.csv`; two-party since 28 September 2026, see D.5):
 
 | | Counties | Share of Q1 votes | Nonwhite | White non-college | 2016 | 2020 | 2024 | 2020→24 |
 |---|---|---|---|---|---|---|---|---|
-| Q1 mostly white | 260 | 26.9% | 0.06 | 0.79 | −9.60 | −9.10 | −10.69 | −1.58 |
-| Q1 mixed | 259 | 31.1% | 0.29 | 0.60 | −6.28 | −6.23 | −8.37 | −2.11 |
-| Q1 heavily nonwhite | 259 | 42.0% | 0.61 | 0.33 | −3.23 | −4.59 | −8.87 | −4.26 |
-| All mostly white | 1,037 | 9.9% of all | 0.06 | 0.75 | −9.64 | −7.24 | −8.28 | −1.08 |
-| All mixed | 1,036 | 29.3% | 0.18 | 0.62 | −4.68 | −0.40 | −1.50 | −1.13 |
-| All heavily nonwhite | 1,037 | 60.9% | 0.48 | 0.40 | −0.48 | +2.33 | −0.87 | −3.23 |
+| Q1 mostly white | 260 | 26.9% | 0.06 | 0.79 | −9.29 | −9.41 | −11.08 | −1.67 |
+| Q1 mixed | 259 | 31.1% | 0.29 | 0.60 | −5.78 | −6.30 | −8.55 | −2.22 |
+| Q1 heavily nonwhite | 259 | 42.0% | 0.61 | 0.33 | −2.17 | −4.62 | −9.08 | −4.44 |
+| All mostly white | 1,037 | 9.9% of all | 0.06 | 0.75 | −8.69 | −7.55 | −8.74 | −1.23 |
+| All mixed | 1,036 | 29.3% | 0.18 | 0.62 | −3.06 | −0.48 | −1.72 | −1.27 |
+| All heavily nonwhite | 1,037 | 60.9% | 0.48 | 0.40 | +1.48 | +2.26 | −0.82 | −3.12 |
 
-Largest Q1 counties by 2024 votes: Bronx NY (nonwhite 0.91; 2024 vs 2012 −18.1), Hidalgo TX (0.94; −22.3), Orleans LA (0.69; +1.9), Cameron TX (0.91; −18.3), Caddo LA, Hinds MS, Doña Ana NM, Richmond GA.
+Largest Q1 counties by 2024 votes (two-party, 2016 / 2020 / 2024 vs 2012): Bronx NY (nonwhite 0.91; −2.3 / −8.6 / −19.9), Hidalgo TX (0.94; −0.1 / −12.5 / −22.5), Orleans LA (0.69; +2.8 / +2.8 / +2.5), Cameron TX (0.91; +1.2 / −9.1 / −18.6), Caddo LA (−0.3 / +0.9 / −0.2), Hinds MS (+0.8 / +2.6 / +1.4), Doña Ana NM (+2.3 / +1.8 / −2.6), Richmond GA (−0.4 / +1.8 / +1.1). The Black-majority counties among them did not move; the heavily nonwhite tercile's 2024 shift is Hispanic.
 
 ### G.2 Individual income, county income, and ethnicity
 
@@ -764,6 +790,18 @@ Panel (contemporaneous, unweighted, events in parentheses): by 2020 income <$30k
 | + RUCC + log population | +0.501 (0.227) | +0.433 (0.170) |
 | + RUCC + log pop, top 5% per capita dropped (N = 2,653) | +0.546 (0.292) | +0.778 (0.301) |
 
+**(i-a) Within states** (added 28 September 2026; `outputs/tables/delivery_state_fe.csv`). Same specification (+ RUCC + log population) with state fixed effects and errors clustered by state:
+
+| Specification | IIJA pp per SD | ARPA pp per SD |
+|---|---|---|
+| No state FE, HC3 (as above) | +0.501 (0.227), p = 0.027 | +0.433 (0.170), p = 0.011 |
+| No state FE, clustered by state | +0.501 (0.258), p = 0.052 | +0.433 (0.164), p = 0.008 |
+| **State FE, clustered by state** | **+0.294 (0.147), p = 0.046** | **+0.042 (0.118), p = 0.72** |
+| State FE, top 5% dropped | +0.455 (0.148), p = 0.002 | +0.052 (0.204), p = 0.80 |
+| State FE, unweighted | +0.184 (0.048), p < 0.001 | +0.012 (0.081), p = 0.88 |
+
+ARPA's county-swing association is between states and disappears within them; IIJA's survives at a bit over half its national size. The main report now leads with the within-state estimates.
+
 **(ii) Perceived economy, CES 2024** (WLS, `commonweight`, county-clustered, N = 56,631):
 
 | Specification | R² | IIJA | ARPA |
@@ -779,7 +817,7 @@ Within party, full controls: Democrats IIJA +0.037 (0.020), ARPA +0.004 (0.016);
 
 **(iv) Panel within-person change 2020→24** (WLS, `commonweight_24`, county-clustered, N = 5,772): delivery + party: IIJA +0.110 (0.069), ARPA +0.095 (0.041); + composition + urban: IIJA +0.134 (0.076), ARPA +0.019 (0.048).
 
-The ARPA association with perception in the under-controlled specifications is composition; ARPA per capita correlates +0.39 with 2020 Democratic share. The county-swing effect survives the same controls.
+The ARPA association with perception in the under-controlled specifications is composition; ARPA per capita correlates +0.39 with 2020 Democratic share. Its county-swing association survives the same controls but not a within-state comparison (i-a).
 
 **(v) Components** (`outputs/tables/delivery_components.csv`; same specification as the county-swing model with full controls, N = 2,913; components per 100 2020 voters as in D.1; vote changes as % of 2020 votes):
 
@@ -793,6 +831,19 @@ The ARPA association with perception in the under-controlled specifications is c
 | Republican votes, % change | −1.127 (0.410) | −0.229 (0.488) | 0.235 |
 
 Neither program predicts the turnout component or total turnout change. IIJA's swing effect is carried by lower Republican vote growth; ARPA's by higher Democratic vote retention. The individual switching model (iii) cannot detect an effect of this size: a 0.5pp county margin effect corresponds to roughly 0.25pp of individual vote share, well inside the logit's precision at a 6% base rate.
+
+**(v-a) Components within states** (`outputs/tables/delivery_components_state_fe.csv`; state FE, clustered by state):
+
+| Outcome | IIJA per SD | ARPA per SD |
+|---|---|---|
+| Margin swing (pp) | +0.294 (0.147) | +0.042 (0.118) |
+| Turnout component | −0.122 (0.073) | +0.084 (0.102) |
+| Share component | +0.119 (0.082) | +0.033 (0.059) |
+| Total votes, % change | −0.259 (0.122) | +0.062 (0.128) |
+| Democratic votes, % change | −0.025 (0.167) | +0.022 (0.178) |
+| Republican votes, % change | −0.574 (0.286) | −0.012 (0.229) |
+
+Within states, IIJA's effect is still lower Republican vote growth, with no Democratic or turnout gain; ARPA shows nothing.
 
 ---
 
@@ -815,6 +866,20 @@ From `county_decomposition.csv` (3,111 counties), binned on 2020 Democratic shar
 
 65%+ counties: Dem votes 24.69M → 21.79M (−11.8%); non-Dem votes 8.84M → 9.43M; 47% of national ΔDem, 68% of national turnout component; −0.10M in the seven swing states, −1.79M in CA+NY+IL. Ten largest losses: Los Angeles −611,776 (turnout −380,665), Cook −278,152, Queens −131,756, Alameda −118,108, Santa Clara −107,223, Kings −102,045, Bronx −93,704, Dallas −87,458, King WA −74,704, New York County −69,258.
 
+### H.1a Turnout against the eligible population (added 28 September 2026)
+
+Notebook 10 §1b; `acs_cvap_pull.py` → `data/raw/acs_cvap/county_cvap.csv`; `outputs/tables/stayhome_cvap_check.csv`. The turnout component counts votes, so it mixes abstention with any change in the eligible population. Citizen voting-age population (ACS `B29001_001E`) splits it: holding each county's 2020 turnout rate, votes would have moved with CVAP (`dem_share_2020 × total_votes_2020 × (CVAP_2024 / CVAP_2020 − 1)`, the population part); the rest is a change in the turnout rate. Primary: ACS 1-year, 2020 baseline = mean of 2019 and 2021 (no standard 2020 release), counties of 65,000+ (84% of 2020 votes; 98% in the 65%+ bin). Check: ACS 5-year 2016–20 against 2020–24, all counties.
+
+| 2020 Dem share | CVAP change, 1-yr | Votes change | Turnout component | Population part | Rate part | Rate part, 5-yr check |
+|---|---|---|---|---|---|---|
+| <35% | +6.3% | +3.6% | +0.14M | +0.25M | −0.11M | −0.11M |
+| 35–45% | +5.3% | +1.4% | +0.11M | +0.43M | −0.33M | −0.33M |
+| 45–55% | +4.4% | −1.4% | −0.26M | +0.76M | −1.02M | −1.07M |
+| 55–65% | +3.0% | −3.9% | −0.74M | +0.57M | −1.32M | −1.37M |
+| 65%+ | +1.8% | −6.9% | −1.69M | +0.43M | **−2.12M** | −2.13M |
+
+(1-year columns cover only counties with 1-year estimates, so the turnout component differs slightly from H.1.) CVAP grew in every bin, the strongholds included (Los Angeles: votes −12.6%, CVAP +0.4%), so on net none of the stronghold vote loss is a shrinking electorate; measured as a rate, the loss is larger than the raw turnout component, and turnout rates fell in every bin, most steeply in the strongholds.
+
 ### H.2 Partisanship of 2024 non-voters
 
 **Cross-section.** CES 2024, `TS_voterstatus` non-missing (matched to TargetSmart) and `presvote20post ∈ {1, 2}`: N = 34,666 (20,348 recalled Biden, 14,318 recalled Trump). `stay = 1` if `TS_g2024 == 7`. Recalled D/R ratio is 1.42 unweighted against actual 1.09; the CES weights rake on 2020 vote and bring it to 1.08 (`commonweight`) or 1.12 (`vvweight`), so no separate recall adjustment is applied. `outputs/tables/stayhome_partisanship.csv`:
@@ -825,7 +890,7 @@ From `county_decomposition.csv` (3,111 counties), binned on 2020 Democratic shar
 | `commonweight` (adults) | 4.4% | 3.8% | 55.6% |
 | `vvweight` (registered voters) | 8.0% | 5.9% | 60.5% |
 
-**Panel.** Validated 2020 voters with a 2024 match and a contemporaneous 2020 major-party vote: N = 3,982, 136 stay-homes; unweighted Biden 3.2%, Trump 3.7%; `commonweight_24` 2.4% / 4.6%.
+**Panel.** Validated 2020 voters with a 2024 match and a contemporaneous 2020 major-party vote: N = 3,982, 136 stay-homes; unweighted Biden 3.2%, Trump 3.7%; `commonweight_24` 2.4% / 4.6%. (F.4's 3.9% and 4.2% are for everyone who reported a 2020 major-party vote, validated in 2020 or not.)
 
 **By demographic group** (cross-section, unweighted; `outputs/tables/stayhome_by_group.csv`):
 
@@ -899,7 +964,7 @@ Notebook `11_share_and_issues.ipynb` §1. Validated 2024 voters (`TS_g2024 ∈ 1
 | Other | 1,193 | 2.1% | 37.2% | 42.1% | 20.7% | +0.10 |
 | Non-voter | 1,943 | 5.6% | 40.0% | 57.7% | 2.2% | +0.98 |
 
-Net switching: +2.48 − 0.73 = +1.74pp. New voters: +0.98pp. New voters by group (share of new voters; Trump / Harris): white/other 30+ 48.5%, 70.8 / 27.4; under 30 (other) 30.2%, 44.6 / 51.6; Hispanic 13.8%, 64.5 / 34.4; Black 7.6%, 14.7 / 85.0. Mean age 39 (all voters 53); no degree 71% (all 50%).
+Net switching: +2.48 − 0.73 = +1.74pp of the electorate, which is +3.49 points of margin (a switcher moves the margin by two). New voters: +0.98 points of margin; 2020 other: +0.10. Switching 76%, new voters 22% of the three. New voters by group (share of new voters; Trump / Harris): white/other 30+ 48.5%, 70.8 / 27.4; under 30 (other) 30.2%, 44.6 / 51.6; Hispanic 13.8%, 64.5 / 34.4; Black 7.6%, 14.7 / 85.0. Mean age 39 (all voters 53); no degree 71% (all 50%).
 
 ### H.7 The share decomposition corrected for recall
 
@@ -909,13 +974,17 @@ Notebook `22_share_decomposition_recall.ipynb`; `outputs/tables/share_decomposit
 |---|---|---|---|---|
 | Biden→Trump (pp of electorate) | 2.48 | 1.92 | 1.24–2.44 | 1.66 |
 | Trump→Harris | 0.73 | 0.75 | 0.61–0.87 | 0.66 |
-| Net switching | +1.74 | +1.18 | 0.49–1.71 | +1.00 |
-| New voters (net) | +0.98 | +0.64 | −0.48 to 1.66 | +2.35 |
-| 2020 other (net) | +0.10 | +0.39 | −0.09 to 1.23 | −0.32 |
+| Net switching (pp of electorate) | +1.74 | +1.18 | 0.49–1.71 | +1.00 |
+| Net switching (points of margin, ×2) | +3.49 | +2.35 | 0.98–3.41 | +2.01 |
+| New voters (net, points of margin) | +0.98 | +0.64 | −0.48 to 1.66 | +2.35 |
+| 2020 other (net, points of margin) | +0.10 | +0.39 | −0.09 to 1.23 | −0.32 |
 | Switch ratio | 3.4 | 2.6 | 1.7–3.6 | 2.5 |
 | Biden switch rate | 5.2% | 4.1% | 2.6–5.1% | 3.9% |
 | New voters' share of electorate | 5.6% | 4.5% | 3.4–5.6% | 12.5% |
-| Switching / new voters, share of shift | 62% / 35% | 53% / 29% | — | 33% / 77% |
+| Switching / new voters / other, share of the movement in margin | 76% / 22% / 2% | **70% / 19% / 11%** | 42–113% / −21–44% / — | 50% / 58% / −8% |
+| Switching minus new voters (points of margin) | +2.51 | +1.71 | 0.03–3.31 | −0.34 |
+
+Switching exceeds new voters in 97.9% of the 1,000 resamples. *Corrected 28 September 2026:* the share-of-shift row first compared net switching in points of the electorate (each switcher counted once) with new voters' net margin, and read 62% / 35% (recall) and 53% / 29% (corrected), with the conclusion that the split could not be pinned down. Counting both in points of margin, it can at the corrected estimate; only the validated-turnout bound, which overstates new voters, puts them level.
 
 The validated-turnout column treats every panelist without a matched 2020 voter record as a non-voter; 9.3% of panel 2024 voters who reported a 2020 vote have no record, most of them match failures, so it overstates new voters and is a bound, not an estimate. Panelists had answered the 2020 vote item twice before 2024; fresh cross-section respondents are likely to misrecall more, so the correction is conservative.
 
@@ -976,6 +1045,8 @@ AME per +1 SD, controls model: `econ_left` −0.0215, `cult_cons` +0.0757. Split
 
 The defensible figure is **about 1.8**, with 1.5–2.2 depending on the direction of a finite step. In the split model, immigration (coefficient +1.447) against economics (−1.249) is **1.16**; stepped toward switching, +0.0450 against +0.0371, 1.21. Abortion and marriage (+0.868) is 0.69 of the economic effect; policing is nil. Immigration was the larger force on who left, but nearly co-equal with economic views rather than three-and-a-half times it. Computed in notebook 11, section "Correction: comparing the cultural and economic effects like-for-like"; tables `switch_cultural_vs_economic_ratio.csv` and `switch_split_ratio_to_economic.csv`.
 
+**Dependence on the party control** (added 28 September 2026). The 1.8 is from the model with `pid7`. Without it (issues only), the ratio is 1.922 / 1.587 = **1.21**: adding `pid7` shrinks the economic coefficient (−1.59 → −1.15) far more than the cultural one. `pid7` is measured in 2024 and is partly an outcome of the switch, so neither model is clean. With the CES panel's 2020 attitudes the ratio is 3.2 (I.10) and with the ANES panel's 2020 indices one at a time about 1.0 (I.9). The report now describes cultural views as weighing at least as much as economic ones, by an unidentified ratio.
+
 **New voters → Trump** (`outputs/tables/newvoter_issue_model.csv`; N = 1,943, 854 Trump; no party control): `econ_left` −1.451 (0.205), `immig_cons` +1.282 (0.240), `social_cons` +1.138 (0.135), `police_cons` +0.309 (0.169), Hispanic −0.100 (0.315), Black −2.869 (0.438), college −0.587 (0.282).
 
 **Harris "very liberal" among Biden→Trump switchers** (N = 299; LPM, HC3): `econ_left` −0.111 (0.059), `immig_cons` +0.137 (0.054), `social_cons` +0.035 (0.046), `police_cons` +0.028 (0.055). Base rate 58.9%.
@@ -998,6 +1069,8 @@ Notebook `12_attitudes_timing_and_2016.ipynb`.
 | Biden→Trump | 39 | 0.50 | 0.55 | 0.74 | +0.24 | 0.59 / 0.68 / 0.47 |
 | Trump→Harris | 39 | 0.51 | 0.53 | 0.51 | 0.00 | 0.43 / 0.42 / 0.28 |
 | Trump→Trump | 1,643 | 0.81 | 0.82 | 0.85 | +0.04 | 0.81 / 0.83 / 0.80 |
+
+Switcher-minus-loyal gap: 0.33 in 2020, 0.31 in 2022, 0.40 in 2024, so about five-sixths of the 2024 gap predates the switch, and the switcher-specific change (+0.06) is inside the ±0.15 sampling error. *(An earlier version of the main report said half the gap opened after 2020.)*
 
 2020 items, conservative share, loyal Dem / Biden→Trump / loyal Rep (`panel_immigration_items_2020.csv`): oppose legal status 10 / 72 / 63; more border patrol 33 / 49 / 98; cut legal immigration 17 / 39 / 74; wall 7 / 40 / 90.
 
@@ -1049,11 +1122,11 @@ Immigration-conservative (index ≥ 0.5) share of Biden 2020 voters by 2016 stat
 
 Reservoir (`reservoir_2024.csv`): immigration-conservative = 19.4% of Biden-2020 voters; switch rate 22.0% vs 1.2% for the rest; 81% of all switchers. By group: Hispanic (N = 221) 23.6%, Black (607) 15.2%, white (1,775) 23.2%; Medicaid-expansion support 78 / 92 / 84%. Switcher composition vs all Biden-2020 voters: Hispanic 17 vs 12%, Black 17 vs 17%, white 54 vs 63%.
 
-The panel's Trump-2016 share of switchers (I.5: 4% weighted, 8 of 39) is superseded by the cross-section's 27%; recall bias toward the current vote makes 27% an upper bound.
+The panel's Trump-2016 share of switchers (I.5: 4% weighted, 8 of 39) is superseded by the cross-section's 27%. An earlier version called 27% an upper bound, on the reasoning that recall drifts toward the current vote; the ANES panel's 2016 vote recorded in 2016 (I.9: 32%, interval 13–61%, on 21 switchers) does not support that.
 
 **Robustness** (notebook 13 §3b; `reservoir_cutoffs.csv`, `reservoir_by_pid.csv`, `reservoir_2020_attitudes_panel.csv`). Cutoff: ≥ 0.4 → 42.0% of Biden-2020 voters, switch 11.1% vs 1.0%, 89% of switchers; ≥ 0.5 → 19.4% / 22.0% vs 1.2% / 81%; ≥ 0.6 → 19.3% / 22.1% vs 1.2% / 81%; ≥ 0.8 → 7.4% / 35.9% vs 2.8% / 51%. By party ID (reservoir share; switch reservoir vs rest): strong Democrat 13.8%, 3.7% vs 0.2%; weak/lean Democrat 18.6%, 9.4% vs 0.8%; independent 36.3%, 46.3% vs 3.3%; Republican-identifying Biden voters 63.5%, 74.7% vs 30.1%.
 
-**Pre-switch version.** Panel, reservoir on 2020 attitudes (four 2020 items, cutoff 0.5), 2024 outcome; N = 1,684 Biden-2020 voters, 39 switchers: reservoir 16.7% of the coalition (N = 285); switch 13.5% weighted / 8.1% unweighted (23 events) vs 2.2% / 1.1% (16 events); 55.6% of switchers. At cutoff 0.75: 7.6% (N = 98), 19.9% vs 2.8%, 37.3% of switchers. Medicare-for-all support among the 2020-defined reservoir: 85%. The 2024-attitude figures (I.6 above) include concurrent attitude change; the 2020-attitude figures are the predictive estimate.
+**Pre-switch version.** Panel, reservoir on 2020 attitudes (four 2020 items, cutoff 0.5), 2024 outcome; N = 1,684 Biden-2020 voters, 39 switchers: reservoir 16.7% of the coalition (N = 285); switch 13.5% weighted / 8.1% unweighted (23 events) vs 2.2% / 1.1% (16 events); 55.6% of switchers. At cutoff 0.75: 7.6% (N = 98), 19.9% vs 2.8%, 37.3% of switchers. Medicare-for-all support among the 2020-defined reservoir: 85%. The 2024-attitude figures (I.6 above) include concurrent attitude change, and a single 2020 reading misclassifies some respondents near the cutoff, which attenuates the 2020 figures; the 2020-attitude figures are the predictive estimate.
 
 **2016 primary, all switchers.** Of the 2,121 Obama→Trump respondents (not only primary voters): 67% voted in a primary; Trump primary 30%, Sanders 15%, Clinton 14%, no primary or other 41%.
 
@@ -1166,7 +1239,7 @@ Notebook `17_nyc_precinct_overlap.ipynb`. Data A.10. Usable EDs: ≥ 50 two-part
 
 **By majority group** (Hispanic / Asian / Black / mixed / white; N 723 / 226 / 628 / 1,060 / 1,233): swing +13.6 / +14.8 / +4.5 / +8.6 / +4.9; Harris 70.2 / 53.1 / 89.9 / 69.3 / 61.6%; Mamdani Nov 58.4 / 46.5 / 63.6 / 57.7 / 41.3%; Mamdani vs Cuomo Nov 62.6 / 52.3 / 65.9 / 62.5 / 45.3%; primary head-to-head 55.3 / 61.4 / 43.7 / 64.6 / 56.2%; Mamdani first choice 48.3 / 53.5 / 35.4 / 52.9 / 39.2%, Cuomo first 40.3 / 33.8 / 48.8 / 29.9 / 33.7%; Nov 2025 per 2024 vote 0.69 / 0.79 / 0.67 / 0.81 / 0.92; primary per 2024 vote 0.35 / 0.30 / 0.38 / 0.40 / 0.43. Income terciles within group in `nyc_by_majority_x_income.csv`; low-income Hispanic (N = 490): swing +13.7, Mamdani 56.3%, vs Cuomo 60.2%, primary 47.9%; mid-income Hispanic (173): 63.2%, 68.0%, 68.6%; low-income white (120): swing +5.2, Mamdani 21.9%.
 
-**Within-group WLS** (weights 2024 two-party votes; HC1; regressors swing, 2020 Trump share, log income, BA share, Hispanic / Black / Asian shares). Dependent Mamdani vs Cuomo (Nov), coefficient on swing (SE): Hispanic −0.32 (0.10), Asian +0.03 (0.10), Black −0.62 (0.21), mixed −0.33 (0.08), white −0.47 (0.08), all −0.62 (0.06); on 2020 Trump share −1.18 / −1.48 / −1.65 / −1.18 / −0.83 / −0.86. Primary head-to-head: swing −0.40 / +0.26 / −0.21 / −0.21 / −0.16 / −0.40. Dependent Mamdani Nov share − Harris 2024 share, swing coefficient: Hispanic +0.66 (0.10), Asian +1.05 (0.10), Black +0.37 (0.21), mixed +0.66 (0.08), white +0.53 (0.07), all +0.41 (0.05); R² 0.57 / 0.59 / 0.58 / 0.32 / 0.49 / 0.35. Turnout ratio (Nov 2025 / 2024) on swing: white +6.2 (0.5), Black +7.7 (2.3), mixed +3.3 (0.6), Hispanic −0.4 (0.7), Asian +0.6 (0.2).
+**Within-group WLS** (weights 2024 two-party votes; HC1; regressors swing, 2020 Trump share, log income, BA share, Hispanic / Black / Asian shares). HC1 errors treat neighbouring EDs as independent; the Assembly-District-clustered errors now shown in the main report's table are in K.2e (1.1–1.9 times larger). Dependent Mamdani vs Cuomo (Nov), coefficient on swing (SE): Hispanic −0.32 (0.10), Asian +0.03 (0.10), Black −0.62 (0.21), mixed −0.33 (0.08), white −0.47 (0.08), all −0.62 (0.06); on 2020 Trump share −1.18 / −1.48 / −1.65 / −1.18 / −0.83 / −0.86. Primary head-to-head: swing −0.40 / +0.26 / −0.21 / −0.21 / −0.16 / −0.40. Dependent Mamdani Nov share − Harris 2024 share, swing coefficient: Hispanic +0.66 (0.10), Asian +1.05 (0.10), Black +0.37 (0.21), mixed +0.66 (0.08), white +0.53 (0.07), all +0.41 (0.05); R² 0.57 / 0.59 / 0.58 / 0.32 / 0.49 / 0.35. Turnout ratio (Nov 2025 / 2024) on swing: white +6.2 (0.5), Black +7.7 (2.3), mixed +3.3 (0.6), Hispanic −0.4 (0.7), Asian +0.6 (0.2).
 
 **Composition of citywide vote** by ED majority (Hispanic / Asian / Black / mixed / white): Harris 2024 15.6 / 3.8 / 20.8 / 26.1 / 33.7%; Trump 2024 14.8 / 7.5 / 5.2 / 25.8 / 46.8%; Mamdani Nov 15.1 / 4.4 / 16.4 / 29.5 / 34.6%; Cuomo Nov 11.1 / 4.9 / 10.5 / 21.9 / 51.6%; Sliwa 11.0 / 7.1 / 4.9 / 26.1 / 51.0%; Mamdani primary first choices 14.7 / 4.6 / 12.4 / 31.5 / 36.7%; Cuomo first choices 15.0 / 3.5 / 21.0 / 21.8 / 38.7%.
 
@@ -1174,7 +1247,7 @@ Notebook `17_nyc_precinct_overlap.ipynb`. Data A.10. Usable EDs: ≥ 50 two-part
 
 ### K.1b Same-ballot comparison, November 2025
 
-Notebook 17 section 3b. NYC BOE ED-level CSVs for the 4 November 2025 citywide Public Advocate and City Comptroller contests (`data/raw/nyc/2025_general/`, linked from the cached 2025 results page), parsed with `read_boe_edlevel`; ballot-method rows dropped. Democratic share is the named candidate's votes across all his lines (Williams also ran on Working Families) over all candidate votes. Sample: in-play EDs not combined in 2024 or 2025, with at least 50 votes in the 2020 and 2024 presidential and 2025 mayoral contests and both down-ballot results: 3,879. WLS weighted by 2025 mayoral votes, HC1. Slope of (candidate share − Harris 2024 share) on the 2020→2024 two-party swing to Trump, points per point: Mamdani 0.870 (0.027), Levine 0.825 (0.040), Williams 0.923 (0.018); with Hispanic, Black and Asian shares, BA share, log income, age 18–34 share and borough fixed effects, 0.790 (0.030), 0.830 (0.055), 0.863 (0.024). Mamdani − Levine on swing: +0.045 (0.049), with controls −0.040 (0.056). Mamdani − Williams: −0.053 (0.017), with controls −0.073 (0.015). Table: `nyc_2025_same_ballot_by_swing_decile.csv`. Limit: Mamdani faced an independent Democrat and a Republican, the others a Republican only, so levels are not comparable; the test is the gradient, which Cuomo's candidacy would leave intact only if his pull were uniform across the swing.
+Notebook 17 section 3b. NYC BOE ED-level CSVs for the 4 November 2025 citywide Public Advocate and City Comptroller contests (`data/raw/nyc/2025_general/`, linked from the cached 2025 results page), parsed with `read_boe_edlevel`; ballot-method rows dropped. Democratic share is the named candidate's votes across all his lines (Williams also ran on Working Families) over all candidate votes. Sample: in-play EDs not combined in 2024 or 2025, with at least 50 votes in the 2020 and 2024 presidential and 2025 mayoral contests and both down-ballot results: 3,879. WLS weighted by 2025 mayoral votes, HC1. Slope of (candidate share − Harris 2024 share) on the 2020→2024 two-party swing to Trump, points per point: Mamdani 0.870 (0.027), Levine 0.825 (0.040), Williams 0.923 (0.018); with Hispanic, Black and Asian shares, BA share, log income, age 18–34 share and borough fixed effects, 0.790 (0.030), 0.830 (0.055), 0.863 (0.024). Mamdani − Levine on swing: +0.045 (0.049), with controls −0.040 (0.056). Mamdani − Williams: −0.053 (0.017), with controls −0.073 (0.015). Clustered by Assembly District (K.2e): Mamdani − Levine SE 0.074 / 0.055; Mamdani − Williams −0.053 (0.040, p = 0.19), with controls −0.073 (0.019, p = 0.0002). Table: `nyc_2025_same_ballot_by_swing_decile.csv`. Limit: Mamdani faced an independent Democrat and a Republican, the others a Republican only, so levels are not comparable; the test is the gradient, which Cuomo's candidacy would leave intact only if his pull were uniform across the swing.
 
 ---
 
@@ -1206,7 +1279,7 @@ Notebook `18_nyc_money_media_history.ipynb`. Data A.11. Tables `nyc_ie_by_candid
 
 **Independent expenditures on Mayor, support / oppose ($M).** 2013: Thompson 3.08 / 0; Quinn 0.83 / 1.00; Lhota 0.52 / 1.04; de Blasio 0.51 / 0.02. 2021: Adams 8.04 / 0.01; Donovan 6.49 / 0; McGuire 5.75 / 0; Stringer 4.75 / 0; Yang 3.85 / 0.17; Wiley 1.98 / 0. 2025: Cuomo 31.02 / 1.67; Mamdani 4.83 / 21.93; Sliwa 0.79 / 2.82. 2025 spenders: Fix the City 19.30 for Cuomo, 10.63 against Mamdani, 0.89 against Sliwa (contributions reported $35.6M); For Our City 2.51 for Cuomo / 4.85 against Mamdani; Stop the Socialists 1.79 / 2.14 (+1.52 against Sliwa); Defend NYC 2.49 / 2.21; Housing for All 2.50 for Cuomo; New Yorkers for Lower Costs 2.72 for Mamdani; WFP 0.98 against Cuomo. Total mayoral IE: 2013 ≈ 9, 2021 ≈ 27, 2025 ≈ 83.
 
-**Committees ($M spent; contributors; small-dollar share).** 2013 de Blasio 13.5 (12,267; 7%), Quinn 6.9, Thompson 6.5. 2021 Adams 18.3 (15,483; 14%), McGuire 11.9, Yang 10.5, Stringer 10.2, Garcia 8.6, Wiley 7.6. 2025 Mamdani 16.4 (40,835; 55%; public funds 13.2), Cuomo 14.1 (10,400; 14%; public funds 8.1), Lander 8.2, Sliwa 6.9. Sides (committee + IE for + IE against the other): 2013 de Blasio 15.1 vs Quinn 7.7 / Thompson 9.6; 2021 Adams 26.3 vs Garcia 8.6 / Yang 14.3; 2025 Mamdani 22.9 vs Cuomo 67.0 (ratio 2.92).
+**Committees ($M spent; contributors; small-dollar share).** 2013 de Blasio 13.5 (12,267; 7%), Quinn 6.9, Thompson 6.5. 2021 Adams 18.3 (15,483; 14%), McGuire 11.9, Yang 10.5, Stringer 10.2, Garcia 8.6, Wiley 7.6. 2025 Mamdani 16.4 (40,835; 55%; public funds 13.2), Cuomo 14.1 (10,400; 14%; public funds 8.1), Lander 8.2, Sliwa 6.9. Sides (committee + IE for + IE against the other): 2013 de Blasio 15.1 vs Quinn 7.7 / Thompson 9.6; 2021 Adams 26.3 vs Garcia 8.6 / Yang 14.3; 2025 Mamdani 22.9 vs Cuomo 67.0 (ratio 2.92). All are whole-cycle figures (the CFB summaries scraped here are per election cycle, not per election): winners' committee spending includes the general election, while Quinn, Thompson, Garcia and Yang spent only in the primary, so the 2013 and 2021 ratios overstate the winners' primary-season advantage. Cuomo ran in both rounds, so the 2025 ratio is closer to like-for-like, and it is not comparable to the Justice Democrats' pre-primary ratios in K-bis.
 
 **Coverage (GDELT).** Tone is averaged over days with daily volume as the weight; volume is the mean daily intensity × 1000. Twelve candidate-cycles, seven sources. Full cycle (Jan 1 to election eve), all-source tone / volume: 2021 Adams −1.86 / 13.19, Yang −1.58 / 10.03, Wiley −1.34 / 5.96, Garcia −1.46 / 5.51, Sliwa −2.06 / 4.54, Stringer −1.38 / 4.48; 2025 Adams −3.29 / 47.31, Mamdani −1.69 / 45.38, Cuomo −1.95 / 31.06, Sliwa −1.43 / 14.29, Lander −2.87 / 4.96, Stringer −2.20 / 1.35. Eric Adams's 2025 volume is mostly not campaign coverage (indictment, mayoralty, withdrawal in September) and is not treated as a candidate comparison. By source, full cycle, tone Fox / CNN / MSNBC / *Times* / *Daily News* / *Post*: Adams 2021 −2.52 / −1.46 / −1.39 / −1.34 / −1.42 / —; Garcia −1.76 / −1.48 / +1.13 / −0.99 / −1.02 / —; Wiley −1.36 / −1.37 / −2.43 / −0.88 / −0.90 / —; Yang −1.97 / −1.26 / −3.11 / −1.23 / −1.27 / —; Mamdani 2025 −2.36 / −1.41 / −1.74 / −0.09 / −1.57 / −2.00; Cuomo −2.23 / −1.67 / −0.17 / −1.31 / −1.50 / −2.29. Volume the same way: Adams 2021 0.143 / 0.057 / 0.010 / 0.357 / 0.489; Mamdani 0.797 / 0.333 / 0.061 / 0.029 / 0.568 / 1.499; Cuomo 0.372 / 0.245 / 0.022 / 0.049 / 0.553 / 1.105. Mamdani ÷ Adams 2021: 3.44 all, 5.57 Fox, 5.81 CNN, 1.16 *Daily News*.
 
@@ -1218,13 +1291,15 @@ Notebook `18_nyc_money_media_history.ipynb`. Data A.11. Tables `nyc_ie_by_candid
 
 **Known misreadings, and their effect.** The most frequent lexicon hits across the corpus are political rather than evaluative: `party` (+1.7, 53 occurrences — VADER's sense is a celebration), `top` (+0.8, 47), `won` (+2.7, 45), `win` (+2.8, 41), `support` (+1.7, 41), against `charges` (−1.1, 47) and `crisis` (−3.1, 28). Two sensitivity tests (`nyt_census_tone_robustness.csv`): dropping ambiguous political words moves the Mamdani-vs-Adams gap from +0.030 to +0.028 and the pre/post gap from +0.133 to +0.149; dropping horse-race outcome words moves them to +0.055 and +0.128 (p = 0.013), and outcome words occur at the same rate before and after the primary (0.48 vs 0.47 per article), so the post-primary shift is not an artifact of his having won. Levels are crude; the differences survive both attacks because the misread words appear at similar rates across candidates and windows and cancel in a comparison.
 
-**Frame salience (A.11).** Share of a candidate's race-related *Times* articles whose headline or abstract matches each pattern. Religion `muslim|islam|mosque|jewish|synagogue|catholic|christian`; Israel/Gaza `israel|gaza|palestin|zionis|intifada|antisemit|hamas`; socialism `socialis|marxis|communis|radical|far-left|extremis`; plus crime, affordability and corruption as controls. 2025 (religion / Israel-Gaza / socialism / crime / affordability / corruption): Mamdani n=582, 7.0 / 5.7 / 4.3 / 3.4 / 6.9 / 1.2%; Cuomo 391, 3.8 / 3.8 / 2.0 / 2.6 / 6.1 / 3.1; Adams 246, 0.8 / 1.6 / 0.0 / 7.7 / 5.7 / 29.3; Sliwa 94, 1.1 / 1.1 / 1.1 / 4.3 / 4.3 / 2.1. 2021: Adams 141, 0.0 / 0.0 / 0.0 / 16.3 / 3.5 / 0.0; Yang 69, 1.4 / 1.4 / 1.4 / 8.7 / 0.0 / 1.4; Wiley 36, Garcia 29 and Sliwa 41 all zero on religion, Israel-Gaza and socialism. Mamdani against the rest of the 2025 field: religion +6.7pp, Israel-Gaza +4.6pp, socialism +4.3pp, all p < 0.0001; corruption −25.9pp (p < 0.0001); affordability +1.3pp and crime −3.2pp, both null. Novelty confound: of 30 articles raising Muslim/Islam, 8 carry a "first Muslim" / "first South Asian" / "youngest" hook and 22 do not. Salience measures what a piece raises, not how it treats it; the design does not distinguish respectful from hostile treatment of the same subject, and no inference about any individual article is drawn. Tables `nyt_frame_salience.csv`, `nyt_frame_salience_tests.csv`.
+**Frame salience (A.11).** Share of a candidate's race-related *Times* articles whose headline or abstract matches each pattern. Religion `muslim|islam|mosque|jewish|synagogue|catholic|christian`; Israel/Gaza `israel|gaza|palestin|zionis|intifada|antisemit|hamas`; socialism `socialis|marxis|communis|radical|far-left|extremis`; plus crime, affordability and corruption as controls. 2025 (religion / Israel-Gaza / socialism / crime / affordability / corruption): Mamdani n=582, 7.0 / 5.7 / 4.3 / 3.4 / 6.9 / 1.2%; Cuomo 391, 3.8 / 3.8 / 2.0 / 2.6 / 6.1 / 3.1; Adams 246, 0.8 / 1.6 / 0.0 / 7.7 / 5.7 / 29.3; Sliwa 94, 1.1 / 1.1 / 1.1 / 4.3 / 4.3 / 2.1. 2021: Adams 141, 0.0 / 0.0 / 0.0 / 16.3 / 3.5 / 0.0; Yang 69, 1.4 / 1.4 / 1.4 / 8.7 / 0.0 / 1.4; Wiley 36, Garcia 29 and Sliwa 41 all zero on religion, Israel-Gaza and socialism. Mamdani against the rest of the 2025 field (2025 articles that do not name him): religion +6.7pp, Israel-Gaza +4.6pp, socialism +4.3pp, all p < 0.0001; corruption −25.9pp (p < 0.0001); affordability +1.3pp and crime −3.2pp, both null. **Own faith** (`muslim|islam|mosque` only; added 28 September 2026): Mamdani 5.2% (30 articles), Cuomo 2.8%, Adams 2025 0.0%, Sliwa 1.1%, every 2021 candidate 0.0%; rest of the 2025 field 0.0%, p < 0.0001. The broader religion pattern adds Jewish, synagogue, Catholic and Christian, which in Mamdani's coverage mostly concerns Jewish voters and antisemitism debates; the main report had described its 7.0% as coverage of his religion and now leads with the own-faith figure. Novelty confound: of 30 articles raising Muslim/Islam, 8 carry a "first Muslim" / "first South Asian" / "youngest" hook and 22 do not. Salience measures what a piece raises, not how it treats it; the design does not distinguish respectful from hostile treatment of the same subject, and no inference about any individual article is drawn. Tables `nyt_frame_salience.csv`, `nyt_frame_salience_tests.csv`.
 
 Tables `nyt_census_tone.csv`, `nyt_census_tone_validation.csv`, `nyt_census_tone_comparisons.csv`, `nyt_census_tone_robustness.csv`.
 
-**Framing by outlet (A.11).** `src/data_collection/gdelt_nyc_artlist_pull.py`, notebook 18 section 2e. GDELT `artlist` per domain for Mamdani and Cuomo over 1 Jan – 5 Nov 2025, cap-aware bisection as in K-bis.3; 1,970 headlines. `nytimes.com` is taken from the Archive census instead (GDELT recall 5.8%); `washingtonpost.com` returns zero articles for 2025 on every query attempted, including generic ones, so it is absent rather than zero-coverage. Registers are `src/analysis/framing.py` as in K-bis.3. Mamdani, self-description / loaded / threat / identity / Israel-Gaza: foxnews.com n=394, 2.8 / 13.5 / 2.3 / 5.1 / 8.1%; nypost.com n=701, 1.4 / 8.6 / 3.1 / 3.0 / 7.4%; nydailynews.com n=170, 0.6 / 3.5 / 2.4 / 2.4 / 5.9%; cnn.com n=121, 2.5 / 0.0 / 0.8 / 4.1 / 5.0%; nytimes.com (census) n=582, 7.6 / 2.1 / 2.4 / 7.2 / 5.7%; msnbc.com n=22, too small to read. Loaded-to-self-description ratio: Fox 4.8, *Post* 6.0, *Daily News* 6.0, CNN 0, *Times* 0.27 (i.e. inverted).
+**Framing by outlet (A.11).** `src/data_collection/gdelt_nyc_artlist_pull.py`, notebook 18 section 2e. GDELT `artlist` per domain for Mamdani and Cuomo over 1 Jan – 5 Nov 2025, cap-aware bisection as in K-bis.3; 1,970 headlines. `nytimes.com` is taken from the Archive census instead (GDELT recall 5.8%); `washingtonpost.com` returns zero articles for 2025 on every query attempted, including generic ones, so it is absent rather than zero-coverage. Registers are `src/analysis/framing.py` as in K-bis.3. Mamdani, self-description / loaded / threat / identity / Israel-Gaza: foxnews.com n=394, 2.8 / 13.5 / 2.3 / 5.1 / 8.1%; nypost.com n=701, 1.4 / 8.6 / 3.1 / 3.0 / 7.4%; nydailynews.com n=170, 0.6 / 3.5 / 2.4 / 2.4 / 5.9%; cnn.com n=121, 2.5 / 0.0 / 0.8 / 4.1 / 5.0%; nytimes.com (census) n=582, 7.6 / 2.1 / 2.4 / 7.2 / 5.7%; msnbc.com n=22, too small to read. Loaded-to-self-description ratio: Fox 4.8, *Post* 6.0, *Daily News* 6.0 (6 headlines against 1), CNN 0, *Times* 0.27 (i.e. inverted).
 
-*Two-candidate contamination.* 52.8% of Cuomo headlines name Mamdani, and Cuomo's loaded rate is 7.1% in those against 3.0% in the rest (p = 0.027) — headlines like "Cuomo vows to stand up to the far left" score the loaded label for Cuomo. Within-outlet comparisons therefore use only Cuomo headlines that do not mention Mamdani: *Post* 8.6% vs 2.1%, diff +6.5pp, p = 0.0004; Fox 13.5% vs 8.5%, +4.9pp, p = 0.27; *Daily News* 3.5% vs 2.9%, +0.7pp, p = 0.78; CNN 0 vs 0. Tables `nyc_framing_by_outlet.csv`, `nyc_framing_vs_cuomo.csv`; figure `nyc_framing_by_outlet.png`.
+*Without bare "socialist"* (added 28 September 2026; notebook 18 §2e, `nyc_framing_by_outlet_strict.csv`): loaded = radical, far-/hard-/ultra-left, extremist, extreme, Marxist, communist, leftist only. Fox 3.8% (15 headlines), *Post* 3.7% (26), *Daily News* 2.9% (5), CNN 0.0%, *Times* 1.2% (7); ratio to self-description 1.4, 2.6, 5.0, 0, 0.16. Cuomo headlines not naming Mamdani: Fox 2.1%, *Post* 0.0%, *Daily News* 1.4%. Bare "socialist" is most of the loaded register on Fox and the *Post*; the ordering of outlets is unchanged.
+
+*Two-candidate contamination.* 52.8% of Cuomo headlines name Mamdani, and Cuomo's loaded rate is 7.1% in those against 3.0% in the rest (p = 0.027) — headlines like "Cuomo vows to stand up to the far left" score the loaded label for Cuomo. Within-outlet comparisons therefore use only Cuomo headlines that do not mention Mamdani: *Post* 8.6% vs 2.1%, diff +6.5pp, p = 0.0004; Fox 13.5% vs 8.5%, +4.9pp, p = 0.27; *Daily News* 3.5% vs 2.9%, +0.7pp, p = 0.78; CNN 0 vs 0. A centrist opponent is not expected to draw ideological labels, so this comparison bounds house style; it does not hold the candidate constant. Tables `nyc_framing_by_outlet.csv`, `nyc_framing_vs_cuomo.csv`; figure `nyc_framing_by_outlet.png`.
 
 **Coalitions** (3,790 EDs usable in all of 2017, 2020, 2021, 2024, 2025). By swing decile 1 … 10: de Blasio 2017 general 74.5 / 70.7 / 68.7 / 63.3 / 59.9 / 58.8 / 62.2 / 67.1 / 70.9 / 72.5%; Adams 2021 general 78.3 / 74.2 / 72.7 / 65.5 / 61.2 / 59.3 / 59.6 / 62.7 / 64.9 / 68.5%; Harris 84.4 … 54.2%; Mamdani 64.1 / 56.1 / 52.7 / 47.8 / 45.9 / 43.7 / 44.5 / 47.9 / 49.5 / 53.6%; Adams vs Garcia 2021 primary 33.7 / 45.7 / 49.2 / 53.2 / 51.4 / 53.5 / 59.0 / 60.3 / 62.0 / 51.8%; Adams vs Wiley 40.2 … 57.8%; Wiley first choices 29.3 … 16.4%; Mamdani vs Cuomo 67.5 / 59.1 / 55.1 / 53.5 / 55.2 / 52.5 / 50.2 / 52.5 / 51.6 / 57.1%. By majority (Hispanic / Asian / Black / mixed / white): de Blasio 2017 83.1 / 54.2 / 92.0 / 68.5 / 50.1; Adams 2021 75.8 / 51.6 / 90.9 / 66.9 / 57.8; Mamdani 58.4 / 46.5 / 63.6 / 57.7 / 41.3; Adams vs Garcia 62.4 / 45.7 / 84.1 / 50.0 / 29.4; Adams vs Wiley 59.9 / 56.6 / 71.3 / 50.7 / 45.6; Mamdani vs Cuomo 55.3 / 61.4 / 43.8 / 64.6 / 56.2. ED-level correlations weighted by 2025 votes: Mamdani general with de Blasio 2017 0.80, Harris 0.79, Adams 2021 0.72, Wiley first 0.81; Mamdani primary head-to-head with Wiley first 0.82, with Adams-vs-Wiley −0.84, with Adams-vs-Garcia −0.54, with Harris 0.39. General votes 2025 / 2021: Hispanic 2.10, Asian 2.00, mixed 2.09, white 1.99, Black 1.66. Primary ballots 2025 / 2021: white 1.25, mixed 1.19, Hispanic 1.13, Black 0.97, Asian 0.92; income terciles low 1.02, mid 1.14, high 1.24.
 
@@ -1236,7 +1311,7 @@ Notebook 17 section 4c. 3,834 EDs with age data and at least 25 primary ballots 
 
 **By quintile of the 18–34 share of adults** (1 = oldest), reporting 18–34 % / median age / primary turnout 2025÷2021 / Mamdani-vs-Cuomo primary / Mamdani November / mean 2024 swing to Trump / BA share: Q1 16.8 / 48.8 / 1.085 / 47.0 / 39.1 / 7.53 / 47.9; Q2 24.8 / 42.9 / 1.063 / 51.6 / 45.2 / 8.79 / 37.6; Q3 29.8 / 39.6 / 1.078 / 52.3 / 51.0 / 9.77 / 34.8; Q4 35.4 / 36.3 / 1.157 / 59.0 / 57.0 / 9.71 / 37.6; Q5 47.6 / 32.5 / 1.361 / 68.6 / 63.9 / 6.99 / 50.7. Primary turnout growth is flat across Q1–Q3 and concentrated in Q5; the 2024 swing is non-monotonic, peaking in Q3–Q4, so youth does not proxy for it.
 
-**WLS, weighted by 2025 primary ballots, HC1, controls log median income, BA share, white/Black/Hispanic shares** (`outputs/tables/nyc_age_models.csv`): Mamdani primary head-to-head, `age18_34` +0.551 (SE 0.030, p = 5.6 × 10⁻⁷⁷), N = 3,741, R² = 0.363; primary turnout growth +0.915 (0.092, p = 2.4 × 10⁻²³), R² = 0.187; November share +0.453 (0.027, p = 1.3 × 10⁻⁶³), R² = 0.454. Coefficients are per unit of share, so a ten-point higher young-adult share is one-tenth of each. Education enters independently and large in every specification.
+**WLS, weighted by 2025 primary ballots, HC1, controls log median income, BA share, white/Black/Hispanic shares** (`outputs/tables/nyc_age_models.csv`): Mamdani primary head-to-head, `age18_34` +0.551 (SE 0.030, p = 5.6 × 10⁻⁷⁷), N = 3,741, R² = 0.363; primary turnout growth +0.915 (0.092, p = 2.4 × 10⁻²³), R² = 0.187; November share +0.453 (0.027, p = 1.3 × 10⁻⁶³), R² = 0.454. Coefficients are per unit of share, so a ten-point higher young-adult share is one-tenth of each. Education enters independently and large in every specification. Clustered by Assembly District (K.2e) the standard errors are about three times larger — 0.089, 0.203 and 0.081 — and every coefficient remains far from zero (p < 10⁻⁴).
 
 **Limits.** Ecological: the age composition of a district is not the age composition of its voters, and turnout is strongly age-graded, so these coefficients bound neighbourhood composition rather than individual behaviour. ACS 2023 five-year estimates straddle the period and carry block-group sampling error, which the population weighting does not remove. Table `nyc_by_age_quintile.csv`.
 
@@ -1250,7 +1325,7 @@ Notebook 17 section 4d. 3,848 EDs with at least 100 enrolled Democrats in Februa
 
 **By quintile of Mamdani's primary head-to-head share** (share / enrollment growth / net added / primary turnout as a share of February-enrolled Democrats / 18–34 share of adults): Q1 24.7% / 1.031 / +20,700 / 25.7% / 27.6; Q2 39.9% / 1.024 / +15,041 / 25.7% / 27.9; Q3 51.2% / 1.037 / +22,408 / 29.9% / 28.9; Q4 63.1% / 1.052 / +33,231 / 33.3% / 32.6; Q5 80.7% / 1.091 / +64,668 / 44.8% / 37.5.
 
-**WLS, weighted by February 2025 Democratic enrollment, HC1** (`outputs/tables/nyc_enrollment_models.csv`): enrollment growth on Mamdani primary share +0.1080 (SE 0.0052, p = 3.5 × 10⁻⁹⁵), R² = 0.199; adding age, education, race and log income, +0.0572 (SE 0.0048, p = 8.0 × 10⁻³³), R² = 0.496, with `age18_34` +0.164.
+**WLS, weighted by February 2025 Democratic enrollment, HC1** (`outputs/tables/nyc_enrollment_models.csv`): enrollment growth on Mamdani primary share +0.1080 (SE 0.0052, p = 3.5 × 10⁻⁹⁵), R² = 0.199; adding age, education, race and log income, +0.0572 (SE 0.0048, p = 8.0 × 10⁻³³), R² = 0.496, with `age18_34` +0.164. These HC1 errors were not re-estimated with clustering; K.2e's other ED models suggest multiplying them by 1.5–3, which leaves the estimates clearly non-zero.
 
 **Limits.** The snapshots bracket the campaign rather than bisecting it: a new registrant could vote in the June primary, but an enrollment change filed after 14 February took effect 1 July, so Feb→Nov growth mixes pre- and post-nomination registration and no intermediate snapshot separates them. The 2021→2025 decline of 437,000 spans a list-maintenance cycle as well as real change, so the 2025 recovery of about a third of it should not be read as net growth across the period. Turnout rates use total (including inactive) enrollment as the denominator; the active-only denominator raises every rate but leaves the gradient unchanged. Table `nyc_enrollment_by_mamdani_quintile.csv`.
 
@@ -1272,9 +1347,29 @@ Notebook 17 section 4d. 3,848 EDs with at least 100 enrolled Democrats in Februa
 
 **Turnout** (`nyc_2026_replication_turnout.csv`), quintiles of Mamdani 2025 share formed within race; turnout is primary ballots as a share of total Democratic enrolment at the snapshot six days after each cycle's 14 February party-change deadline (2025-02-20 and 2026-02-20): Q1 25.8% → 16.7%, Q2 27.9 → 16.5, Q3 31.8 → 18.3, Q4 37.8 → 21.9, Q5 40.5 → 22.8. Strongest-to-weakest ratio 1.57 in 2025, 1.36 in 2026; share of 2025 turnout retained, 0.649 in Q1 falling to 0.562 in Q5.
 
-**Swing.** WLS with race fixed effects, 2026 left head-to-head on the 2020→2024 swing to Trump: −0.402 (SE 0.090) alone; −0.103 (0.028, p = 0.0003) net of Mamdani's 2025 share.
+**Swing.** WLS with race fixed effects, 2026 left head-to-head on the 2020→2024 swing to Trump: −0.402 (SE 0.090) alone; −0.103 (0.028, p = 0.0003) net of Mamdani's 2025 share. Clustered by Assembly District (K.2e): −0.402 (0.149, p = 0.007) and −0.103 (0.055, p = 0.058). The net-of-Mamdani result is suggestive rather than established; the main report said p < 0.001 until 28 September 2026.
 
 **Limits.** Ecological: the same places, not demonstrably the same voters. The level comparison crosses different opponents — Cuomo in 2025, five establishment candidates in 2026 — so the shortfall bounds a decline rather than measuring one. A midterm-year congressional primary and a mayoral primary differ in turnout structurally; the gradient, not the level, is the comparable quantity. NY-13's two leading candidates were both Dominican-American and NY-6's both Asian-American, so candidate ethnicity is held roughly constant there but not in general. Five races in one city.
+
+---
+
+### K.2e Standard errors clustered by Assembly District (added 28 September 2026)
+
+Notebook 17 §4g; `outputs/tables/nyc_ad_clustered_se.csv`. The ED-level models above use HC1 errors, which treat roughly 3,800 neighbouring districts as independent. Re-estimated with errors clustered by Assembly District (the first two digits of the five-digit ED; 65 clusters), coefficients unchanged:
+
+| Estimate | Coef. | SE, HC1 | SE, AD-clustered | p, AD-clustered |
+|---|---|---|---|---|
+| Same ballot, Mamdani − Harris on swing (raw / controls) | 0.870 / 0.790 | 0.027 / 0.030 | 0.059 / 0.045 | < 0.001 |
+| Same ballot, Levine − Harris | 0.825 / 0.830 | 0.040 / 0.055 | 0.069 / 0.071 | < 0.001 |
+| Same ballot, Williams − Harris | 0.923 / 0.863 | 0.018 / 0.024 | 0.037 / 0.036 | < 0.001 |
+| Mamdani − Levine | +0.045 / −0.040 | 0.049 / 0.056 | 0.074 / 0.055 | 0.54 / 0.46 |
+| Mamdani − Williams | −0.053 / −0.073 | 0.017 / 0.015 | 0.040 / 0.019 | 0.19 / 0.0002 |
+| Within group, Mamdani − Harris on swing: Hispanic / Asian / Black / mixed / white | 0.66 / 1.05 / 0.37 / 0.66 / 0.53 | 0.09 / 0.10 / 0.21 / 0.08 / 0.07 | 0.14 / 0.14 / 0.28 / 0.09 / 0.13 | < 0.001 except Black 0.18 |
+| Within group, Mamdani vs Cuomo (Nov) on swing: same order | −0.32 / +0.03 / −0.62 / −0.33 / −0.47 | 0.10 / 0.10 / 0.21 / 0.08 / 0.08 | 0.14 / 0.15 / 0.28 / 0.09 / 0.13 | 0.02 / 0.82 / 0.03 / < 0.001 / < 0.001 |
+| Age: primary head-to-head / turnout growth / November share, per unit of 18–34 share | 0.551 / 0.915 / 0.453 | 0.030 / 0.092 / 0.027 | 0.089 / 0.203 / 0.081 | < 0.001 |
+| 2026 left vote on swing, alone / net of Mamdani 2025 | −0.402 / −0.103 | 0.090 / 0.028 | 0.149 / 0.055 | 0.007 / 0.058 |
+
+Clustering multiplies the errors by 1.0–3.0 (median 1.5). Two published conclusions change: the 2026 swing-district result net of the Mamdani coalition is no longer significant at conventional levels, and Mamdani's raw gradient against Williams is not either (it holds with controls). The Assembly-District versions of the same-day tests (K.1c) were already at this level of aggregation.
 
 ---
 
@@ -1286,7 +1381,7 @@ Hand-entered from pollster releases into `data/raw/nyc/mamdani_approval_polls.cs
 
 **Job rating** (good-or-excellent / fair-or-poor — a four-point scale, not the approve–disapprove question and not directly comparable to it): Suffolk CityView, field 1–3 Sep 2026, n = 500 NYC registered voters, MoE ±4.4 — 57 / 34; better-than-expected 61 / 19.
 
-**Favourability** (favourable / unfavourable), Siena: NYC 56 / 34 (April), 58 / 26 (June), 69 / 24 (3–6 Aug); statewide 43 / 40, 45 / 34, 47 / 44. Partisan benchmark from the MIT county file: Harris 2024 took 68.5% of the vote in the five boroughs and 55.9% statewide, so the August city figure is at baseline (+0.5) and the statewide figure is nine points below it.
+**Favourability** (favourable / unfavourable), Siena: NYC 56 / 34 (April), 58 / 26 (June), 69 / 24 (3–6 Aug); statewide 43 / 40, 45 / 34, 47 / 44. Partisan benchmark from the MIT county file: Harris 2024 took 68.5% of the vote in the five boroughs and 55.9% statewide, so the August city figure is at about that level (+0.5) and the statewide figure nine points below it. Favourability among likely-voter respondents and a share of votes cast are different measures of different populations, so this is a rough benchmark rather than a match.
 
 **Siena August crosstabs** (811 NY likely voters, 691 asked the favourability item, MoE ±4.2). By region: NYC 69 / 24 (net +45), Upstate 41 / 46 (−5), **Suburbs 34 / 60 (−26)**. The suburbs being the most hostile region contradicts any distance- or exposure-based gradient, since they are nearest the city and share its media market. By party: Dem 74 / 15, Ind 43 / 49, Rep 8 / 84. By religion: Other-or-none 74 / 19, Protestant 40 / 49, Catholic 34 / 55, **Jewish 26 / 66 (−40)**. By age: 18–34 72 / 21, 35–54 57 / 37, 55+ 38 / 51. By ethnicity: Black 78 / 15, Latino 55 / 34, white 41 / 49.
 
@@ -1307,6 +1402,8 @@ Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-pr
 **Opposing committees** (sum of top-three-per-case cycle tallies, $M): UDP 22.45, Congressional Leadership Fund 6.30, Fairshake 3.49, DMFI 2.97, NRCC 2.66, Americans for Tomorrow's Future 2.42, Chicago Progressive Partnership 1.84, Bold America 1.52. Pre-primary IE against > $250k: 16 contested cases, win rate 6/16 (38%) vs 46/90 (51%).
 
 **Models** (contested, N = 106, HC1). OLS vote share: log(opponent:JD ratio, clipped 0.05–50) −7.87 (SE 0.99); log1p(pre-primary IE against, $M) −2.91 (2.06); challenger-vs-incumbent +12.8 (2.8); JD incumbent +11.1 (4.2); 2022+ +0.3 (2.8); DSA +6.47 (3.26, p = 0.05). Logit win: −0.85 (0.27); −2.15 (0.66); −0.01 (0.74); +1.19 (0.75); +0.26 (0.59); DSA +2.98 (1.21, p = 0.01). Small-dollar share medians: JD incumbents 0.28 vs opponents 0.05; challengers 0.39 vs 0.02; open 0.35 vs 0.12; DSA 0.40 vs JD-only 0.32; winners 0.34 vs losers 0.35. Pre-primary receipts: winners $2.53M vs losers $0.50M; DSA $2.53M vs JD-only $0.78M; money ratio winners 0.20 vs losers 2.73.
+
+**Reading the models** (added 28 September 2026). Money follows expected strength as well as buying votes, and outside money targets incumbents who are already exposed (Newman 2022 was a member-versus-member race after redistricting), so the money coefficients are associations, not effects. The DSA flag is assigned once per person from 2018–2026 sources (Ballotpedia's DSA endorsement tables, DSA statements, candidates' articles), not dated to each race; a candidate who joined or was endorsed after an early win is flagged for that race too. Endorsement dates have not been checked race by race, which could flatter the DSA coefficient.
 
 ---
 
@@ -1362,7 +1459,7 @@ Notebook `19_insurgent_primaries.ipynb`. Data A.12. Money in $M; "side" = pre-pr
 
 ### K-bis.5 Super PAC spending and ad content
 
-**Spending.** `src/data_collection/superpac_ie_pull.py` pulls every itemized Schedule E row for United Democracy Project (C00799031), DMFI PAC (C00710848), Fairshake (C00835959) and Protect Progress (C00848440) through the cached, key-safe FEC getter in `fec_insurgent_pull.py`. The itemized endpoint pages by keyset and ignores `two_year_transaction_period`, so each committee's full history is pulled once and the cycle taken from the expenditure date; memo rows are dropped. Totals reconcile to `/committee/<id>/totals/` for every committee-cycle (DMFI 2020 and 2022 within $0.3M, from rows dated near a cycle boundary). Medium is classified from the free-text description (first regex match: TV/placement, digital, mail, radio, production, field, research). Stage: primary, runoff and special-primary rows are pooled as primary. Tables: `superpac_spending_by_bucket.csv`, `superpac_spending_by_medium.csv`.
+**Spending.** `src/data_collection/superpac_ie_pull.py` pulls every itemized Schedule E row for United Democracy Project (C00799031), DMFI PAC (C00710848), Fairshake (C00835959) and Protect Progress (C00848440) through the cached, key-safe FEC getter in `fec_insurgent_pull.py`. The itemized endpoint pages by keyset and ignores `two_year_transaction_period`, so each committee's full history is pulled once and the cycle taken from the expenditure date; memo rows are dropped. Totals reconcile to `/committee/<id>/totals/` for every committee-cycle (DMFI 2020 and 2022 within $0.3M, from rows dated near a cycle boundary). Medium is classified from the free-text description (first regex match: TV/placement, digital, mail, radio, production, field, research). Stage: primary, runoff and special-primary rows are pooled as primary. Total 2022–2026, the period analysed: $247.6M (UDP 117.4, Protect Progress 62.2, Fairshake 54.0, DMFI 14.1, including $6.0M of non-candidate or unclassified spending in the "other" bucket); $252.8M with DMFI's 2020 cycle ($5.2M), which the main report quoted until 28 September 2026. Tables: `superpac_spending_by_bucket.csv`, `superpac_spending_by_medium.csv`.
 
 **Ad universe and coding.** `data/coded/superpac_races_for_coding.csv` lists the 32 Democratic primaries, 2022–2026, in which one of the four committees spent $1M or more. Ads were collected from each committee's own citation pages (UDP's sitemap lists one page per ad script, 2022–2026; DMFI's `our-ad` pages) and from reporting that quotes or describes an ad, and coded in `data/coded/superpac_ads_coded.csv` (tracked in git: hand-coded, not regenerable) under the codebook in `src/analysis/attack_modes.py`, written before any ad was read. Each ad carries every mode that applies and one lead mode. Eleven modes were defined in advance; five emerged (progressive mimicry, borrowed voice, corruption/crime, guilt by association, doctored material), each defined with the ads that prompted it and not used to widen an existing definition. `disputed_by` records a named outlet or fact-checker calling the central claim false, misleading, baseless, distorted or fabricated — never the target's word alone. Race-level statements by reporters (e.g. "the onslaught of negative ads did not mention Israel or the war in Gaza") are kept separately in `superpac_race_statements.csv` and not counted as ads.
 
@@ -1418,7 +1515,7 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 4. **The 2020 baseline is an outlier.** Turnout losses in Democratic strongholds are partly the unwinding of the 2020 surge; the 2016 → 2020 rows are provided so the reader can judge how much.
 5. **ACS vintage.** County economic characteristics are 2016–2020 averages. Conditions in 2024 differed in ways the 2020 file cannot capture; the QCEW variables partially address this for employment and pay but not for income distribution or education.
 6. **Small-N fundamentals model.** Nineteen observations and four predictors. Two predictors are not significant. The model's out-of-sample error (3.75pp) is larger than most of the residuals it is asked to interpret.
-7. **Third-party votes.** Parts 2–3 use raw shares over all votes cast. Rightward "swing" therefore includes movement to third parties, not only to the Republican column.
+7. **Third-party votes.** Parts 2–3's county swing and decomposition use shares over all votes cast, so rightward "swing" includes movement to third parties, not only to the Republican column; third-party voting was small in both 2020 and 2024. The multi-cycle income gradient against Obama 2012 (D.5) and the poorest-quartile table (G.1) use two-party shares, because 2016's third-party vote was large and rose with county income.
 8. **Suppression.** BLS suppression removes 6–9% of counties from the extended regression, disproportionately small single-employer counties.
 9. **Reverse causation in the switching model.** The economy rating is pre-election and the vote post-election, but a respondent who had already decided to switch would rate the economy badly because of it. The gap → switching association is consistent with misattribution causing switching and with the reverse. Panel data with perception measured before the decision, or an instrument for perception, is required to separate them.
 10. **Media diet is self-selected.** Fox/MSNBC coefficients net of party ID are associations, not exposure effects.
@@ -1431,14 +1528,14 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 17. **Panel attrition and what it hides.** The retained panel is more engaged than the population (A.7). Validated 2024 non-voting of 3–4% among 2020 voters is a floor, and the equality between Biden and Trump 2020 voters on that measure should not be read as evidence against the stronghold turnout loss in Part 2, which the panel cannot see.
 18. **Timing is not identification.** A 2022 rating rules out rationalization of a 2024 decision. It does not rule out a common cause already operating in 2022 — a voter leaving Biden for a non-economic reason and rating the economy worse because of it. Distinguishing those would need either a measure of the non-economic cause in 2022 or an exogenous shock to perception between waves.
 19. **Delivery is obligations, by place of performance, for two programs.** Obligated money is not built infrastructure; place of performance mis-credits state capitals and federal labs (addressed by winsorizing and tail-dropping, not eliminated); IRA and CHIPS are absent. A perception null could reflect voters not crediting delivery or delivery not yet being visible by November 2024.
-20. **A vote effect without a perception effect is only partly explained.** The delivery coefficient on the county swing survives every control tried and loads on the share component, not turnout (G.3 v), which rules out mobilization. Its absence from perception, within-person change, and individual switching means the remaining channel is not one this project measures: a local-conditions perception the "nation's economy" item does not capture, or county-level confounding that composition, RUCC, and population do not remove.
+20. **A vote effect without a perception effect is only partly explained.** Only IIJA's county-swing coefficient survives a within-state comparison (G.3 i-a); ARPA's was a difference between states. Within states IIJA's effect loads on lower Republican vote growth, with no Democratic or turnout gain (G.3 v-a), which is not what mobilization would look like. Its absence from perception, within-person change, and individual switching means the remaining channel is not one this project measures: a local-conditions perception the "nation's economy" item does not capture, or county-level confounding that composition, RUCC, population and state do not remove.
 21. **Race categories are coarse.** CES self-identification; "Other" pools Asian, Native, multiracial, and unspecified. The Hispanic switching rate is a single-wave cross-sectional estimate on recalled 2020 vote; the panel cannot corroborate it (38 Hispanic Biden voters).
 22. **Stay-home partisanship is a composition effect and its size depends on the weight.** Unweighted, Biden and Trump 2020 voters stayed home at the same rate, and within every demographic group Trump voters stayed home as much or more (H.2). The weighted aggregate gap reflects the Democratic coalition's concentration in low-turnout groups. The counterfactual is reported under three weightings; Michigan flips under one, on 41 stay-homes, with an unweighted CI spanning zero. It holds new 2024 voters fixed.
 23. **Panel and cross-section agree on propensity and cannot both speak to effect.** Both show no propensity difference. The panel's stay-home rate is a third of the cross-section's because it retained the engaged; the cross-section's weighted rates are the population estimate. The 2020 vote in the cross-section is recalled.
 24. **Attitudes are measured after the vote.** Part 8's issue items are from the 2024 wave. A switcher's 2024 immigration position could follow from the switch as much as precede it. The panel carries the same items in 2020 and 2022 but has 39 switchers.
 25. **The cultural axis is what the CES asks, not what the hypothesis names.** No transgender, "wokeness," or salience items exist in the 2024 common content. The finding that immigration dominates among the cultural items measured is not evidence about items not measured.
 26. **The 2016 comparison is across surveys and formats.** The 2016 immigration items are select-all (non-selection coded as opposition), the 2012 vote is recalled in 2016, and the 2024 items are support/oppose. Path-to-path comparisons within each survey are sound; cross-year levels are not. The 2024 switchers' 2016 vote rests on 39 panelists with strong weight sensitivity on the eight who reported a Trump 2016 vote.
-27. **Recalled 2016 vote in the 2024 file favors the current vote.** A 2024 Trump voter is more likely to recall a 2016 Trump vote. The 27% Trump-2016 share of switchers is an upper bound; the panel's 4% (eight people, low weights) is a lower bound. The reservoir result does not depend on 2016 recall.
+27. **Recalled 2016 vote in the 2024 file.** A 2024 Trump voter might be expected to over-recall a 2016 Trump vote, which would make the 27% Trump-2016 share of switchers an upper bound, and the CES panel's 4% (eight people, low weights) a lower one. The ANES panel, with the 2016 vote recorded in 2016, found 32% (on 21 switchers, interval 13–61%) and recall that understated it, so 27% is not shown to be high. The reservoir result does not depend on 2016 recall.
 28. **The ANES salience results rest on 69 switchers.** Every switcher percentage in I.7 carries roughly a ±10-point interval; the logits are indicative. The ANES also over-represents Harris voters by ~5 points and under-recruits the young, weakly attached voters who make up the new-voter groups. Salience, importance, and ownership are all post-election and cannot separate reason from rationalization; the CES panel's timing test (F.3, I.5) does not extend to salience because the CES does not ask it. MIP family assignments are the script's own; reassigning borderline codes (32 race relations, 37 justice, 55 economics-other) does not change the prices-vs-immigration comparison.
 29. **The capture test is indirect.** No survey on disk asks whether the *Democrats* are beholden to corporate interests; I.8 tests whether general anti-corporate sentiment predicts leaving them, and finds the opposite sign. A voter could believe both parties are captured and leave for other reasons; the strong-hand and distrust items that do predict leaving are consistent with an anti-system reading that is not specifically anti-corporate. Sixty-two to sixty-nine events across a dozen items; the per-item coefficients in I.8 should be read as a pattern, not individually.
 30. **The cross-pressure cells depend on the cutoff and on which items the CES asks.** Counting four-four ties as "left" gives a 20% cross-pressured cell voting 68% Trump; excluding them, 13% voting 57%. The ordering — economically-left cultural liberals near-unanimous for Harris, economically-left cultural conservatives majority Trump — holds under both; the shares are a range, not a point. The 2016 economic index is two items and its cells collapse under a strict cutoff; 2016 is a direction, not a measurement.
@@ -1449,7 +1546,13 @@ OLS, incumbent share (points) on 18–34 share (points), incumbent age and log n
 
 35. **The ANES panel rests on 21 switchers, effectively 11.** Every I.9 switcher figure moves with two or three heavily weighted respondents; the unweighted series agree in sign and rough size, but a single-wave difference below about 0.5 SD is not distinguishable from zero. The panel represents the 2016 electorate, so switchers too young to vote in 2016 are absent.
 
-36. **The Part 8 cultural-to-economic ratio is a point estimate without a usable interval.** In the CES panel (I.10) the bootstrap interval for the economic coefficient includes zero at 37 switchers, before and after the switch; the cross-section's 327 switchers give a tighter figure but measure attitudes after the vote and define switchers by recall, which the panel shows inflates both the switch rate and the economic gap.
+36. **The Part 8 cultural-to-economic ratio is a point estimate without a usable interval.** In the CES panel (I.10) the bootstrap interval for the economic coefficient includes zero at 37 switchers, before and after the switch; the cross-section's 327 switchers give a tighter figure but measure attitudes after the vote and define switchers by recall, which the panel shows inflates both the switch rate and the economic gap. It also depends on controlling 2024 party ID, which the switch partly determines: 1.8 with it, 1.2 without (I.3). The ANES panel's 2020 answers put the axes about level (I.9).
+
+37. **Marginal effects on bounded scales** (added 28 September 2026). A one-step average marginal effect must keep each respondent on the answer scale. Two reported effects did not — the Part 5 panel rating (F.3: +8.3 points, on the scale +4.3) and the Part 4 prices item (E.8: +1.9 / +5.1, on the "somewhat → a lot" margin +1.4 / +3.9) — and have been corrected. The Part 8 3.5× figure had the related problem of stepping in opposite directions.
+
+38. **Standard errors on neighbouring units.** County models (Parts 3 and 6) were fit without state fixed effects or state-clustered errors until 28 September 2026 (D.3a, G.3 i-a); the education, composition, stronghold-turnout and IIJA results hold within states, while county income, job growth and ARPA do not. NYC election-district models use HC1 errors except where K.2e reports Assembly-District clustering, which multiplies them by 1.0–3.0.
+
+39. **County turnout is counted in votes.** The turnout component and the stronghold figures use votes cast, not turnout rates. The eligible population grew in every county bin between 2020 and 2024 (H.1a), so the raw figures understate, rather than overstate, the stronghold turnout loss.
 
 ---
 
@@ -1483,7 +1586,8 @@ python -m ipykernel install --user --name dnc-autopsy --display-name "Python (dn
 | 14 | `08_panel_analysis.ipynb` | steps 8, 13 | `data/processed/panel_biden2020_outcomes.csv`, tables, figure |
 | 15 | `python src/data_collection/usaspending_pull.py` | USAspending API | `data/raw/usaspending/county_delivery.csv` |
 | 16 | `09_bottom_quartile_and_delivery.ipynb` | steps 7, 8, 9, 11, 13, 15 | `data/processed/county_delivery_clean.csv`, tables, figure |
-| 17 | `10_stronghold_demobilization.ipynb` | steps 3, 6, 9, 13 | tables, figure |
+| 16b | `python src/data_collection/acs_cvap_pull.py` | Census API (ACS 1-year 2019/2021/2024, 5-year 2020/2024, `B29001_001E`) | `data/raw/acs_cvap/county_cvap.csv` |
+| 17 | `10_stronghold_demobilization.ipynb` | steps 3, 6, 9, 13, 16b | tables, figure |
 | 18 | `11_share_and_issues.ipynb` | step 9 | tables, figure |
 | 19 | `12_attitudes_timing_and_2016.ipynb` | steps 9, 13 | tables |
 | 20 | `13_coalition_2020_and_reservoir.ipynb` | step 9 | tables |
@@ -1521,7 +1625,7 @@ Copy `.env.example` to `.env` and set `FRED_API_KEY` and `CENSUS_API_KEY`. Never
 
 Part 4 established that perception is disconnected from local reality and travels with media diet and with vote switching. The news-environment instrument failed (E.9, first-stage F = 0.64). Part 5 then used the panel to put perception two years ahead of the vote, which is as far as the CES can take the timing question. What remains:
 
-1. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab.
+1. **The 2022 common cause.** The panel's 2022 wave carries the items needed to probe whether Biden voters who rated the economy badly in 2022 were already moving on non-economic grounds: 2022 presidential approval (`CC22_320a`), 2022 issue items, and the 2022 House vote (`CC22_412`; candidate names are state-specific, so party must be recovered from the candidate-party fields). A Biden voter who rated the economy "much worse" in 2022 but still voted Democratic in the 2022 House election, and then switched in 2024, is a cleaner case than one who had already defected by 2022. With 39 events this is a cross-tab, not a model, but it is the right cross-tab. A first step is done (F.3): holding 2022 party ID fixed leaves the 2022 rating's coefficient at −1.27 against −1.38.
 2. **A local price measure.** The prices item is the least partisan perception in the survey and predicts switching net of the economy rating in both the cross-section (E.8) and the panel (F.3), but there is nothing to set it against. BEA regional price parities or ACS 1-year rent would allow a prices gap — perceived minus measured.
 3. **More panel.** The 2020–2022 panel (`doi:10.7910/DVN/XV7ABM`) is a different, larger recontact of 2020 respondents; whether any of its members also appear in the 2020–2024 file is undetermined. If so, pooling adds 2022 observations but not 2024 outcomes.
 4. **The delivery mechanism.** Delivery moved the county vote (G.3) without moving perception, and the component test (G.3 v) shows it is a share effect, not turnout — Republican vote growth was lower where infrastructure money went. Two things would narrow it further: (a) a local-conditions perception — the CES has no "your area's economy" item, but the household-income item (`CC24_302` in the common content) is the closest available and could be tested against delivery the way the national item was; (b) the composition of the Republican vote growth — whether it is new voters or switchers, which the CES cross-section cannot separate but a county-level comparison of validated new registrants (L2 or TargetSmart aggregates) against delivery could.

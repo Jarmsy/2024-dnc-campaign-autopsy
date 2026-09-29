@@ -1,0 +1,45 @@
+{
+ "bins": [
+  {
+   "bin": "<35% (R strongholds)",
+   "counties": 1903,
+   "turnout_M": 0.167,
+   "share_M": -0.324,
+   "total_M": -0.157,
+   "turnout_change_pct": 2.1
+  },
+  {
+   "bin": "35-45%",
+   "counties": 539,
+   "turnout_M": 0.108,
+   "share_M": -0.396,
+   "total_M": -0.288,
+   "turnout_change_pct": 1.2
+  },
+  {
+   "bin": "45-55% (competitive)",
+   "counties": 322,
+   "turnout_M": -0.27,
+   "share_M": -0.929,
+   "total_M": -1.198,
+   "turnout_change_pct": -1.4
+  },
+  {
+   "bin": "55-65% (lean D)",
+   "counties": 197,
+   "turnout_M": -0.802,
+   "share_M": -0.876,
+   "total_M": -1.678,
+   "turnout_change_pct": -3.9
+  },
+  {
+   "bin": "65%+ (D strongholds)",
+   "counties": 150,
+   "turnout_M": -1.716,
+   "share_M": -1.188,
+   "total_M": -2.905,
+   "turnout_change_pct": -6.9
+  }
+ ],
+ "note": "Change in Democratic votes 2020->2024 (millions), split into the part from fewer/more people voting (turnout) and the part from voters choosing differently (share). Kitagawa-Blinder decomposition, county level."
+}
