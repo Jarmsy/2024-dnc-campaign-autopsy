@@ -299,6 +299,8 @@ R² = 0.769, adj. R² = 0.704. Leave-one-out RMSE = 4.23pp. Durbin-Watson 1.91; 
 
 ### B.5 Sensitivity
 
+Computed in notebook 02, section 7, and saved to `outputs/tables/fundamentals_sensitivity.csv`.
+
 | Specification | N | R² | LOOCV RMSE | GDP coef. | 2024 pred. | Residual |
 |---|---|---|---|---|---|---|
 | Full, 1948–2020 | 19 | 0.769 | 4.23 | 0.189 | 48.3 | +0.9 |

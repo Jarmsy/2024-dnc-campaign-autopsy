@@ -32,6 +32,7 @@ def r(x, n=2):
 
 # 1. Fundamentals: leave-one-out predictions 1948-2020, plus the 2024 out-of-sample prediction
 f = pd.read_csv(T / "fundamentals_loocv_predictions.csv")
+sens = pd.read_csv(T / "fundamentals_sensitivity.csv", index_col=0)
 nb = json.loads((ROOT / "notebooks" / "02_fundamentals_model.ipynb").read_text(encoding="utf-8"))
 txt = "".join("".join(o.get("text", "")) for c in nb["cells"] for o in c.get("outputs", []))
 pred24 = float(re.search(r"Predicted Harris share:\s+([\d.]+)%", txt).group(1))
@@ -39,13 +40,13 @@ rmse = float(np.sqrt((f.residual_dem ** 2).mean()))
 write("01_fundamentals", {
     "elections": [{"year": int(y), "incumbent_party": p, "actual": r(a), "predicted": r(pr)} for y, p, a, pr in
                   zip(f.year, f.incumbent_party, f.actual_dem, f.predicted_dem)],
-    "harris_2024": {"predicted": pred24, "actual": 49.25, "error_band_pp": r(rmse), "error_band_refit_without_2020_pp": 2.79,
-                    "error_band_refit_source": "technical appendix B, robustness table, 'Drop 2020' row (model refit without 2020)"},
+    "harris_2024": {"predicted": pred24, "actual": 49.25, "error_band_pp": r(rmse), "error_band_refit_without_2020_pp": r(sens.loc["drop_2020", "loocv_rmse"]),
+                    "error_band_refit_source": "outputs/tables/fundamentals_sensitivity.csv, 'drop_2020' row (notebook 02; model refit without 2020)"},
     "note": "Two-party Democratic share. 1948-2020 are leave-one-out predictions; 2024 is out of sample (model fit on 1948-2020). "
             "Error band = root-mean-square leave-one-out error; the 2020 pandemic quarter alone inflates it.",
 })
 checks["Harris predicted / actual"] = f"{pred24} / 49.25 (report: 48.3 / 49.25)"
-checks["error band (LOOCV RMSE)"] = f"{rmse:.2f} (report: 4.23); refit without 2020 = 2.79 taken from appendix B"
+checks["error band (LOOCV RMSE)"] = f"{rmse:.2f} (report: 4.23); refit without 2020 = {sens.loc['drop_2020', 'loocv_rmse']:.2f} (report: 2.79)"
 
 # 2. Where the votes went: turnout vs share component by county 2020 Democratic share
 b = pd.read_csv(T / "stayhome_by_county_bin.csv")

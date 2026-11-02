@@ -120,7 +120,7 @@
   "actual": 49.25,
   "error_band_pp": 4.23,
   "error_band_refit_without_2020_pp": 2.79,
-  "error_band_refit_source": "technical appendix B, robustness table, 'Drop 2020' row (model refit without 2020)"
+  "error_band_refit_source": "outputs/tables/fundamentals_sensitivity.csv, 'drop_2020' row (notebook 02; model refit without 2020)"
  },
  "note": "Two-party Democratic share. 1948-2020 are leave-one-out predictions; 2024 is out of sample (model fit on 1948-2020). Error band = root-mean-square leave-one-out error; the 2020 pandemic quarter alone inflates it."
 }
