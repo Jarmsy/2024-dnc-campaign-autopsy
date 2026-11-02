@@ -27,7 +27,7 @@ A note on terms: a **switcher** voted Biden in 2020 and Trump in 2024; a **perce
 
 ### Findings by part
 
-**Part 1 — The conditions predicted a narrow loss.** A model built on every election since 1948, using the economy and presidential approval, predicted Harris would win 47.9%. She won 49.25% — 0.8 to 1.4 points better than predicted in every version of the model, and within its margin of error in all of them. That margin (3.75 points) is inflated by one unusual data point, the 2020 pandemic collapse; without it the margin is 2.66 points.
+**Part 1 — The conditions predicted a narrow loss.** A model built on every election since 1948, using the economy and presidential approval, predicted Harris would win 48.3%. She won 49.25% — 0.5 to 1.0 points better than predicted in every version of the model, and within its margin of error in all of them. That margin (4.23 points) is inflated by one unusual data point, the 2020 pandemic collapse; without it the margin is 2.79 points.
 
 **Part 2 — The shift was nearly universal.** 90% of counties and all 51 states (including DC) moved toward Trump. Of the votes Democrats lost nationally, about three-quarters (73%) came from people voting differently and a quarter (27%) from people not voting. The biggest raw losses were in Democratic strongholds, and there the cause was turnout.
 
@@ -65,7 +65,7 @@ A note on terms: a **switcher** voted Biden in 2020 and Trump in 2024; a **perce
 
 An incumbency-adjusted OLS regression on 19 presidential elections (1948–2020), following Abramowitz's "Time for Change" framework. The dependent variable is the incumbent party's two-party vote share. Predictors: Q2 real GDP growth in the election year (annualized, FRED GDPC1), the president's June Gallup approval, the number of consecutive terms the incumbent party has held, and whether the seat is open. The model is fit on 1948–2020; 2024 is strictly out-of-sample.
 
-**Fit.** In-sample R² = 0.81; leave-one-out RMSE = 3.75pp. Approval (+0.27pp per point, *p* = 0.001) and GDP growth (+0.19pp per point, *p* = 0.04) carry the model. The open-seat penalty (−2.6pp) is marginal (*p* = 0.08) and consecutive terms (−0.4pp) is not distinguishable from zero (*p* = 0.55). An approval-only model achieves R² = 0.68 and predicts 48.1% for 2024. The fundamentals story is, in practice, an approval story.
+**Fit.** In-sample R² = 0.77; leave-one-out RMSE = 4.23pp. Approval (+0.25pp per point, *p* = 0.002) carries the model; GDP growth (+0.19pp per point, *p* = 0.06) is marginal. The open-seat penalty (−2.6pp, *p* = 0.10) and consecutive terms (−0.6pp, *p* = 0.46) are not distinguishable from zero. An approval-only model achieves R² = 0.65 and also predicts 48.3% for 2024. The fundamentals story is, in practice, an approval story.
 
 ### 2024
 
@@ -75,13 +75,13 @@ An incumbency-adjusted OLS regression on 19 presidential elections (1948–2020)
 | Biden June 2024 approval | 38% |
 | Consecutive Democratic terms | 1 |
 | Open seat | Yes |
-| **Predicted Harris two-party share** | **47.9%** |
+| **Predicted Harris two-party share** | **48.3%** |
 | **Actual** | **49.25%** |
-| **Residual** | **+1.4pp** |
+| **Residual** | **+0.9pp** |
 
-The +1.4pp residual is less than half the model's out-of-sample error. Fourteen of the nineteen training elections have larger absolute residuals. The honest reading is that Harris performed about as a 38%-approval incumbent party should be expected to — not that she beat the fundamentals.
+The +0.9pp residual is about a fifth of the model's out-of-sample error. Sixteen of the nineteen training elections have larger absolute residuals. The honest reading is that Harris performed about as a 38%-approval incumbent party should be expected to — not that she beat the fundamentals.
 
-**Sensitivity.** 2020 is the model's largest miss by far (−10.9pp): COVID's −28% Q2 GDP (annualized; about −8% in the quarter itself) predicted a Trump collapse that did not happen. That single observation suppresses the GDP coefficient. Refit without 2020, the GDP coefficient more than doubles (0.19 → 0.47), LOOCV RMSE falls to 2.66pp, and the 2024 prediction rises to 48.4% — residual +0.8pp. The conclusion is the same under either specification.
+**Sensitivity.** 2020 is the model's largest miss by far (−12.9pp): COVID's −28% Q2 GDP (annualized; about −8% in the quarter itself) predicted a Trump collapse that did not happen. That single observation suppresses the GDP coefficient. Refit without 2020, the GDP coefficient more than doubles (0.19 → 0.51), LOOCV RMSE falls to 2.79pp, and the 2024 prediction rises to 48.7% — residual +0.5pp. The conclusion is the same under either specification.
 
 **Limitation.** Q2 GDP growth was strong in 2024, but real disposable income had only recently recovered from the 2021–23 inflation and consumer sentiment remained depressed. The model has no variable for the accumulated price-level shock, which is the most commonly cited economic grievance of the cycle. FRED consumer-sentiment and real-income series were pulled for this project and are the natural next test.
 
@@ -1411,9 +1411,9 @@ A few terms come up repeatedly:
 
 **The claim.** The loss was the one the economic and political conditions predicted, not one the campaign added to.
 
-**How we know.** Presidential results since 1948 track a few conditions closely — mainly economic growth and the sitting president's approval. A model built on those past elections, given 2024's conditions (an incumbent party at 38% approval, seeking an open seat), predicted Harris would win 47.9% of the two-party vote. She won 49.25%. Across every version of the model tested, she ran 0.8 to 1.4 points *better* than predicted, and every version put her inside its normal margin of error.
+**How we know.** Presidential results since 1948 track a few conditions closely — mainly economic growth and the sitting president's approval. A model built on those past elections, given 2024's conditions (an incumbent party at 38% approval, seeking an open seat), predicted Harris would win 48.3% of the two-party vote. She won 49.25%. Across every version of the model tested, she ran 0.5 to 1.0 points *better* than predicted, and every version put her inside its normal margin of error.
 
-**One detail.** That margin of error is wider than it should be because of a single unusual data point: the 2020 pandemic quarter, when GDP fell at a 28% annual rate (about 8% in the quarter). That quarter alone accounts for 45% of the model's error. Without it the margin shrinks from 3.75 points to 2.66, and Harris is still comfortably inside it.
+**One detail.** That margin of error is wider than it should be because of a single unusual data point: the 2020 pandemic quarter, when GDP fell at a 28% annual rate (about 8% in the quarter). That quarter alone accounts for about half (49%) of the model's error. Without it the margin shrinks from 4.23 points to 2.79, and Harris is still comfortably inside it.
 
 ### 2. The vote moved right almost everywhere, but for different reasons in different places
 
