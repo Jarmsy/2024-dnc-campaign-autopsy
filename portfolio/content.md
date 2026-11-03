@@ -27,7 +27,7 @@ I built this from public data: election returns for every county and several tho
 
 **The finding.** Presidential elections since 1948 follow a few conditions closely, mainly economic growth and the sitting president's approval. A model built on those past elections, given 2024's conditions (an incumbent party at 38% approval seeking an open seat), predicted Harris would win **47.9%** of the two-party vote. She won **49.25%**, slightly *better* than predicted.
 
-**How I know.** I fit the model on 1948–2020 and predicted each election with that year left out, which shows how far off the model typically is: about 3.75 points. That margin is inflated by one data point, the 2020 pandemic quarter when GDP fell 28%; refitting without it shrinks the margin to 2.66 points. Harris sits inside the margin either way.
+**How I know.** I fit the model on 1948–2020 and predicted each election with that year left out, which shows how far off the model typically is: about 3.75 points. That margin is inflated by one data point, the 2020 pandemic quarter when GDP fell at a 28% annual rate (about 8% in the quarter); refitting without it shrinks the margin to 2.66 points. Harris sits inside the margin either way.
 
 **What it doesn't show.** A good forecast of the total doesn't say which voters moved or why. The rest of this page is about that.
 
