@@ -41,7 +41,7 @@ Filtering to `mode == "TOTAL"` drops the second group entirely; summing all rows
 - **Q2 GDP growth** = `((GDP_Q2 / GDP_Q1)^4 − 1) × 100`, election year.
 - **CPI deflators** for QCEW pay: annual mean of monthly CPIAUCSL, base 2024. 2012 → 1.366, 2016 → 1.307, 2020 → 1.212.
 
-FRED has no presidential-approval series. June Gallup approval is hand-coded in notebook 02 from Gallup's Presidential Job Approval Center.
+FRED has no presidential-approval series. June Gallup approval is entered in notebook 02 as the mean of each election year's June readings in the American Presidency Project's Gallup tables (B.2).
 
 ### A.3 Census ACS 2020 five-year estimates
 
@@ -270,7 +270,7 @@ inc_vote_share ~ gdp_q2_growth + approval_rating_june + consecutive_terms + open
 | 2020 | R | 52.27 | −28.0 | 38.5 | 1 | | **−12.9** |
 | **2024** | **D** | **49.25** | **+3.6** | **38.0** | **1** | **✓** | **+0.9** (out-of-sample) |
 
-Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes drop out; this matters most in 1968 (Wallace), 1980 (Anderson), 1992 and 1996 (Perot) and 2000 (Nader). Shares entered by hand in notebook 02 from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas. GDP values are from FRED GDPC1. Approval is the mean of every Gallup reading whose fieldwork ended in June of the election year, from the American Presidency Project's Gallup tables. **Corrected 2 November 2026:** these values were previously an unsourced hardcoded list that used one June reading in some years and an average in others, with two values matching no June reading (1972 = 62, against June readings of 59 and 56; 2020 = 42, against 39 and 38). All of Part 1's numbers were recomputed.
+Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes drop out; this matters most in 1968 (Wallace), 1980 (Anderson), 1992 and 1996 (Perot) and 2000 (Nader). Shares entered by hand in notebook 02 from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas. GDP values are from FRED GDPC1. Approval is the mean of every Gallup reading whose fieldwork ended in June of the election year, from the American Presidency Project's Gallup tables. **Corrected 2 November 2026:** these values were previously an unsourced hardcoded list that matched one June reading in 16 years and the mean of that year's June readings in 1996, and neither in three (1972 = 62, against June readings of 59 and 56; 2000 = 57, against 60 and 55; 2020 = 42, against 39 and 38). All of Part 1's numbers were recomputed.
 
 ### B.3 Coefficients (1948–2020)
 
@@ -280,7 +280,7 @@ Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes dr
 | Q2 GDP growth (pp per pp) | 0.189 | 0.092 | 2.06 | 0.058 |
 | June approval (pp per pt) | 0.252 | 0.068 | 3.73 | 0.002 |
 | Consecutive terms | −0.59 | 0.78 | −0.75 | 0.464 |
-| Open seat | −2.58 | 1.49 | −1.74 | 0.104 |
+| Open seat | −2.58 | 1.48 | −1.74 | 0.104 |
 
 R² = 0.769, adj. R² = 0.704. Leave-one-out RMSE = 4.23pp. Durbin-Watson 1.91; no evidence of residual autocorrelation.
 
@@ -290,7 +290,7 @@ R² = 0.769, adj. R² = 0.704. Leave-one-out RMSE = 4.23pp. Durbin-Watson 1.91; 
 |---|---|
 | Intercept | 41.23 |
 | GDP: 0.189 × 3.59 | +0.68 |
-| Approval: 0.252 × 38 | +9.56 |
+| Approval: 0.2517 × 38 | +9.56 |
 | Terms: −0.59 × 1 | −0.59 |
 | Open seat | −2.58 |
 | **Predicted incumbent (Dem) share** | **48.30%** |
