@@ -41,7 +41,7 @@ Filtering to `mode == "TOTAL"` drops the second group entirely; summing all rows
 - **Q2 GDP growth** = `((GDP_Q2 / GDP_Q1)^4 − 1) × 100`, election year.
 - **CPI deflators** for QCEW pay: annual mean of monthly CPIAUCSL, base 2024. 2012 → 1.366, 2016 → 1.307, 2020 → 1.212.
 
-FRED has no presidential-approval series. June Gallup approval is hand-coded in notebook 02 from Gallup's Presidential Job Approval Center.
+FRED has no presidential-approval series. June Gallup approval is entered in notebook 02 as the mean of each election year's June readings in the American Presidency Project's Gallup tables (B.2).
 
 ### A.3 Census ACS 2020 five-year estimates
 
@@ -249,63 +249,65 @@ inc_vote_share ~ gdp_q2_growth + approval_rating_june + consecutive_terms + open
 
 | Year | Inc. | Dem 2-party | Q2 GDP | June appr. | Terms | Open | LOOCV resid. (Dem) |
 |---|---|---|---|---|---|---|---|
-| 1948 | D | 52.37 | +6.8 | 39 | 4 | | +4.1 |
-| 1952 | D | 44.60 | +0.9 | 32 | 5 | ✓ | +1.2 |
-| 1956 | R | 42.25 | +3.3 | 73 | 1 | | +2.8 |
-| 1960 | R | 50.08 | −2.1 | 61 | 2 | ✓ | +3.6 |
-| 1964 | D | 61.34 | +4.4 | 74 | 1 | | +1.5 |
-| 1968 | D | 49.60 | +6.9 | 42 | 2 | ✓ | +0.6 |
-| 1972 | R | 38.22 | +9.4 | 62 | 1 | | −4.5 |
-| 1976 | R | 51.05 | +3.0 | 45 | 2 | | +3.2 |
-| 1980 | D | 44.70 | −8.0 | 32 | 1 | | −2.9 |
-| 1984 | R | 40.83 | +7.1 | 54 | 1 | | −4.3 |
-| 1988 | R | 46.09 | +5.4 | 51 | 2 | ✓ | −3.2 |
-| 1992 | R | 53.45 | +4.4 | 37 | 3 | | +3.8 |
-| 1996 | D | 54.74 | +6.8 | 55 | 1 | | −1.1 |
-| 2000 | D | 50.27 | +7.5 | 57 | 2 | ✓ | −3.7 |
-| 2004 | R | 48.74 | +3.1 | 48 | 1 | | +2.1 |
-| 2008 | R | 53.69 | +2.4 | 30 | 2 | ✓ | −1.9 |
-| 2012 | D | 51.96 | +1.8 | 47 | 1 | | −0.7 |
-| 2016 | D | 51.11 | +1.3 | 51 | 2 | ✓ | +0.8 |
-| 2020 | R | 52.27 | −28.0 | 42 | 1 | | **−10.9** |
-| **2024** | **D** | **49.25** | **+3.6** | **38** | **1** | **✓** | **+1.4** (out-of-sample) |
+| 1948 | D | 52.37 | +6.8 | 39.5 | 4 | | +4.0 |
+| 1952 | D | 44.60 | +0.9 | 31.5 | 5 | ✓ | +1.7 |
+| 1956 | R | 42.25 | +3.3 | 72.0 | 1 | | +2.3 |
+| 1960 | R | 50.08 | −2.1 | 61.0 | 2 | ✓ | +3.6 |
+| 1964 | D | 61.34 | +4.4 | 74.0 | 1 | | +1.8 |
+| 1968 | D | 49.60 | +6.9 | 42.0 | 2 | ✓ | +0.3 |
+| 1972 | R | 38.22 | +9.4 | 57.5 | 1 | | −5.8 |
+| 1976 | R | 51.05 | +3.0 | 45.0 | 2 | | +3.3 |
+| 1980 | D | 44.70 | −8.0 | 33.7 | 1 | | −4.0 |
+| 1984 | R | 40.83 | +7.1 | 54.5 | 1 | | −4.0 |
+| 1988 | R | 46.09 | +5.4 | 49.5 | 2 | ✓ | −3.5 |
+| 1992 | R | 53.45 | +4.4 | 37.3 | 3 | | +4.0 |
+| 1996 | D | 54.74 | +6.8 | 55.0 | 1 | | −1.2 |
+| 2000 | D | 50.27 | +7.5 | 57.5 | 2 | ✓ | −3.8 |
+| 2004 | R | 48.74 | +3.1 | 48.5 | 1 | | +2.5 |
+| 2008 | R | 53.69 | +2.4 | 28.7 | 2 | ✓ | −1.9 |
+| 2012 | D | 51.96 | +1.8 | 46.3 | 1 | | −0.8 |
+| 2016 | D | 51.11 | +1.3 | 51.8 | 2 | ✓ | +0.4 |
+| 2020 | R | 52.27 | −28.0 | 38.5 | 1 | | **−12.9** |
+| **2024** | **D** | **49.25** | **+3.6** | **38.0** | **1** | **✓** | **+0.9** (out-of-sample) |
 
-Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes drop out; this matters most in 1968 (Wallace), 1980 (Anderson), 1992 and 1996 (Perot) and 2000 (Nader). Shares entered by hand in notebook 02 from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas. GDP values are from FRED GDPC1; approval is Gallup June.
+Every year uses the two-party share `Dem / (Dem + Rep)`, so third-party votes drop out; this matters most in 1968 (Wallace), 1980 (Anderson), 1992 and 1996 (Perot) and 2000 (Nader). Shares entered by hand in notebook 02 from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas. GDP values are from FRED GDPC1. Approval is the mean of every Gallup reading whose fieldwork ended in June of the election year, from the American Presidency Project's Gallup tables. **Corrected 2 November 2026:** these values were previously an unsourced hardcoded list that matched one June reading in 16 years and the mean of that year's June readings in 1996, and neither in three (1972 = 62, against June readings of 59 and 56; 2000 = 57, against 60 and 55; 2020 = 42, against 39 and 38). All of Part 1's numbers were recomputed.
 
 ### B.3 Coefficients (1948–2020)
 
 | Term | Coef. | SE | t | p |
 |---|---|---|---|---|
-| Intercept | 40.09 | 3.80 | 10.56 | <0.001 |
-| Q2 GDP growth (pp per pp) | 0.191 | 0.082 | 2.32 | 0.036 |
-| June approval (pp per pt) | 0.267 | 0.061 | 4.41 | 0.001 |
-| Consecutive terms | −0.44 | 0.72 | −0.61 | 0.552 |
-| Open seat | −2.60 | 1.36 | −1.92 | 0.075 |
+| Intercept | 41.23 | 4.17 | 9.88 | <0.001 |
+| Q2 GDP growth (pp per pp) | 0.189 | 0.092 | 2.06 | 0.058 |
+| June approval (pp per pt) | 0.252 | 0.068 | 3.73 | 0.002 |
+| Consecutive terms | −0.59 | 0.78 | −0.75 | 0.464 |
+| Open seat | −2.58 | 1.48 | −1.74 | 0.104 |
 
-R² = 0.808, adj. R² = 0.753. Leave-one-out RMSE = 3.75pp. Durbin-Watson 1.82; no evidence of residual autocorrelation.
+R² = 0.769, adj. R² = 0.704. Leave-one-out RMSE = 4.23pp. Durbin-Watson 1.91; no evidence of residual autocorrelation.
 
 ### B.4 2024 prediction
 
 | | Contribution |
 |---|---|
-| Intercept | 40.09 |
-| GDP: 0.191 × 3.59 | +0.69 |
-| Approval: 0.267 × 38 | +10.15 |
-| Terms: −0.44 × 1 | −0.44 |
-| Open seat | −2.60 |
-| **Predicted incumbent (Dem) share** | **47.89%** |
+| Intercept | 41.23 |
+| GDP: 0.189 × 3.59 | +0.68 |
+| Approval: 0.2517 × 38 | +9.56 |
+| Terms: −0.59 × 1 | −0.59 |
+| Open seat | −2.58 |
+| **Predicted incumbent (Dem) share** | **48.30%** |
 | Actual | 49.25% |
-| Residual | +1.36pp |
+| Residual | +0.95pp |
 
 ### B.5 Sensitivity
 
+Computed in notebook 02, section 7, and saved to `outputs/tables/fundamentals_sensitivity.csv`.
+
 | Specification | N | R² | LOOCV RMSE | GDP coef. | 2024 pred. | Residual |
 |---|---|---|---|---|---|---|
-| Full, 1948–2020 | 19 | 0.808 | 3.75 | 0.191 | 47.9 | +1.4 |
-| Drop 2020 | 18 | 0.852 | 2.66 | 0.469 | 48.4 | +0.8 |
-| Approval only | 19 | 0.684 | — | — | 48.1 | +1.2 |
+| Full, 1948–2020 | 19 | 0.769 | 4.23 | 0.189 | 48.3 | +0.9 |
+| Drop 2020 | 18 | 0.835 | 2.79 | 0.513 | 48.7 | +0.5 |
+| Approval only | 19 | 0.645 | 3.33 | — | 48.3 | +1.0 |
 
-2020's −28% Q2 GDP growth (annualized, as are all values in the series; −7.9% quarter on quarter) is 20 points below the next-lowest value (1980, −8.0%) and is the single most influential observation. Without it, GDP growth matters roughly 2.5× as much and the model fits better. The 2024 residual is inside the out-of-sample error under every specification.
+2020's −28% Q2 GDP growth (annualized, as are all values in the series; −7.9% quarter on quarter) is 20 points below the next-lowest value (1980, −8.0%) and is the single most influential observation: it accounts for 49% of the squared leave-one-out error. Without it, GDP growth matters roughly 2.7× as much and the model fits better. The 2024 residual is inside the out-of-sample error under every specification.
 
 ---
 
@@ -1534,7 +1536,7 @@ Notebook 19 section 10. Tests fixed before computing (2026-09-24): M1 win rate b
 
 **Justice Democrats cases.** Challenger wins over sitting Democrats: 2018 Ocasio-Cortez, Pressley; 2020 Bowman, Bush, Newman; 2022 and 2024 none; 2026 Kiros, McKinney, Avila Chevalier. DSA-tier challenger win rate 3 of 4 in both 2018–24 and 2026. Contested-race residual: DSA 2026 +3.5 (n = 6) against 2018–24 +3.6 (n = 9), p = 0.99; JD-only 2026 −5.3 (n = 7) against −0.6 (n = 56), p = 0.36. Money slope 2018–24 −7.55 (SE 1.05) per log unit; 2026 difference −1.84 (1.60), p = 0.25. The all-race DSA residual for 2026 (+7.9) is inflated by uncontested incumbents (Casar, Ocasio-Cortez, Omar, Lee) and is not used.
 
-**Super PAC targets** (`src/data_collection/superpac_targets_pull.py`). 24 races from the $1M+ list with an identifiable target: a candidate the four committees opposed directly, or the main rival of the candidate they backed with at most three serious candidates. Excluded: California and Washington top-two primaries (shares include Republicans), crowded open seats with no single rival (MD-5 and GA-13 2026), specials with no clear rival (VA-11). Money counted as in Part 11 — each side's receipts through the last pre-election report plus outside money disseminated by election day, the target's side including IE against the rival. Votes from Wikipedia election boxes via the MediaWiki API (cached), head-to-head against the main rival; the TX-28 2022 runoff table is raw HTML and is entered by hand (22,606 to 22,895, matching Part 11). FEC matches are checked on first and last name; three are fixed by hand (Glenn Ivey, not Amber Ivey; Raquel Terán; S. Raja Krishnamoorthi). Head-to-head share on log money ratio, incumbency difference and a 2026 indicator: money −6.14 (2.17), incumbency +3.83 (2.80), 2026 +6.73 (3.87), p = 0.08. By cycle: 2022 2 of 8 won, median ratio 1.74, residual −1.0; 2024 1 of 6, 2.57, +1.3; 2026 6 of 10, 3.23, +3.5 (2026 vs 2022–24 residual p = 0.31). Progressive targets (JD or DSA endorsement or Progressive Caucus membership): 1 of 9 won in 2022–24, 4 of 7 in 2026. Tables: `superpac_targets_scored.csv`, `superpac_targets_by_cycle.csv`.
+**Super PAC targets** (`src/data_collection/superpac_targets_pull.py`). 24 races from the $1M+ list with an identifiable target: a candidate the four committees opposed directly, or the main rival of the candidate they backed with at most three serious candidates. Excluded: California and Washington top-two primaries (shares include Republicans), crowded open seats with no single rival (MD-5 and GA-13 2026), specials with no clear rival (VA-11). Money counted as in Part 11 — each side's receipts through the last pre-election report plus outside money disseminated by election day, the target's side including IE against the rival. Votes from Wikipedia election boxes via the MediaWiki API (cached), head-to-head against the main rival; the TX-28 2022 runoff table is raw HTML and is entered by hand (22,606 to 22,895, matching Part 11). FEC matches are checked on first and last name; three are fixed by hand (Glenn Ivey, not Amber Ivey; Raquel Terán; S. Raja Krishnamoorthi). Head-to-head share on log money ratio, incumbency difference and a 2026 indicator: money −6.14 (2.17), incumbency +3.83 (2.80), 2026 +6.73 (3.87), p = 0.08. By cycle: 2022 2 of 8 won, median ratio 1.74, residual −1.0; 2024 1 of 6, 2.57, +1.3; 2026 6 of 10, 3.23, +3.5 (2026 vs 2022–24 residual p = 0.31). Progressive targets (JD or DSA endorsement or Progressive Caucus membership): 1 of 9 won in 2022–24, 4 of 7 in 2026. **CA-14 2026** is the 18 August special general for the rest of Eric Swalwell's term (Wahab 53.1%, Hernandez 46.9%; [Ballotpedia](https://news.ballotpedia.org/2026/09/04/aisha-wahab-takes-office-ending-the-vacancy-in-californias-14th-congressional-district/)), not the regular top-two primary. The same two candidates contest the full term on 3 November ([NBC Bay Area](https://www.nbcbayarea.com/news/local/wahab-hernandez-california-congressional-district-14-race/4130272/)). If Hernandez wins, the 2026 count for full terms is 5 of 10, and 3 of 7 for progressive targets; the residuals above use the special-election result. *(Added 2 November 2026, before the 3 November result.)* Tables: `superpac_targets_scored.csv`, `superpac_targets_by_cycle.csv`.
 
 **Age** (`src/data_collection/candidate_ages_pull.py`). Wikidata dates of birth, accepted only for human entities described as U.S. politicians or officeholders; 43 of 47 people matched (missing: Chardo Richardson, Sameena Mustafa, Anthony Clark, Julie Johnson). Age at 30 June of the election year. 18 of 21 challenger cases have both ages: mean challenger age 38.1 (DSA) and 38.7 (JD-only), incumbent 64.9 and 65.8, gap 26.8 and 27.0; correlation of DSA tier with the gap −0.01. Vote share on money and DSA tier: DSA +5.02 (4.95); adding the age gap: DSA +5.30 (4.85), gap +0.11 per year (0.11). 2026 defeats: DeGette 69 to Kiros 29; Espaillat 72 to Avila Chevalier 33; Thanedar 71 to McKinney 34; Goldman 50 to Lander 57; Larson 78 to Bronin 47; Green 79 to Menefee 38 (redistricting); Johnson to Allred 43 (redistricting). Tables: `momentum_jd_residuals.csv`, `insurgent_age_gap.csv`, `defeats_2026_ages.csv`.
 
@@ -1594,7 +1596,7 @@ Plan: `report/preregistration_2026_general.md`, Addenda 1–4 and `report/prereg
 3. **The share component is a residual.** See C.5. "Persuasion" appears in the report as shorthand for the share component, not as a measured quantity.
 4. **The 2020 baseline is an outlier.** Turnout losses in Democratic strongholds are partly the unwinding of the 2020 surge; the 2016 → 2020 rows are provided so the reader can judge how much.
 5. **ACS vintage.** County economic characteristics are 2016–2020 averages. Conditions in 2024 differed in ways the 2020 file cannot capture; the QCEW variables partially address this for employment and pay but not for income distribution or education.
-6. **Small-N fundamentals model.** Nineteen observations and four predictors. Two predictors are not significant. The model's out-of-sample error (3.75pp) is larger than most of the residuals it is asked to interpret.
+6. **Small-N fundamentals model.** Nineteen observations and four predictors. Only approval is significant at 5%; GDP growth is marginal (*p* = 0.06). The model's out-of-sample error (4.23pp) is larger than most of the residuals it is asked to interpret.
 7. **Third-party votes.** Parts 2–3's county swing and decomposition use shares over all votes cast, so rightward "swing" includes movement to third parties, not only to the Republican column; third-party voting was small in both 2020 and 2024. The multi-cycle income gradient against Obama 2012 (D.5) and the poorest-quartile table (G.1) use two-party shares, because 2016's third-party vote was large and rose with county income.
 8. **Suppression.** BLS suppression removes 6–9% of counties from the extended regression, disproportionately small single-employer counties.
 9. **Reverse causation in the switching model.** The economy rating is pre-election and the vote post-election, but a respondent who had already decided to switch would rate the economy badly because of it. The gap → switching association is consistent with misattribution causing switching and with the reverse. Panel data with perception measured before the decision, or an instrument for perception, is required to separate them.

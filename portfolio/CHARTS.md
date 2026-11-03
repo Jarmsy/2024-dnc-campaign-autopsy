@@ -24,9 +24,9 @@ One entry per `{{CHART:<id>}}` slot in `content.md`. Data: `data/<id>.json` (eac
 ---
 
 ### 01_fundamentals: "The loss the conditions predicted"
-- **Data:** `elections[]` (year, actual, predicted, incumbent_party) and `harris_2024` (predicted 47.9, actual 49.25, error_band_pp 3.75).
-- **Form:** a dot plot by year (x = year 1948–2024, y = Democratic two-party share). A grey hollow dot for each prediction, a filled dot for each actual, and a thin line joining the pair. For 2024, draw the prediction with a ±3.75 shaded band, and highlight 2024 with the highlight color.
-- **Caption:** "Each pair is one election: the model's prediction (hollow) and the actual result (filled). For 2024 the model, fit on 1948–2020, predicted 47.9%; Harris won 49.25%, inside its usual margin of error (shaded)."
+- **Data:** `elections[]` (year, actual, predicted, incumbent_party) and `harris_2024` (predicted 48.3, actual 49.25, error_band_pp 4.23).
+- **Form:** a dot plot by year (x = year 1948–2024, y = Democratic two-party share). A grey hollow dot for each prediction, a filled dot for each actual, and a thin line joining the pair. For 2024, draw the prediction with a ±4.23 shaded band, and highlight 2024 with the highlight color.
+- **Caption:** "Each pair is one election: the model's prediction (hollow) and the actual result (filled). For 2024 the model, fit on 1948–2020, predicted 48.3%; Harris won 49.25%, inside its usual margin of error (shaded)."
 
 ### 02_turnout_vs_share: "Where the votes went"
 - **Data:** `bins[]`: county groups by 2020 Democratic share, with turnout_M and share_M (millions of Democratic votes; negative = lost).

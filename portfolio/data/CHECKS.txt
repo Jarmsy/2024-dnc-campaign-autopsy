@@ -1,5 +1,5 @@
-Harris predicted / actual: 47.9 / 49.25 (report: 47.9 / 49.25)
-error band (LOOCV RMSE): 3.75 (report: 3.75); refit without 2020 = 2.66 taken from appendix B
+Harris predicted / actual: 48.3 / 49.25 (report: 48.3 / 49.25)
+error band (LOOCV RMSE): 4.23 (report: 4.23); refit without 2020 = 2.79 (report: 2.79)
 strongholds lost (65%+ D counties): -2.90M (report: 2.9M)
 perception by party 2024 (D, R): +0.32, -1.37
 economy rating R2: party / +prices / +own income (gain over party): 0.338 / +0.102 / +0.090
