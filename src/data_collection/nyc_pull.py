@@ -73,7 +73,16 @@ def read_boe_edlevel(path):
             elif len(parts) == 11 and parts[0] != "AD":   # 2017 format: ordinary CSV
                 rows.append(parts)
     df = pd.DataFrame(rows, columns=["AD", "ED", "County", "EDAD Status", "Event", "Party", "Office", "District Key", "VoteFor", "Unit Name", "Tally"])
-    df["AD"] = df["AD"].astype(int); df["ED"] = df["ED"].astype(int); df["Tally"] = pd.to_numeric(df["Tally"], errors="coerce").fillna(0).astype(int)
+    df["AD"] = df["AD"].astype(int); df["ED"] = df["ED"].astype(int)
+    # Tallies of 1,000 or more are written with a thousands separator ("1,023"). Until 4 Nov 2026 they were
+    # coerced to NaN and then 0, which zeroed 177 tallies in the 2024 presidential file (36 of them Harris's
+    # Democratic line), 49 in the 2025 mayoral file, 5 in the 2020 presidential file and others in the 2025
+    # citywide files. Commas are now stripped; an empty tally is 0; anything else unreadable stops the run.
+    t = df["Tally"].str.replace(",", "", regex=False).str.strip()
+    bad = t[(t != "") & ~t.str.fullmatch(r"\d+")]
+    if len(bad):
+        raise ValueError(f"{path}: unreadable tallies {bad.unique()[:10].tolist()}")
+    df["Tally"] = t.replace("", "0").astype(int)
     df["ElectDist"] = df["AD"] * 1000 + df["ED"]
     return df
 
@@ -282,9 +291,57 @@ def backfill_demographics():
     print(panel[cols].describe().round(3).to_string())
 
 
+def block_pop():
+    """2020 census block population (PL P1_001N) for the five counties: the only census input crosswalk_2020 uses."""
+    key = os.getenv("CENSUS_API_KEY")
+    pl = []
+    for c in COUNTIES:
+        r = requests.get("https://api.census.gov/data/2020/dec/pl", timeout=120,
+                         params={"get": "P1_001N", "for": "block:*", "in": f"state:36 county:{c}", "key": key})
+        if r.status_code != 200:                               # the URL carries the key; never print it
+            raise SystemExit(f"Census API returned {r.status_code} for county {c}")
+        j = r.json(); pl.append(pd.DataFrame(j[1:], columns=j[0]))
+    pl = pd.concat(pl)
+    pl["GEOID"] = pl["state"] + pl["county"] + pl["tract"] + pl["block"]
+    pl["pop"] = pl["P1_001N"].astype(int)
+    return pl[["GEOID", "pop"]]
+
+
+VOTE_COLS = {"pres24": ["pres24_total", "pres24_harris", "pres24_trump"],
+             "gen25": ["gen25_total", "gen25_mamdani", "gen25_cuomo", "gen25_sliwa"],
+             "pres20": ["pres20_biden", "pres20_trump", "pres20_total"]}
+
+
+def rebuild_votes():
+    """Recompute the panel's vote columns (2024 presidential, 2025 mayoral general, 2020 presidential
+    crosswalk) with the corrected read_boe_edlevel, leaving the primary and demographic columns as they are.
+    Prints every changed column with the old and new sums over the changed EDs."""
+    panel = pd.read_csv(OUT, index_col="ElectDist")
+    old = panel.copy()
+    pres = wide_results(read_boe_edlevel(fetch(*FILES["pres24"])), {"harris": "Harris", "trump": "Trump"}, "pres24")
+    mayor = wide_results(read_boe_edlevel(fetch(*FILES["mayor25g"])), {"mamdani": "Mamdani", "cuomo": "Cuomo", "sliwa": "Sliwa"}, "gen25")
+    xw20 = crosswalk_2020(block_pop())
+    for src, frame in (("pres24", pres), ("gen25", mayor), ("pres20", xw20)):
+        new = frame[VOTE_COLS[src]].reindex(panel.index)
+        have = new.notna().any(axis=1)                         # EDs absent from the source keep their values
+        panel.loc[have, VOTE_COLS[src]] = new.loc[have].values
+    allc = sum(VOTE_COLS.values(), [])
+    changed = pd.DataFrame(~np.isclose(old[allc].fillna(-1), panel[allc].fillna(-1), rtol=0, atol=1e-6), index=panel.index, columns=allc)
+    print(f"changed EDs: {int(changed.any(axis=1).sum())}")
+    for c in allc:
+        k = changed[c]
+        if k.any():
+            print(f"  {c}: {int(k.sum())} EDs, sum {old.loc[k, c].sum():,.1f} -> {panel.loc[k, c].sum():,.1f}")
+    panel.to_csv(OUT)
+    print(f"wrote {OUT}")
+    return old, panel
+
+
 def main():
     if "--age-only" in sys.argv:
         return backfill_demographics()
+    if "--votes-only" in sys.argv:
+        return rebuild_votes()
     RAW.mkdir(parents=True, exist_ok=True)
     for k, rel in SHAPES.items():
         zp = fetch(DCP + rel, f"{k}.zip")
