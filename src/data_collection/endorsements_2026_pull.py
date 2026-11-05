@@ -135,6 +135,9 @@ def district_parts(text):
 
 
 def main():
+    if OUT.exists() and "--overwrite" not in sys.argv:
+        sys.exit(f"{OUT} is the plan-day record (4 Nov 2026, commit 54ad019) and is not overwritten; "
+                 "corrections go in data/coded/e1_endorsements_2026_notes.md. Pass --overwrite to replace it.")
     now = datetime.now(timezone.utc)
     stamp, retrieved = now.strftime("%Y%m%dT%H%M%SZ"), now.strftime("%Y-%m-%dT%H:%M:%SZ")
     out = []
