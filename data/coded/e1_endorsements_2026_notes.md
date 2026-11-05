@@ -11,6 +11,7 @@ The CSV is the record of Justice Democrats' and national DSA's 2026 House endors
 To check before E1 is run:
 
 - **Oliver Larkin (FL-25, national DSA only).** Is he the Democratic nominee? Florida's primary was 18 August 2026. Florida is on `incumbent_primaries_pull.REDRAWN_2026`, so also confirm the district number on the 2026 lines.
+  - *Resolved 5 November 2026:* he is not the nominee, so E1, whose set is nominees, leaves him out. Rep. Jared Moskowitz (FEC H2FL22171) won the 18 August Democratic primary with "more than two thirds of the vote", per WLRN's election-night report; Larkin conceded ([WLRN](https://www.wlrn.org/government-politics/2026-08-18/jared-moskowitz-25-democratic-primary); [CBS Miami](https://www.cbsnews.com/miami/news/florida-primary-district-25-democratic-jared-moskowitz/)). The FEC lists Larkin's candidacy (H6FL23154) in district 25 on the 2026 lines.
 
 ## Provenance
 
