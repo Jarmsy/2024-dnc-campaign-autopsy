@@ -45,6 +45,14 @@ CERTIFIED.update({
     (2018, "Secretary of State"): {"D": 2213243, "R": 1840118},
 })
 OFFICES_2018 = ("U.S. Senate", "Governor", "Attorney General", "Secretary of State")
+# Test A, 3 November 2026 (pre-registration, "Candidates on the same ballot"). The certified statewide totals
+# are filled in from the Board of State Canvassers' certified statement (due 23 November 2026) before the
+# 2026 file is read; reconcile() fails while they are empty. The pre-registration names the Secretary of
+# State's official results by jurisdiction (Michigan.gov/ElectionResults, served from mielections.us). That
+# host refused connections from this machine on 4 November 2026, as it did in September, so the 2026 loader
+# is written against the certified file once it is posted.
+OFFICES_2026 = ("U.S. Senate", "Governor", "Attorney General", "Secretary of State")
+CERTIFIED_2026 = {(2026, o): {"D": None, "R": None} for o in OFFICES_2026}
 
 
 # Candidates are identified by surname in either the candidate or party column: labels vary by
@@ -56,13 +64,34 @@ NAMES = {("President", 2020): {"D": "biden", "R": "trump"}, ("U.S. Senate", 2020
          ("President", 2008): {"D": "obama", "R": "mccain"}, ("President", 2012): {"D": "obama", "R": "romney"},
          ("President", 2016): {"D": "clinton", "R": "trump"}, ("U.S. Senate", 2018): {"D": "stabenow", "R": "james"},
          ("Governor", 2018): {"D": "whitmer", "R": "schuette"}, ("Attorney General", 2018): {"D": "nessel", "R": "leonard"},
-         ("Secretary of State", 2018): {"D": "benson", "R": "lang"}}
+         ("Secretary of State", 2018): {"D": "benson", "R": "lang"},
+         # 2026 entries are regular expressions on whole words with the first name, either order, so another
+         # candidate whose name contains 'james' or 'lloyd' (the 2022 Green SoS nominee was Larry James
+         # Hutchinson Jr.) is not counted as the Republican. 'el[- ]?sayed' covers El-Sayed / EL SAYED.
+         # Built by _nm(): first name (or listed alternatives) then surname, or 'Surname [Jr./II...], First'.
+         ("U.S. Senate", 2026): {"D": None, "R": None}, ("Governor", 2026): {"D": None, "R": None},
+         ("Attorney General", 2026): {"D": None, "R": None}, ("Secretary of State", 2026): {"D": None, "R": None}}
+
+
+def _nm(firsts, last):
+    f = f"(?:{'|'.join(firsts)})"
+    return rf"\b{f}\b.*\b{last}\b|\b{last}\b(?:\s+(?:jr|sr|ii|iii|iv)\.?)?,?\s*{f}\b"
+
+
+NAMES.update({
+    ("U.S. Senate", 2026): {"D": _nm(["abdul"], r"el[- ]?sayed"), "R": _nm(["mike", "michael"], "rogers")},
+    ("Governor", 2026): {"D": _nm(["jocelyn"], "benson"), "R": _nm(["john"], "james")},
+    ("Attorney General", 2026): {"D": _nm(["eli"], "savit"), "R": _nm(["doug", "douglas"], "lloyd")},
+    ("Secretary of State", 2026): {"D": _nm(["garlin"], "gilchrist"), "R": _nm(["anthony", "tony"], "forlini")}})
 SHORT = {"President": "pres", "U.S. Senate": "sen", "Governor": "gov", "Attorney General": "ag", "Secretary of State": "sos"}
 
 
 def party_of(text, office, year):
     t = text.lower()
-    hits = [p for p, n in NAMES[(office, year)].items() if n in t]
+    if year >= 2026:                                            # regular expressions (see NAMES)
+        hits = [p for p, n in NAMES[(office, year)].items() if re.search(n, t)]
+    else:                                                       # surname substrings, as the validated runs used
+        hits = [p for p, n in NAMES[(office, year)].items() if n in t]
     return hits[0] if len(hits) == 1 else None
 
 
@@ -109,9 +138,54 @@ def load(year, offices=("President", "U.S. Senate")):
     d = d[d.p.notna()]
     d["county"] = d.county.str.strip().str.title()
     d["muni"] = d.precinct.map(municipality)
+    d["muni"] = township_by_context(d)
     out = d.pivot_table(index=["county", "muni"], columns=["office", "p"], values="votes", aggfunc="sum", fill_value=0)
     out.columns = [f"{SHORT[o]}_{p}_{year}" for o, p in out.columns]
     return out.reset_index()
+
+
+def township_by_context(d):
+    """A precinct named only 'Harrisville' is read as a city by municipality(), which knows no context. In
+    a county whose file also names an explicit city of the same name ('Harrisville City', 'City of
+    Harrisville'), the bare name is the township. Found 4 Nov 2026 (fresh review): OpenElections' 2022 and
+    2024 files name Harrisville Township (Alcona) and Lake Township (Missaukee) this way, which merged each
+    into its city; no other place in 2008-2024 triggers the rule. Returns the corrected `muni` column."""
+    raw = d.precinct.fillna("").str.split(",").str[0].str.strip().str.lower()
+    typed = raw.str.contains(r"\b(?:city|township|twp|village|charter)\b", regex=True)
+    is_city = raw.str.contains(r"\bcity\b", regex=True)
+    explicit = set(zip(d.county[is_city], d.muni[is_city]))
+    # Only a precinct field that is exactly the bare name ('harrisville'), not a city precinct written without
+    # its type word plus a counting-board or ward suffix ('harrisville avcb'), and only where the file names no
+    # township of that name explicitly.
+    bare = d.muni.str.replace(r" city$", "", regex=True)
+    explicit_twp = set(zip(d.county[raw.str.contains(r"\b(?:township|twp)\b")], d.muni[raw.str.contains(r"\b(?:township|twp)\b")]))
+    fix = ((~typed) & d.muni.str.endswith(" city") & (raw.str.replace(".", "", regex=False).str.strip() == bare)
+           & pd.Series([k in explicit for k in zip(d.county, d.muni)], index=d.index)
+           & pd.Series([(c, b + " township") not in explicit_twp for c, b in zip(d.county, bare)], index=d.index))
+    if fix.any():
+        print(f"  read as townships (bare name beside an explicit city): "
+              f"{sorted(set(zip(d.county[fix], raw[fix])))}")
+    return d.muni.where(~fix, d.muni.str.replace(r" city$", " township", regex=True))
+
+
+def reconcile(m, year, offices, certified=None, tol=0.001):
+    """Check municipal totals against the certified statewide totals; True if every D and R total is within
+    `tol` (every year so far reconciles within 0.1%). A missing certified total fails, so an unfilled
+    CERTIFIED_2026 cannot pass. Run it on load()'s output, before match(): matching drops the unplaceable
+    early-voting boards and unmatched places, so a matched file falls 0.2-0.5% short by design. main()'s
+    print loop is the check for 2008-2024; the 2026 loader, once written, must call this and stop on False."""
+    certified = {**CERTIFIED, **CERTIFIED_2026} if certified is None else certified
+    ok = True
+    for office in offices:
+        cert = certified.get((year, office))
+        for p in ("D", "R"):
+            if not cert or cert.get(p) is None:
+                print(f"{year} {office} {p}: no certified total on file"); ok = False; continue
+            got = m[f"{SHORT[office]}_{p}_{year}"].sum()
+            dev = got / cert[p] - 1
+            print(f"{year} {office} {p}: {got:,.0f} vs certified {cert[p]:,} ({dev:+.3%})")
+            ok = ok and abs(dev) <= tol
+    return ok
 
 
 def main():
